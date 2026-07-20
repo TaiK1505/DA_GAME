@@ -303,6 +303,11 @@ MonoBehaviour:
   dashSpeed: 20
   dashDuration: 0.15
   dashCooldown: 1
+  slideMultiplier: 2.5
+  slideFriction: 35
+  minSlideSpeed: 5
+  slideCooldown: 0.5
+  slideSteeringFactor: 3
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,12 +15,23 @@ public class PlayerController : MonoBehaviour
     public float dashDuration = 0.15f; 
     public float dashCooldown = 1f;
 
+    [Header("Slide Stats")]
+    public float slideMultiplier = 2.5f; // Scales initial burst off your current move speed
+    public float slideFriction = 40f;    // How fast you lose speed during the slide
+    public float minSlideSpeed = 5f;     // The speed at which the slide cancels
+    public float slideCooldown = 0.5f;
+    public float slideSteeringFactor = 3f;  // How much control WASD has during a slide
+
     private Rigidbody2D rb;
     private Vector2 movementInput;
     private Vector2 dashDirection;
-    
     private float dashTimeLeft;
     private float lastDashTime = -100f;
+
+    private Vector2 slideDirection;
+    private float currentSlideSpeed;
+    private float lastSlideTime = -100f;
+
     private PlayerControls controls;
     
     void Awake()
@@ -32,6 +43,7 @@ public class PlayerController : MonoBehaviour
 
         // 4. The "Tripwire": When the Dash button is performed, fire the AttemptDash method!
         controls.Player.Dash.performed += ctx => AttemptDash();
+        controls.Player.Slide.performed += ctx => AttemptSlide();
     }
     
     void OnEnable()
@@ -71,7 +83,19 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case State.Sliding:
-                // Slide logic goes here
+                if (movementInput != Vector2.zero)
+                {
+                    slideDirection = Vector2.Lerp(slideDirection, movementInput.normalized, slideSteeringFactor * Time.deltaTime).normalized;
+                }
+
+                // FRICTION LOGIC: Bleed off speed over time
+                currentSlideSpeed -= slideFriction * Time.deltaTime;
+                
+                // EXIT LOGIC: If we slow down enough, exit the slide
+                if (currentSlideSpeed <= minSlideSpeed)
+                {
+                    currentState = State.Idle;
+                }
                 break;
 
             case State.Dashing:
@@ -100,6 +124,9 @@ public class PlayerController : MonoBehaviour
             case State.Dashing:
                 rb.linearVelocity = dashDirection * dashSpeed;
                 break;
+            case State.Sliding:
+                rb.linearVelocity = slideDirection * currentSlideSpeed;
+                break;    
         }
     }
 
@@ -126,5 +153,31 @@ public class PlayerController : MonoBehaviour
         {
             dashDirection = new Vector2(1, 0); 
         }
+    }
+
+    private void AttemptSlide()
+    {
+        if ((currentState == State.Running || currentState == State.Dashing) && Time.time >= lastSlideTime + slideCooldown)
+        {
+            StartSlide();
+        }
+    }
+
+     private void StartSlide()
+    {
+        // 2. MOMENTUM CHECK: If we are dashing, use dashSpeed as our base. Otherwise, use moveSpeed.
+        float momentumBase = (currentState == State.Dashing) ? dashSpeed : moveSpeed;
+
+        // 3. DIRECTION CHECK: Inherit the dash direction if we let go of the keys mid-dash
+        Vector2 startingDir = movementInput.normalized;
+        if (startingDir == Vector2.zero && currentState == State.Dashing)
+        {
+            startingDir = dashDirection;
+        }
+
+        currentState = State.Sliding;
+        currentSlideSpeed = momentumBase * slideMultiplier; 
+        lastSlideTime = Time.time;
+        slideDirection = startingDir; 
     }
 }
