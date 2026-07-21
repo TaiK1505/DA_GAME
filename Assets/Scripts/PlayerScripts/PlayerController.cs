@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Slide Stats")]
     public float slideMultiplier = 2.5f; // Scales initial burst off your current move speed
+    public float dashSlideDampener = 0.7f;
     public float slideFriction = 40f;    // How fast you lose speed during the slide
     public float minSlideSpeed = 5f;     // The speed at which the slide cancels
     public float slideCooldown = 0.5f;
@@ -166,8 +167,7 @@ public class PlayerController : MonoBehaviour
      private void StartSlide()
     {
         // 2. MOMENTUM CHECK: If we are dashing, use dashSpeed as our base. Otherwise, use moveSpeed.
-        float momentumBase = (currentState == State.Dashing) ? dashSpeed : moveSpeed;
-
+        float momentumBase = (currentState == State.Dashing) ? (dashSpeed * dashSlideDampener) : moveSpeed;
         // 3. DIRECTION CHECK: Inherit the dash direction if we let go of the keys mid-dash
         Vector2 startingDir = movementInput.normalized;
         if (startingDir == Vector2.zero && currentState == State.Dashing)
