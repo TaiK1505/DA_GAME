@@ -6,7 +6,7 @@ public class WeaponController : MonoBehaviour
     [Header("Aiming Components")]
     public Transform weaponPivot;
     public SpriteRenderer playerSprite;
-    public SpriteRenderer gunSprite;
+    private SpriteRenderer currentGunSprite;
 
     private PlayerControls controls;
     private Vector2 mousePosition;
@@ -42,6 +42,11 @@ public class WeaponController : MonoBehaviour
         HandleAiming();
     }
 
+     public void UpdateWeaponSprite(SpriteRenderer newSprite)
+    {
+        currentGunSprite = newSprite;
+    }   
+
     private void HandleAiming()
     {
         // 1. Convert the screen mouse position into world space
@@ -59,15 +64,22 @@ public class WeaponController : MonoBehaviour
 
         // 5. The "Gungeon" Flip Logic
         // If the angle is looking left (greater than 90 or less than -90 degrees)
-        if (angle > 90 || angle < -90)
+        if (currentGunSprite != null)
         {
-            playerSprite.flipX = true; // Flips character to face left
-            gunSprite.flipY = true;    // Flips gun so it isn't upside down
+            if (mousePosition.x < transform.position.x)
+            {
+                // A "Real" flip! Flips the art AND perfectly mirrors the FirePoint child
+                currentGunSprite.transform.localScale = new Vector3(1, -1, 1);
+            }
+            else
+            {
+                // Reset to normal
+                currentGunSprite.transform.localScale = new Vector3(1, 1, 1);
+            }
         }
-        else
-        {
-            playerSprite.flipX = false; // Faces right
-            gunSprite.flipY = false;    // Gun is right-side up
-        }
+        
+        
     }
+
+   
 }

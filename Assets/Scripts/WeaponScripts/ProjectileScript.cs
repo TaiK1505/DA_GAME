@@ -42,8 +42,6 @@ public class ProjectileScript : MonoBehaviour
 
     private void Deactivate()
     {
-        // TEMPORARY: We are destroying the bullet so your computer doesn't crash right now.
-        // Once we build the Object Pool manager, we will change this single line to: gameObject.SetActive(false);
-        Destroy(gameObject);
+        ObjectPoolManager.Instance.ReturnObject(gameObject);
     }
 }
