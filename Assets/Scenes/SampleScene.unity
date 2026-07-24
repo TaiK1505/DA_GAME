@@ -306,7 +306,7 @@ MonoBehaviour:
   dashSpeed: 20
   dashDuration: 0.15
   dashCooldown: 1
-  slideMultiplier: 3
+  slideMultiplier: 2.5
   dashSlideDampener: 0.5
   slideFriction: 30
   minSlideSpeed: 5
