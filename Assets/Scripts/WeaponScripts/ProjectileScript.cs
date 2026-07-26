@@ -32,7 +32,12 @@ public class ProjectileScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // When it hits anything, print a message and remove the bullet.
+        IDamageable damageableTarget = collision.GetComponent<IDamageable>();
+
+        if (damageableTarget != null)
+        {
+            damageableTarget.TakeDamage(damage);
+        }   
         Debug.Log("Bullet hit: " + collision.name);
         Deactivate();
     }
