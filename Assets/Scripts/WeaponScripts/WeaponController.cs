@@ -62,8 +62,6 @@ public class WeaponController : MonoBehaviour
         // 4. Rotate the invisible pivot
         weaponPivot.eulerAngles = new Vector3(0, 0, angle);
 
-        // 5. The "Gungeon" Flip Logic
-        // If the angle is looking left (greater than 90 or less than -90 degrees)
         if (currentGunSprite != null)
         {
             if (mousePosition.x < transform.position.x)

@@ -26,7 +26,7 @@ public class ObjectPoolManager : MonoBehaviour
     {
         string poolKey = prefab.name;
 
-        // 1. If we've never shot this type of bullet before, create a new bucket for it!
+        // 1. If we've never shot this type of bullet before, create a new bucket for it
         if (!poolDictionary.ContainsKey(poolKey))
         {
             poolDictionary.Add(poolKey, new Queue<GameObject>());
@@ -43,11 +43,11 @@ public class ObjectPoolManager : MonoBehaviour
         }
         else
         {
-            // 3. Bucket is empty! We must create a brand new bullet.
+            // 3. Bucket is empty We must create a brand new bullet.
             GameObject newObj = Instantiate(prefab, position, rotation);
             
-            // CRUCIAL: Unity automatically adds "(Clone)" to the end of spawned objects. 
-            // We MUST rename it so it exactly matches our dictionary key when returning!
+           
+            //rename so it exactly matches our dictionary key when returning!
             newObj.name = poolKey; 
             
             return newObj;

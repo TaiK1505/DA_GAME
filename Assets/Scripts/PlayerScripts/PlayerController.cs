@@ -89,10 +89,10 @@ public class PlayerController : MonoBehaviour
                     slideDirection = Vector2.Lerp(slideDirection, movementInput.normalized, slideSteeringFactor * Time.deltaTime).normalized;
                 }
 
-                // FRICTION LOGIC: Bleed off speed over time
+                // FRICTION LOGIC
                 currentSlideSpeed -= slideFriction * Time.deltaTime;
                 
-                // EXIT LOGIC: If we slow down enough, exit the slide
+                // EXIT LOGIC
                 if (currentSlideSpeed <= minSlideSpeed)
                 {
                     currentState = State.Idle;
@@ -166,9 +166,9 @@ public class PlayerController : MonoBehaviour
 
      private void StartSlide()
     {
-        // 2. MOMENTUM CHECK: If we are dashing, use dashSpeed as our base. Otherwise, use moveSpeed.
+        // 2. MOMENTUM CHECK
         float momentumBase = (currentState == State.Dashing) ? (dashSpeed * dashSlideDampener) : moveSpeed;
-        // 3. DIRECTION CHECK: Inherit the dash direction if we let go of the keys mid-dash
+        // 3. DIRECTION CHECK
         Vector2 startingDir = movementInput.normalized;
         if (startingDir == Vector2.zero && currentState == State.Dashing)
         {

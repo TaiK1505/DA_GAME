@@ -18,7 +18,7 @@ public class CrosshairManager : MonoBehaviour
         // Hide the default operating system cursor
         Cursor.visible = false;
         
-        // Optional: Confine the cursor to the game window so players don't accidentally click out
+       
         Cursor.lockState = CursorLockMode.Confined;
     }
 

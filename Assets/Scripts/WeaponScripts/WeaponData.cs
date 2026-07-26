@@ -14,7 +14,7 @@ public class WeaponData : ScriptableObject
     public float reloadTime = 1.5f;
     
     [Header("Scaling (Phase 5 Prep)")]
-    // We will expand on this when we build the RPG stats later!
+    
     public string scalesOffStat = "None"; 
 
     [Header("Prefabs")]

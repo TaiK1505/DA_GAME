@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class WeaponBase : MonoBehaviour
 {
     [Header("Weapon Data")]
-    // This holds all our stats (Damage, Fire Rate, Bullet Prefab)
+    
     public WeaponData weaponData;
     public Transform firePoint; 
 
@@ -35,7 +35,7 @@ public class WeaponBase : MonoBehaviour
         }
     }
 
-    // We use "virtual" so future laser/melee weapons can override this exact function!
+    
     protected virtual void Shoot()
     {
         // 1. Spawn the physical bullet at the tip of the barrel
