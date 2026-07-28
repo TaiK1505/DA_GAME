@@ -14,6 +14,12 @@ public class HealthComponent : MonoBehaviour, IDamageable
         CurrentHealth = maxHealth;
     }
 
+    public void InitializeHealth(float newMaxHealth)
+{
+    maxHealth = newMaxHealth;
+    CurrentHealth = newMaxHealth;
+}
+
     public void TakeDamage(float damageAmount)
     {
         CurrentHealth -= damageAmount;
