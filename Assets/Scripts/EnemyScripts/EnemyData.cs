@@ -15,4 +15,5 @@ public class EnemyData : ScriptableObject
 
     [Header("Combat")]
     public float damageToPlayer = 10f;
+    public float attackRate = 1f;
 }
