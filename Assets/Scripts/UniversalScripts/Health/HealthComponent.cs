@@ -47,7 +47,6 @@ public class HealthComponent : MonoBehaviour, IDamageable
     private void Die()
     {
         Debug.Log(gameObject.name + " has died!");
-        // For now, just turn the object off. We will add death animations/pooling later.
-        gameObject.SetActive(false);
+        ObjectPoolManager.Instance.ReturnObject(gameObject);
     }
 }

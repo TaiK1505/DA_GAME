@@ -20,7 +20,7 @@ public class EnemyAI : MonoBehaviour
     }
 
    
-    private void Start()
+    private void OnEnable()
     {
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
 
