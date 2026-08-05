@@ -3,15 +3,17 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [Header("Enemy Types")]
-    public GameObject[] enemyPrefabs; // Array so you can drop in Melee AND Ranged prefabs!
+    public GameObject[] enemyPrefabs;    
+    public GameObject spawnIndicatorPrefab;
 
     [Header("Spawn Locations")]
-    public Transform[] spawnPoints;   // The corners of your room
-
+    public Transform[] spawnPoints;  
     [Header("Wave Settings")]
-    public float spawnInterval = 3f;  // Seconds between spawns
+    public float spawnInterval = 3f;  
 
     private float nextSpawnTime;
+
+    
 
     private void Start()
     {
@@ -29,15 +31,29 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnRandomEnemy()
     {
-        if (spawnPoints.Length == 0 || enemyPrefabs.Length == 0) return;
+        if (spawnPoints.Length == 0 || enemyPrefabs.Length == 0 || spawnIndicatorPrefab == null) return;
 
+        // 1. Pick a random enemy blueprint
         int randomEnemy = Random.Range(0, enemyPrefabs.Length);
-        GameObject enemyToSpawn = enemyPrefabs[randomEnemy]; // The prefab blueprint
+        GameObject enemyToSpawn = enemyPrefabs[randomEnemy];
 
+        // 2. Pick a random corner from your array
         int randomPoint = Random.Range(0, spawnPoints.Length);
-        Transform chosenPoint = spawnPoints[randomPoint];
+        Transform chosenSpawnPoint = spawnPoints[randomPoint];
 
+        // 3. Spawn the Indicator at that exact corner instead of the Enemy
+        GameObject indicatorObj = ObjectPoolManager.Instance.SpawnObject(
+            spawnIndicatorPrefab, 
+            chosenSpawnPoint.position, 
+            Quaternion.identity
+        );
         
-        ObjectPoolManager.Instance.SpawnObject(enemyToSpawn, chosenPoint.position, Quaternion.identity);
-    }
+        // 4. Hand the indicator the enemy blueprint so it knows what to summon
+        EnemySpawnIndicator indicatorScript = indicatorObj.GetComponent<EnemySpawnIndicator>();
+        if (indicatorScript != null)
+        {
+            indicatorScript.Initialize(enemyToSpawn);
+        }
+    
+    }    
 }
