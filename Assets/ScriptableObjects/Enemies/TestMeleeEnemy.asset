@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   enemyName: Basic Enemy
   maxHealth: 50
-  moveSpeed: 5
+  moveSpeed: 7
   stoppingDistance: 1
   damageToPlayer: 10
   attackRate: 1
