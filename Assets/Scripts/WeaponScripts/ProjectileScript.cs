@@ -40,6 +40,12 @@ public class ProjectileScript : MonoBehaviour
         }   
         Debug.Log("Bullet hit: " + collision.name);
         Deactivate();
+
+        if (collision.CompareTag("Wall"))
+        {
+            Deactivate();   
+
+        }
     }
 
     private void Deactivate()
