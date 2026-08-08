@@ -6,6 +6,7 @@ public class CameraController : MonoBehaviour
     
     [Header("Targeting")]
     public Transform player;
+    
     private Camera cam;
 
     [Header("Camera Feel")]
