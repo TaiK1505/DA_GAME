@@ -36,8 +36,7 @@ public class EnemyAI : MonoBehaviour
         if (enemyStats != null)
         {
             aiPath.maxSpeed = enemyStats.moveSpeed;
-            aiPath.endReachedDistance = enemyStats.stoppingDistance;
-
+            aiPath.endReachedDistance = 0.1f; 
             healthComponent.InitializeHealth(enemyStats.maxHealth);
         }
         else

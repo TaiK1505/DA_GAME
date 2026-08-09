@@ -303,6 +303,13 @@ MonoBehaviour:
   enemyBulletPrefab: {fileID: 2423502688357899637, guid: 1ca2e27eebeb3a845aa9c2d6a772932e, type: 3}
   firePoint: {fileID: 4783820082306673465}
   gunPivot: {fileID: 2568975248529398742}
+  attackRange: 8
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  aiPath: {fileID: 625562459011939796}
+  destinationSetter: {fileID: 7815332838212933278}
+  healthComponent: {fileID: 3718585974271944075}
 --- !u!1 &3508305746693243028
 GameObject:
   m_ObjectHideFlags: 0
