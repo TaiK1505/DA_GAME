@@ -143,6 +143,17 @@
                 },
                 {
                     "name": "",
+                    "id": "1427d308-cb20-4f6c-9ad6-d04188167f85",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Slide",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "8f020665-c511-4f97-b10c-ca412a6a4726",
                     "path": "<Mouse>/position",
                     "interactions": "",
