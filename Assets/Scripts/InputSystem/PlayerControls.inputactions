@@ -50,6 +50,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Gadget",
+                    "type": "Button",
+                    "id": "0c3d4fab-72d5-4998-ac97-c7f499a5323f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -143,17 +152,6 @@
                 },
                 {
                     "name": "",
-                    "id": "1427d308-cb20-4f6c-9ad6-d04188167f85",
-                    "path": "<Mouse>/rightButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Slide",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "8f020665-c511-4f97-b10c-ca412a6a4726",
                     "path": "<Mouse>/position",
                     "interactions": "",
@@ -182,6 +180,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9ff48f7d-7d51-4e5a-8472-6df0d5cadb26",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Gadget",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
