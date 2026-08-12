@@ -154,7 +154,7 @@ public class PlayerController : MonoBehaviour
                 if (isGadgetPulling) break; // Hands off! Let the grapple pull us.
                 
                 // MOMENTUM BLEED: slide to a stop smoothly
-                if (rb.linearVelocity.magnitude > 0.5f) 
+                if (rb.linearVelocity.magnitude > moveSpeed + 0.5f) 
                 {
                     rb.linearVelocity = Vector2.Lerp(rb.linearVelocity, Vector2.zero, Time.fixedDeltaTime * 3f);
                 }

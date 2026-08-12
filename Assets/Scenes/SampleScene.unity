@@ -315,7 +315,7 @@ MonoBehaviour:
   minSlideSpeed: 5
   slideCooldown: 0.5
   slideSteeringFactor: 4
-  grappleStrafeForce: 0
+  grappleStrafeForce: 5
   activeGadget: {fileID: 74871049}
 --- !u!114 &74871046
 MonoBehaviour:
@@ -373,6 +373,8 @@ MonoBehaviour:
   isGadgetActive: 0
   overridePlayerPhysics: 0
   myStats: {fileID: 11400000, guid: 1cd0e752aa33b3549b737d0f186b3f9a, type: 2}
+  maxHoldTime: 2
+  maxGrappleSpeed: 20
 --- !u!120 &74871050
 LineRenderer:
   serializedVersion: 3

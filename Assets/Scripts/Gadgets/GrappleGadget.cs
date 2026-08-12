@@ -6,12 +6,18 @@ public class GrappleGadget : PlayerGadget
     
     
     [Header("Stats")]
-    public GrappleData myStats; // Drag your ScriptableObject here in the Inspector!
+    public GrappleData myStats;
+    
+    [Header("Grapple Limitations")]
+    public float maxHoldTime = 1.5f; 
+    public float maxGrappleSpeed = 35f;
 
+    private float currentHoldTime;
     private Rigidbody2D rb;
     private LineRenderer lineRenderer;
     private Vector2 grapplePoint;
     private bool isGrappling;
+    private float currentMaxRopeLength;
     
     private void Awake()
     {
@@ -43,6 +49,10 @@ public class GrappleGadget : PlayerGadget
             grapplePoint = hit.point;
             isGadgetActive = true;
             overridePlayerPhysics = true;
+
+            currentHoldTime = maxHoldTime;
+
+            currentMaxRopeLength = Vector2.Distance(transform.position, grapplePoint);  
             
             if (lineRenderer != null)
             {
@@ -68,19 +78,58 @@ public class GrappleGadget : PlayerGadget
             lineRenderer.SetPosition(0, transform.position); // Point A: Player
             lineRenderer.SetPosition(1, grapplePoint);       // Point B: The Wall
         }
+
+        currentHoldTime -= Time.deltaTime;
+        if (currentHoldTime <= 0)
+        {   
+            DeactivateGadget(); 
+        }
     }
 
     private void FixedUpdate()
     {
-        // Physics go in FixedUpdate
-        if (isGadgetActive)
+        if (isGadgetActive) 
         {
-            // Calculate the direction pulling us toward the anchor
-            Vector2 pullDir = (grapplePoint - (Vector2)transform.position).normalized;
+            // Get our math vectors
+            Vector2 toAnchor = grapplePoint - (Vector2)transform.position;
+            float currentDistance = toAnchor.magnitude;
+            Vector2 pullDir = toAnchor.normalized;
 
-            // Apply the force! 
-            // This blends with your slide velocity to create the circular Pathfinder swing.
+            // apply the inward thruster
             rb.AddForce(pullDir * myStats.grapplePullForce, ForceMode2D.Force);
+
+            // 2. THE WINCH: If the player gets pulled closer, shrink the maximum rope length!
+            // the rope can get shorter, but never longer.
+            if (currentDistance < currentMaxRopeLength)
+            {
+                currentMaxRopeLength = currentDistance;
+            }
+
+            // 3. THE RIGID TETHER: Prevent the Bungee Cord!
+            if (currentDistance >= currentMaxRopeLength)
+            {
+                // Calculate which way is "Outward" (away from the pillar)
+                Vector2 outwardDir = -pullDir;
+                
+                // Check if our current physics velocity is pushing us outward
+                float outwardSpeed = Vector2.Dot(rb.linearVelocity, outwardDir);
+
+                // If we are flying outward, cancel ONLY the outward speed!
+                if (outwardSpeed > 0)
+                {
+                    // This strips away the bungee stretch
+                    rb.linearVelocity -= outwardDir * outwardSpeed;
+                }
+                
+                // Hard-clamp the position just in case the physics engine stutters
+                transform.position = grapplePoint + (outwardDir * currentMaxRopeLength);
+            }
+
+            if (rb.linearVelocity.magnitude > maxGrappleSpeed)
+        {
+            // Strip the speed back down to the maximum allowed limit
+            rb.linearVelocity = rb.linearVelocity.normalized * maxGrappleSpeed;
+        }
         }
     }
 
