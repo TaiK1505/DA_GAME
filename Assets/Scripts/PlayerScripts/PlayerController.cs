@@ -34,8 +34,9 @@ public class PlayerController : MonoBehaviour
     private float dashTimeLeft;
     private float lastDashTime = -100f;
 
-    private Vector2 slideDirection;
-    private float currentSlideSpeed;
+    public Vector2 slideDirection;
+    public float currentSlideSpeed;
+    [HideInInspector] public float activeBoostFriction = 0.5f;
     private float lastSlideTime = -100f;
 
     private PlayerControls controls;
@@ -99,15 +100,36 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case State.Sliding:
+                float maxNaturalSpeed = dashSpeed * slideMultiplier;
+
+                Debug.Log($"SLIDING STATE | Current Speed: {currentSlideSpeed:F1} | Max Natural Speed: {maxNaturalSpeed:F1} | Is Boosted: {currentSlideSpeed > maxNaturalSpeed + 1f}");
+                
+                
                 if (movementInput != Vector2.zero)
                 {
+                    float currentSteering = slideSteeringFactor;
+                    
+                    if (currentSlideSpeed > maxNaturalSpeed + 1f)
+                    {
+                        currentSteering *= 2.5f; // Tweak this for sharper/looser boosted turns
+                    }
+                    
                     slideDirection = Vector2.Lerp(slideDirection, movementInput.normalized, slideSteeringFactor * Time.deltaTime).normalized;
                 }
 
+                //rb.linearVelocity = slideDirection * currentSlideSpeed;
+                
                 if (!isGadgetPulling)
                 {
-                    // FRICTION LOGIC
-                currentSlideSpeed -= slideFriction * Time.deltaTime;
+                    // Dynamic Friction: Bleed off massive blast speeds faster so we don't slide forever
+                    if (currentSlideSpeed > moveSpeed + 5f) 
+                    {
+                        currentSlideSpeed -= (slideFriction * activeBoostFriction) * Time.deltaTime; 
+                    }
+                    else 
+                    {
+                        currentSlideSpeed -= slideFriction * Time.deltaTime;
+                    }
                 }
                 
                 

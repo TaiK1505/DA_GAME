@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 74871048}
   - component: {fileID: 74871050}
   - component: {fileID: 74871049}
+  - component: {fileID: 74871051}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -316,7 +317,10 @@ MonoBehaviour:
   slideCooldown: 0.5
   slideSteeringFactor: 4
   grappleStrafeForce: 5
-  activeGadget: {fileID: 74871049}
+  activeGadget: {fileID: 74871051}
+  slideDirection: {x: 0, y: 0}
+  currentSlideSpeed: 0
+  activeBoostFriction: 0.5
 --- !u!114 &74871046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -485,6 +489,21 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &74871051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 74871039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c2712c8f408f084f84ad194a862805f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SlideGateGadget
+  isGadgetActive: 0
+  overridePlayerPhysics: 0
+  myStats: {fileID: 11400000, guid: 04d2e0a5b6cae3043bd1068fc5a8e464, type: 2}
 --- !u!1 &179042425
 GameObject:
   m_ObjectHideFlags: 0
