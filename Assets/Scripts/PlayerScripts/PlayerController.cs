@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Slide Stats")]
     public float slideMultiplier = 2.5f; // Scales initial burst off your current move speed
-    public float dashSlideDampener = 0.7f;
+    public float dashSlideDampener;
     public float slideFriction = 40f;    // How fast you lose speed during the slide
     public float minSlideSpeed = 5f;     // The speed at which the slide cancels
     public float slideCooldown = 0.5f;
@@ -100,7 +100,7 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case State.Sliding:
-                float maxNaturalSpeed = dashSpeed * slideMultiplier;
+                float maxNaturalSpeed = (dashSpeed * slideMultiplier) * dashSlideDampener;
 
                 Debug.Log($"SLIDING STATE | Current Speed: {currentSlideSpeed:F1} | Max Natural Speed: {maxNaturalSpeed:F1} | Is Boosted: {currentSlideSpeed > maxNaturalSpeed + 1f}");
                 
@@ -122,7 +122,7 @@ public class PlayerController : MonoBehaviour
                 if (!isGadgetPulling)
                 {
                     // Dynamic Friction: Bleed off massive blast speeds faster so we don't slide forever
-                    if (currentSlideSpeed > moveSpeed + 5f) 
+                    if (currentSlideSpeed > maxNaturalSpeed + 1f) 
                     {
                         currentSlideSpeed -= (slideFriction * activeBoostFriction) * Time.deltaTime; 
                     }
