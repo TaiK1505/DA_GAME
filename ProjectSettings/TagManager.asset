@@ -13,9 +13,9 @@ TagManager:
   - Obstacle
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Trap
+  - Enemy
+  - EnemyProjectile
   - 
   - 
   - 
