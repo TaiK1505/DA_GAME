@@ -49,7 +49,8 @@ GameObject:
   - component: {fileID: 7815332838212933278}
   - component: {fileID: 7852076935224670536}
   - component: {fileID: 9138007427460598118}
-  m_Layer: 0
+  - component: {fileID: -3313803267100470658}
+  m_Layer: 7
   m_Name: TestRangedEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -310,6 +311,33 @@ MonoBehaviour:
   aiPath: {fileID: 625562459011939796}
   destinationSetter: {fileID: 7815332838212933278}
   healthComponent: {fileID: 3718585974271944075}
+--- !u!50 &-3313803267100470658
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3458384298365180062}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 4
 --- !u!1 &3508305746693243028
 GameObject:
   m_ObjectHideFlags: 0

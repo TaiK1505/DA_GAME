@@ -8,6 +8,7 @@ public class SlideGateInteractable : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Vector2 trapDirection = transform.up;
+        Debug.Log("THE PAD WAS TOUCHED BY: " + collision.gameObject.name);
 
         // THE PLAYER
         if (collision.CompareTag("Player"))
@@ -30,15 +31,15 @@ public class SlideGateInteractable : MonoBehaviour
         
         // THE ENEMY
         else if (collision.CompareTag("Enemy"))
-        {
-            Rigidbody2D enemyRb = collision.GetComponent<Rigidbody2D>();
+{
+    EnemyAI enemyScript = collision.GetComponent<EnemyAI>();    
             
-            if (enemyRb != null)
-            {
-                // launch the enemy in the pad's direction!
-                enemyRb.linearVelocity = trapDirection * boostForce;
-            }
-            
-        }
+    if (enemyScript != null)
+    {
+        // launch the enemy in the pad's direction!
+        // pause their A* brain for 0.4 seconds so they physically fly across the room.
+        enemyScript.ApplyKnockback(trapDirection * boostForce,0.4f);
+    }
+}
     }
 }

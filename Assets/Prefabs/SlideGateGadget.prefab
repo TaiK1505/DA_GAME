@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5389773076342315632}
   - component: {fileID: 8176023029651133655}
   - component: {fileID: 7022141724580260607}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SlideGateGadget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -152,3 +152,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SlideGateInteractable
   boostForce: 1
+  padFrictionMultiplier: 0
