@@ -12,6 +12,7 @@ public class EnemyAI : MonoBehaviour
     [Header("Physics States")]
     private float controlRegainTimer = 0f;
     private bool isKnockedBack = false;
+    private bool isStunned = false;
     
     private AIDestinationSetter destinationSetter;
     private AIPath aiPath;
@@ -56,13 +57,13 @@ public class EnemyAI : MonoBehaviour
         isKnockedBack = true;
         controlRegainTimer = duration;
         
-        // Turn off the A* brain completely so it stops braking!
+        // Turn off the A* brain completely 
         if (aiPath != null)
         {
             aiPath.enabled = false; 
         }
         
-        // Let the pure Unity physics engine blast them away!
+        // the pure physics engine blast them away
         if (rb != null)
         {
             rb.linearVelocity = force;
@@ -72,7 +73,7 @@ public class EnemyAI : MonoBehaviour
     private void Update()
     {
         // Only run this timer if we are currently flying through the air
-        if (isKnockedBack)
+        if (isKnockedBack || isStunned)
         {
             controlRegainTimer -= Time.deltaTime;
 
@@ -80,6 +81,7 @@ public class EnemyAI : MonoBehaviour
             if (controlRegainTimer <= 0f)
             {
                 isKnockedBack = false;
+                isStunned = false;
                 
                 // Wake the A* brain back up so the enemy resumes chasing you!
                 if (aiPath != null)
@@ -87,6 +89,25 @@ public class EnemyAI : MonoBehaviour
                     aiPath.enabled = true;
                 }
             }
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (isKnockedBack && collision.gameObject.CompareTag("Wall")) 
+        {
+            // THE WALL SPLAT!
+            isKnockedBack = false;       // We are no longer flying
+            isStunned = true;            // We are now fully Stunned
+            controlRegainTimer = 2.0f;   // Stay stunned for 2 seconds!
+
+            // Stop the sliding physics instantly so they don't slide up the wall
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector2.zero; 
+            }
+
+            Debug.Log("Enemy Splatted against a Wall!");
         }
     }
 }

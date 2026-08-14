@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d020273dd734424c9e4283e87c63651, type: 3}
   m_Name: TestSlideGate
   m_EditorClassIdentifier: Assembly-CSharp::SlideGateData
+  gadgetName: TestSlideGate
+  description: 
+  icon: {fileID: 0}
+  cooldownTime: 3
   slidePadPrefab: {fileID: 622609131268857258, guid: 8210624fe8796264b993b028ced8016f, type: 3}
   maxActivePads: 3
-  cooldownTime: 1.5
   boostForce: 30
   boostFriction: 0.5
