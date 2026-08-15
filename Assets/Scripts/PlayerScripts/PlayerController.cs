@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     public State currentState;
     
     [Header("Movement Stats")]
-    public float moveSpeed = 8f;
+    private float moveSpeed => myStats.GetCurrentSpeed();   
 
     [Header("Dash Stats")]
     public float dashSpeed = 20f;
@@ -43,13 +43,17 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public float activeBoostFriction = 0.5f;
     private float lastSlideTime = -100f;
 
+    private PlayerStats myStats;
+
     private PlayerControls controls;
     
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        
-        // 3. Initialize the controls
+
+        myStats = GetComponent<PlayerStats>();
+
+        // Initialize the controls
         controls = new PlayerControls();
 
         // 4. The "Tripwire": When the Dash button is performed, fire the AttemptDash method!

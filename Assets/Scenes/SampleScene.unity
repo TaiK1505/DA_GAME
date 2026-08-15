@@ -132,6 +132,8 @@ GameObject:
   - component: {fileID: 74871042}
   - component: {fileID: 74871041}
   - component: {fileID: 74871045}
+  - component: {fileID: 74871053}
+  - component: {fileID: 74871054}
   - component: {fileID: 74871046}
   - component: {fileID: 74871047}
   - component: {fileID: 74871048}
@@ -307,7 +309,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   currentState: 0
-  moveSpeed: 8
   dashSpeed: 20
   dashDuration: 0.15
   dashCooldown: 1
@@ -524,6 +525,39 @@ MonoBehaviour:
   isGadgetActive: 0
   overridePlayerPhysics: 0
   myStats: {fileID: 11400000, guid: 1805a8df8ecf0b440906c47b26c0b1e2, type: 2}
+--- !u!114 &74871053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 74871039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14ed76b753bf7e44087d974790e7597b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
+  baseMovementSpeed: 8
+  baseDamageMultiplier: 1
+  baseDamageReduction: 0
+  baseDodgeChance: 0
+--- !u!114 &74871054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 74871039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2057a2ed4456c6e40bc0b8c20d67e119, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AdrenalineCore
+  currentClass: {fileID: 11400000, guid: 2716510fa0b59154993e402f1f5a915b, type: 2}
+  adrenalineCooldown: 10
+  baseDuration: 3
+  bonusDuration: 0
+  inRunUpgrades: []
 --- !u!1 &106470467
 GameObject:
   m_ObjectHideFlags: 0
