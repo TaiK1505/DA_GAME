@@ -7,4 +7,9 @@ public abstract class PlayerGadget : MonoBehaviour
     
     public abstract void ActivateGadget();
     public abstract void DeactivateGadget();
+
+    public virtual void InitializeGadget(GadgetData data)
+    {
+        // gadgets will override this
+    }
 }

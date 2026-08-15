@@ -9,6 +9,11 @@ public class SlideGateGadget : PlayerGadget
     private Queue<GameObject> activePads = new Queue<GameObject>();
     private float nextFireTime = 0f;
 
+    public override void InitializeGadget(GadgetData data)
+    {
+        myStats = (SlideGateData)data; 
+    }
+    
     public override void ActivateGadget()
     {
         if (Time.time < nextFireTime) return;
@@ -59,4 +64,6 @@ public class SlideGateGadget : PlayerGadget
     {
         
     }
+
+    
 }

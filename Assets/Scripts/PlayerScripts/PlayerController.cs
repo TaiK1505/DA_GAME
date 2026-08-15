@@ -26,7 +26,11 @@ public class PlayerController : MonoBehaviour
     [Header("Gadget Stats")]
     public float grappleStrafeForce = 15f;
 
-    public PlayerGadget activeGadget;
+    [Header("Interaction")]
+    public float interactRange = 1.5f;
+    public LayerMask interactableLayer;
+
+    public PlayerGadget currentActiveGadget;
     
     private Rigidbody2D rb;
     private Vector2 movementInput;
@@ -52,8 +56,10 @@ public class PlayerController : MonoBehaviour
         controls.Player.Dash.performed += ctx => AttemptDash();
         controls.Player.Slide.performed += ctx => AttemptSlide();
         
-        controls.Player.Gadget.started += ctx => activeGadget?.ActivateGadget();
-        controls.Player.Gadget.canceled += ctx => activeGadget?.DeactivateGadget();
+        controls.Player.Gadget.started += ctx => currentActiveGadget?.ActivateGadget();
+        controls.Player.Gadget.canceled += ctx => currentActiveGadget?.DeactivateGadget();
+
+        controls.Player.Interact.performed += ctx => TryInteract();
     }
     
         void OnEnable()
@@ -76,7 +82,7 @@ public class PlayerController : MonoBehaviour
     {
         movementInput = controls.Player.Move.ReadValue<Vector2>();
 
-        bool isGadgetPulling = activeGadget != null && activeGadget.overridePlayerPhysics;
+        bool isGadgetPulling = currentActiveGadget != null && currentActiveGadget.overridePlayerPhysics;
 
         switch (currentState)
         {
@@ -163,7 +169,7 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        bool isGadgetPulling = activeGadget != null && activeGadget.overridePlayerPhysics;
+        bool isGadgetPulling = currentActiveGadget != null && currentActiveGadget.overridePlayerPhysics;
 
         if (isGadgetPulling && movementInput != Vector2.zero)
         {
@@ -272,12 +278,56 @@ public class PlayerController : MonoBehaviour
     }
 
     public void OnGadgetButton()
-{
-    if (activeGadget != null)
     {
-        // The PlayerController just presses the big red "GO" button.
-        // It doesn't care if this triggers a grapple or an explosion.
-        activeGadget.ActivateGadget(); 
+        if (currentActiveGadget != null)
+        {
+            // The PlayerController just presses the big red "GO" button.
+            // It doesn't care if this triggers a grapple or an explosion.
+            currentActiveGadget.ActivateGadget(); 
+        }
     }
-}
+
+    public void TryInteract()
+    {
+        Debug.Log("1. INTERACT BUTTON PRESSED!");
+
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, interactRange, interactableLayer);
+        Debug.Log("2. Found " + hitColliders.Length + " objects on the Interactable Layer in range.");
+
+        foreach (Collider2D hit in hitColliders)
+        {
+            IInteractable interactable = hit.GetComponent<IInteractable>();
+            if (interactable != null)
+            {
+                Debug.Log("3. Found the Pedestal Script! Trying to equip...");
+                interactable.Interact(this.gameObject);
+                return; 
+            }
+        }
+    }
+
+    public void EquipGadget(GadgetData newGadgetData, string newScriptName)
+    {
+        // 1. Destroy the old gadget script if you are already holding one
+        if (currentActiveGadget != null)
+        {
+            Destroy(currentActiveGadget);
+        }
+
+        // 2. Find the new script by its name
+        System.Type scriptType = System.Type.GetType(newScriptName);
+        
+        if (scriptType != null && scriptType.IsSubclassOf(typeof(PlayerGadget)))
+        {
+            // 3. Attach the new script to the player
+            currentActiveGadget = (PlayerGadget)gameObject.AddComponent(scriptType);
+
+            // 4. Shove the Stat Card data into the newly attached script!
+            currentActiveGadget.InitializeGadget(newGadgetData); 
+        }
+        else
+        {
+            Debug.LogError("Could not find a Gadget Script named: " + newScriptName + ". Check your spelling!");
+        }
+    }
 }

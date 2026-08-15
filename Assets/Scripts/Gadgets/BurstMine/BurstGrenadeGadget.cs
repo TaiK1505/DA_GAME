@@ -8,6 +8,11 @@ public class BurstGrenadeGadget : PlayerGadget
 
     private float nextFireTime = 0f;
 
+    public override void InitializeGadget(GadgetData data)
+    {
+        myStats = (BurstGrenadeData)data; 
+    }
+    
     public override void ActivateGadget()
     {
         if (Time.time < nextFireTime) return; 

@@ -1,16 +1,25 @@
 using UnityEngine;
 
-public class GadgetPedestal : MonoBehaviour
+public class GadgetPedestal : MonoBehaviour, IInteractable
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [Header("Gadget")]
+    public GadgetData gadgetToEquip; 
+    
+    [Tooltip("The name of the script")]
+    public string gadgetScriptName;
+
+    public void Interact(GameObject player)
     {
-        
+        if (gadgetToEquip == null) return;
+
+        PlayerController pc = player.GetComponent<PlayerController>();
+
+        if (pc != null)
+        {
+            pc.EquipGadget(gadgetToEquip, gadgetScriptName);
+            Debug.Log("Player picked up: " + gadgetToEquip.name);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }

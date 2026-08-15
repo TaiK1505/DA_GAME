@@ -31,34 +31,38 @@ public class GrappleGadget : PlayerGadget
             lineRenderer.enabled = false;
         }
     }
+
+    public override void InitializeGadget(GadgetData data)
+    {
+        myStats = (GrappleData)data; 
+        lineRenderer = GetComponent<LineRenderer>();
+    }
     
     public override void ActivateGadget()
     {
-        // Find the direction to the mouse
         Vector2 screenMousePos = Mouse.current.position.ReadValue();
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(screenMousePos);
         
         Vector2 grappleDir = (mousePos - (Vector2)transform.position).normalized;
 
-        // Shoot an Raycast to find a wall
         RaycastHit2D hit = Physics2D.Raycast(transform.position, grappleDir, myStats.grappleRange, myStats.grappleableLayer);
 
         if (hit.collider != null)
         {
-            // Anchor in and turn on the rope.
             grapplePoint = hit.point;
             isGadgetActive = true;
             overridePlayerPhysics = true;
 
             currentHoldTime = maxHoldTime;
-
             currentMaxRopeLength = Vector2.Distance(transform.position, grapplePoint);  
             
             if (lineRenderer != null)
             {
+                // ---> THE FIX: Force the Line Renderer to behave! <---
+                lineRenderer.positionCount = 2; // Guarantee it has exactly 2 points
+                lineRenderer.useWorldSpace = true; // Stop it from drawing off-screen
                 lineRenderer.enabled = true;
             } 
-            
         }
     }
 
@@ -75,16 +79,19 @@ public class GrappleGadget : PlayerGadget
         // Visuals go in standard Update so the rope doesn't stutter
         if (isGadgetActive)
         {
-            lineRenderer.SetPosition(0, transform.position); // Point A: Player
-            lineRenderer.SetPosition(1, grapplePoint);       // Point B: The Wall
-        }
+            // Lock the Z axis to 0 so the line doesn't accidentally draw behind the camera!
+            lineRenderer.SetPosition(0, new Vector3(transform.position.x, transform.position.y, 0f));
+            lineRenderer.SetPosition(1, new Vector3(grapplePoint.x, grapplePoint.y, 0f));
 
-        currentHoldTime -= Time.deltaTime;
-        if (currentHoldTime <= 0)
-        {   
-            DeactivateGadget(); 
+            // ---> THE TIMER FIX <---
+            // Only count down IF we are currently grappling!
+            currentHoldTime -= Time.deltaTime;
+            if (currentHoldTime <= 0)
+            {   
+                DeactivateGadget(); 
+            }
         }
-    }
+    }   
 
     private void FixedUpdate()
     {
