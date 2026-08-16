@@ -99,7 +99,7 @@ public class EnemyAI : MonoBehaviour
             // THE WALL SPLAT!
             isKnockedBack = false;       // We are no longer flying
             isStunned = true;            // We are now fully Stunned
-            controlRegainTimer = 2.0f;   // Stay stunned for 2 seconds!
+            controlRegainTimer = 2.0f;  
 
             // Stop the sliding physics instantly so they don't slide up the wall
             if (rb != null)

@@ -21,7 +21,10 @@ public class PlayerController : MonoBehaviour
     public float slideFriction = 40f;    // How fast you lose speed during the slide
     public float minSlideSpeed = 5f;     // The speed at which the slide cancels
     public float slideCooldown = 0.5f;
-    public float slideSteeringFactor = 3f;  // How much control WASD has during a slide
+    public float slideSteeringFactor = 3f; 
+    
+    [Header("Ramming Stats")]
+    public float ramForceMultiplier = 1.2f;
 
     [Header("Gadget Stats")]
     public float grappleStrafeForce = 15f;
@@ -111,7 +114,7 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case State.Sliding:
-                float maxNaturalSpeed = (dashSpeed * slideMultiplier) * dashSlideDampener;
+                float maxNaturalSpeed = GetMaxNaturalSpeed();
 
                 Debug.Log($"SLIDING STATE | Current Speed: {currentSlideSpeed:F1} | Max Natural Speed: {maxNaturalSpeed:F1} | Is Boosted: {currentSlideSpeed > maxNaturalSpeed + 1f}");
                 
@@ -334,6 +337,39 @@ public class PlayerController : MonoBehaviour
         else
         {
             Debug.LogError("Could not find a Gadget Script named: " + newScriptName + ". Check your spelling!");
+        }
+    }
+    
+    private float GetMaxNaturalSpeed()
+    {
+        return (dashSpeed * slideMultiplier) * dashSlideDampener;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // 1. Check the impact speed using relative velocity
+        float impactSpeed = collision.relativeVelocity.magnitude;
+        float maxNaturalSpeed = GetMaxNaturalSpeed();
+
+        if (impactSpeed > maxNaturalSpeed + 1f)
+        {
+            // 2. Look for the EnemyAI script
+            EnemyAI enemy = collision.gameObject.GetComponent<EnemyAI>();
+            
+            if (enemy != null)
+            {
+                Debug.Log($"RAMMED ENEMY! Impact Speed: {impactSpeed:F1}");
+
+                // 3. Calculate direction away from you
+                Vector2 knockbackDir = (collision.transform.position - transform.position).normalized;
+                
+                
+                // The faster player are moving when you hit them the harder they fly
+                float dynamicKnockbackForce = impactSpeed * ramForceMultiplier;
+
+                //Send the scaled force to the enemy
+                enemy.ApplyKnockback(knockbackDir * dynamicKnockbackForce, 0.5f); 
+            }
         }
     }
 }

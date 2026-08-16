@@ -204,7 +204,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &74871042
 BoxCollider2D:
@@ -349,6 +349,7 @@ MonoBehaviour:
   minSlideSpeed: 5
   slideCooldown: 0.5
   slideSteeringFactor: 4
+  ramForceMultiplier: 1
   grappleStrafeForce: 5
   activeBoostFriction: 0.5
   interactRange: 1.5
@@ -398,7 +399,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 832ec8d5cd5b0cb4496bbbc574bb8919, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthComponent
-  maxHealth: 100
+  maxHealth: 500
 --- !u!114 &74871049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -856,7 +857,7 @@ GameObject:
   - component: {fileID: 293957961}
   - component: {fileID: 293957960}
   - component: {fileID: 293957959}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: OExitDoor2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1025,7 +1026,7 @@ GameObject:
   - component: {fileID: 413823269}
   - component: {fileID: 413823268}
   - component: {fileID: 413823267}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: OEntranceDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2342,7 +2343,7 @@ GameObject:
   - component: {fileID: 890677433}
   - component: {fileID: 890677432}
   - component: {fileID: 890677431}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: 'FurnaceExitDoor1 '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2480,7 +2481,7 @@ GameObject:
   - component: {fileID: 903853213}
   - component: {fileID: 903853212}
   - component: {fileID: 903853211}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FurnaceEntranceDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2802,7 +2803,7 @@ GameObject:
   - component: {fileID: 1002959930}
   - component: {fileID: 1002959929}
   - component: {fileID: 1002959928}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: SmallSqEntranceDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3002,7 +3003,7 @@ GameObject:
   - component: {fileID: 1203297123}
   - component: {fileID: 1203297122}
   - component: {fileID: 1203297121}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: OExitDoor1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3140,7 +3141,7 @@ GameObject:
   - component: {fileID: 1207985080}
   - component: {fileID: 1207985079}
   - component: {fileID: 1207985078}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: DominoEntranceDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114630,7 +114631,7 @@ GameObject:
   - component: {fileID: 1777759231}
   - component: {fileID: 1777759230}
   - component: {fileID: 1777759229}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: FurnaceExitDoor2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114768,7 +114769,7 @@ GameObject:
   - component: {fileID: 1796470414}
   - component: {fileID: 1796470413}
   - component: {fileID: 1796470412}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: 'DominoExitDoor '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114906,7 +114907,7 @@ GameObject:
   - component: {fileID: 1850758471}
   - component: {fileID: 1850758470}
   - component: {fileID: 1850758469}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: RobotRoomEntranceDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}

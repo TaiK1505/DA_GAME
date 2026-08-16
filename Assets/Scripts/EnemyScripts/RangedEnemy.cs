@@ -24,11 +24,13 @@ public class RangedEnemy : MonoBehaviour
     private float nextAttackTime = 0f;
 
     private SpriteRenderer spriteRenderer;
+    private Rigidbody2D rb;
 
     private void Awake()
     {
         // 2. We grab the Sprite Renderer off the yellow square
         spriteRenderer = GetComponent<SpriteRenderer>();
+        rb = GetComponent<Rigidbody2D>();
     }
     
     private void OnEnable()
@@ -91,12 +93,16 @@ public class RangedEnemy : MonoBehaviour
 
     if (distanceToPlayer <= enemyStats.stoppingDistance && hasLineOfSight)
     {
-        aiPath.canMove = false;
+        aiPath.canMove = false; // (You can keep this as canMove, or change it to isStopped)
+        
+        // ADD THESE TWO LINES (The Cure)
+        rb.linearVelocity = Vector2.zero; 
+        rb.angularVelocity = 0f; 
     }
-    else
-    {
-        aiPath.canMove = true;
-    }
+else
+{
+    aiPath.canMove = true;
+}
 
     if (distanceToPlayer <= attackRange && hasLineOfSight)
     {
@@ -109,19 +115,21 @@ public class RangedEnemy : MonoBehaviour
     }
 
     private void Shoot()
+{
+    if (enemyBulletPrefab == null || firePoint == null) return;
+
+    // Calculate the math angle to look directly at the player
+    Vector2 aimDirection = (player.position - firePoint.position).normalized;
+    float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
+
+    GameObject spawnedBullet = ObjectPoolManager.Instance.SpawnObject(enemyBulletPrefab, firePoint.position, Quaternion.Euler(0, 0, angle));
+
+    // Look for the unified ProjectileScript instead of EnemyProjectile
+    ProjectileScript projectile = spawnedBullet.GetComponent<ProjectileScript>();
+    
+    if (projectile != null)
     {
-        if (enemyBulletPrefab == null || firePoint == null) return;
-
-        // Calculate the math angle to look directly at the player
-        Vector2 aimDirection = (player.position - firePoint.position).normalized;
-        float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
-
-        GameObject spawnedBullet = ObjectPoolManager.Instance.SpawnObject(enemyBulletPrefab, firePoint.position, Quaternion.Euler(0, 0, angle));
-
-        EnemyProjectile enemyProjectile = spawnedBullet.GetComponent<EnemyProjectile>();
-        if (enemyProjectile != null)
-        {
-            enemyProjectile.damage = enemyStats.damageToPlayer;
-        }
+        projectile.damage = enemyStats.damageToPlayer;
     }
+}
 }
