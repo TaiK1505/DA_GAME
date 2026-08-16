@@ -16,8 +16,8 @@ MonoBehaviour:
   description: 
   icon: {fileID: 0}
   cooldownTime: 0
-  grappleRange: 15
-  grapplePullForce: 30
+  grappleRange: 10
+  grapplePullForce: 40
   grappleableLayer:
     serializedVersion: 2
     m_Bits: 8

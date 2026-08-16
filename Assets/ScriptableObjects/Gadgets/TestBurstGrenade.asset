@@ -18,7 +18,7 @@ MonoBehaviour:
   cooldownTime: 3
   grenadePrefab: {fileID: 2231858823183755870, guid: ece1b7888f980c643a3741c1700afb39, type: 3}
   blastRadius: 4
-  blastForce: 30
+  blastForce: 35
   enemyKnockbackDuration: 0.5
   detonationDelay: 0.2
   burstGrenadeBoostFriction: 1

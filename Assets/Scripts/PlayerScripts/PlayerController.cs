@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Gadget Stats")]
     public float grappleStrafeForce = 15f;
+    public float activeBoostFriction = 0.5f;
 
     [Header("Interaction")]
     public float interactRange = 1.5f;
@@ -40,7 +41,7 @@ public class PlayerController : MonoBehaviour
 
     public Vector2 slideDirection;
     public float currentSlideSpeed;
-    [HideInInspector] public float activeBoostFriction = 0.5f;
+    
     private float lastSlideTime = -100f;
 
     private PlayerStats myStats;
@@ -134,11 +135,12 @@ public class PlayerController : MonoBehaviour
                     // Dynamic Friction: Bleed off massive blast speeds faster so we don't slide forever
                     if (currentSlideSpeed > maxNaturalSpeed + 1f) 
                     {
-                        currentSlideSpeed -= (slideFriction * activeBoostFriction) * Time.deltaTime; 
+                        // Add myStats.GetCurrentFrictionMultiplier() to the math!
+                        currentSlideSpeed -= (slideFriction * myStats.GetCurrentFrictionMultiplier() * activeBoostFriction) * Time.deltaTime; 
                     }
                     else 
                     {
-                        currentSlideSpeed -= slideFriction * Time.deltaTime;
+                        currentSlideSpeed -= (slideFriction * myStats.GetCurrentFrictionMultiplier()) * Time.deltaTime;
                     }
                 }
                 

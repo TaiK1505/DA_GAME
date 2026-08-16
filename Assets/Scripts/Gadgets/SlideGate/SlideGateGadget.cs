@@ -41,9 +41,7 @@ public class SlideGateGadget : PlayerGadget
             SlideGateInteractable gateScript = deployedPad.GetComponent<SlideGateInteractable>();
             if (gateScript != null) 
             {
-                gateScript.boostForce = myStats.boostForce;
-                
-                gateScript.padFrictionMultiplier = myStats.boostFriction; 
+                gateScript.boostForce = myStats.boostForce; 
             }
 
             // 5. Queue Management

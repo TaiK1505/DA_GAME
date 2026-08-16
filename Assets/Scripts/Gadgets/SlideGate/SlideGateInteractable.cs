@@ -3,7 +3,7 @@ using UnityEngine;
 public class SlideGateInteractable : MonoBehaviour
 {
     public float boostForce = 40f; 
-    public float padFrictionMultiplier;
+    
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -23,7 +23,6 @@ public class SlideGateInteractable : MonoBehaviour
                 player.slideDirection = trapDirection;
                 player.currentSlideSpeed = boostForce;
 
-                player.activeBoostFriction = padFrictionMultiplier;
 
                 rb.linearVelocity = trapDirection * boostForce;
             }

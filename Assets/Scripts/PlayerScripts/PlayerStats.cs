@@ -8,6 +8,7 @@ public class PlayerStats : MonoBehaviour
     public float baseDamageMultiplier = 1f;  // 1f = 100% normal damage
     public float baseDamageReduction = 0f;   // 0f = 0% reduction
     public float baseDodgeChance = 0f;       // 0f = 0% chance to dodge
+    public float baseFrictionMultiplier = 1f; // 1f = 100% normal friction
 
     // The List of active stat modifiers currently affecting the player
     private List<StatModifier> activeModifiers = new List<StatModifier>();
@@ -94,5 +95,20 @@ public class PlayerStats : MonoBehaviour
         }
         // Cap it at 0.8f (80%) so the player is never untouchable
         return Mathf.Clamp(finalDodge, 0f, 0.8f); 
+    }
+
+    public float GetCurrentFrictionMultiplier()
+    {
+        float finalMult = baseFrictionMultiplier;
+        foreach (StatModifier mod in activeModifiers)
+        {
+            if (mod.statType == StatModifier.StatType.Friction)
+            {
+                // A ticket with -0.5f will reduce friction by 50%
+                finalMult += mod.multiplier;
+            }
+        }
+        // Don't let friction drop below 10%, otherwise you will slide on ice forever!
+        return Mathf.Max(finalMult, 0.1f); 
     }
 }

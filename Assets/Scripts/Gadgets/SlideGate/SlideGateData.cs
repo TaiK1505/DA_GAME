@@ -10,5 +10,4 @@ public class SlideGateData : GadgetData
 
     [Header("Boost Settings")]
     public float boostForce = 40f;
-    public float boostFriction = 0.5f;
 }

@@ -18,3 +18,7 @@ MonoBehaviour:
     multiplier: 0.5
     duration: 0
     expirationTime: 0
+  - statType: 5
+    multiplier: -0.25
+    duration: 0
+    expirationTime: 0
