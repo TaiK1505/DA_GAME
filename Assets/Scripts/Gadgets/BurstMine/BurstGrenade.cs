@@ -43,7 +43,10 @@ public class BurstGrenade : MonoBehaviour
             if (hit.CompareTag("Enemy"))
             {
                 EnemyAI enemy = hit.GetComponent<EnemyAI>();
-                if (enemy != null) enemy.ApplyKnockback(blastDirection * myStats.blastForce, myStats.enemyKnockbackDuration);
+                if (enemy != null)
+                {
+                    enemy.ApplyKnockback(blastDirection * myStats.blastForce, myStats.enemyKnockbackDuration);
+                }
             }
             else if (hit.CompareTag("Player"))
             {

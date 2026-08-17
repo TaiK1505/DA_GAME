@@ -2,9 +2,16 @@ using UnityEngine;
 
 public class SlideGateInteractable : MonoBehaviour
 {
-    public float boostForce = 40f; 
+    [HideInInspector] public float boostForce; 
+    [HideInInspector] public float knockbackDuration;
     
 
+    
+    public void InitializePad(float durationFromSO)
+    {
+        knockbackDuration = durationFromSO;
+    }
+    
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Vector2 trapDirection = transform.up;
@@ -30,15 +37,15 @@ public class SlideGateInteractable : MonoBehaviour
         
         // THE ENEMY
         else if (collision.CompareTag("Enemy"))
-{
-    EnemyAI enemyScript = collision.GetComponent<EnemyAI>();    
-            
-    if (enemyScript != null)
-    {
-        // launch the enemy in the pad's direction!
-        // pause their A* brain for 0.4 seconds so they physically fly across the room.
-        enemyScript.ApplyKnockback(trapDirection * boostForce,0.4f);
-    }
-}
+        {
+            EnemyAI enemyScript = collision.GetComponent<EnemyAI>();    
+                    
+            if (enemyScript != null)
+            {
+                // launch the enemy in the pad's direction!
+                // pause their A* brain for 0.4 seconds so they physically fly across the room.
+                enemyScript.ApplyKnockback(trapDirection * boostForce, knockbackDuration);
+            }
+        }
     }
 }

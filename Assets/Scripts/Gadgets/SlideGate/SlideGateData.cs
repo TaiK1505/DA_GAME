@@ -8,6 +8,7 @@ public class SlideGateData : GadgetData
     public int maxActivePads = 3;       
     //public float cooldownTime = 1.5f;   
 
-    [Header("Boost Settings")]
+    [Header("Slide Gate Stats")]
     public float boostForce = 40f;
+    public float enemyKnockbackDuration = 0.5f;
 }

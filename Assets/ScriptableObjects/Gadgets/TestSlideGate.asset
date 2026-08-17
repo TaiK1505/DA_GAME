@@ -19,3 +19,4 @@ MonoBehaviour:
   slidePadPrefab: {fileID: 622609131268857258, guid: 8210624fe8796264b993b028ced8016f, type: 3}
   maxActivePads: 3
   boostForce: 30
+  enemyKnockbackDuration: 0.4

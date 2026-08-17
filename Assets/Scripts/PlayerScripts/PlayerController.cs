@@ -347,28 +347,36 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // 1. Check the impact speed using relative velocity
-        float impactSpeed = collision.relativeVelocity.magnitude;
-        float maxNaturalSpeed = GetMaxNaturalSpeed();
+        // 1. Get our RAW speed based on our state, completely ignoring the enemy!
+        float myRawSpeed = 0f;
+        if (currentState == State.Sliding) myRawSpeed = currentSlideSpeed;
+        else if (currentState == State.Dashing) myRawSpeed = dashSpeed;
+        else myRawSpeed = rb.linearVelocity.magnitude;
 
-        if (impactSpeed > maxNaturalSpeed + 1f)
+        // 2. Are we going fast enough to ram?
+        if (myRawSpeed > GetMaxNaturalSpeed() + 1f)
         {
-            // 2. Look for the EnemyAI script
             EnemyAI enemy = collision.gameObject.GetComponent<EnemyAI>();
             
             if (enemy != null)
             {
-                Debug.Log($"RAMMED ENEMY! Impact Speed: {impactSpeed:F1}");
+                Debug.Log($"RAMMED ENEMY! Raw Speed: {myRawSpeed:F1}");
 
-                // 3. Calculate direction away from you
+                // 3. Calculate direction away from us
                 Vector2 knockbackDir = (collision.transform.position - transform.position).normalized;
                 
-                
-                // The faster player are moving when you hit them the harder they fly
-                float dynamicKnockbackForce = impactSpeed * ramForceMultiplier;
+                // 4. Calculate exact, predictable force
+                float dynamicKnockbackForce = myRawSpeed * ramForceMultiplier;
 
-                //Send the scaled force to the enemy
+                // 5. Blast them!
                 enemy.ApplyKnockback(knockbackDir * dynamicKnockbackForce, 0.5f); 
+
+                // 6. THE MOMENTUM TAX: Player loses 15% of their speed on impact!
+                // This stops the "grinding" against ranged enemies and makes the hit feel heavy.
+                if (currentState == State.Sliding)
+                {
+                    currentSlideSpeed *= 0.85f; 
+                }
             }
         }
     }

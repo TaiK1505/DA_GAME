@@ -12,12 +12,12 @@ GameObject:
   - component: {fileID: 6303311596426326617}
   - component: {fileID: 3718585974271944075}
   - component: {fileID: 5097792411332335620}
+  - component: {fileID: 6237251308722689735}
   - component: {fileID: 3730286469581397705}
   - component: {fileID: 625562459011939796}
   - component: {fileID: 7815332838212933278}
   - component: {fileID: 7852076935224670536}
   - component: {fileID: 1778942189669704593}
-  - component: {fileID: 6237251308722689735}
   m_Layer: 7
   m_Name: TestMeleeEnemy
   m_TagString: Enemy
@@ -158,6 +158,33 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!50 &6237251308722689735
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3458384298365180062}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 4
 --- !u!114 &3730286469581397705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,6 +282,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
   enemyStats: {fileID: 11400000, guid: 7abf22e41cc13cd4e959fbc2fa509e50, type: 2}
+  isKnockedBack: 0
+  isStunned: 0
+  knockbackMultiplier: 0.75
 --- !u!114 &1778942189669704593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -268,30 +298,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeEnemy
   enemyStats: {fileID: 11400000, guid: 7abf22e41cc13cd4e959fbc2fa509e50, type: 2}
---- !u!50 &6237251308722689735
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3458384298365180062}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 4

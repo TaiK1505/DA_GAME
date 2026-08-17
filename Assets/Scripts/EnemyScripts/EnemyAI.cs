@@ -11,8 +11,12 @@ public class EnemyAI : MonoBehaviour
 
     [Header("Physics States")]
     private float controlRegainTimer = 0f;
-    private bool isKnockedBack = false;
-    private bool isStunned = false;
+    public bool isKnockedBack = false;
+    public bool isStunned = false;
+
+    [Header("Combat Reactions")]
+    [Tooltip("1.0 = Normal. 1.3 = Extra push. 0.2 = Heavy brute.")]
+    public float knockbackMultiplier = 1f;
     
     private AIDestinationSetter destinationSetter;
     private AIPath aiPath;
@@ -66,7 +70,7 @@ public class EnemyAI : MonoBehaviour
         // the pure physics engine blast them away
         if (rb != null)
         {
-            rb.linearVelocity = force;
+            rb.linearVelocity = force * knockbackMultiplier;
         }
     }
 

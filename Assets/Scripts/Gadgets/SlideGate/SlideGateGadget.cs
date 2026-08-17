@@ -42,6 +42,7 @@ public class SlideGateGadget : PlayerGadget
             if (gateScript != null) 
             {
                 gateScript.boostForce = myStats.boostForce; 
+                gateScript.knockbackDuration = myStats.enemyKnockbackDuration;
             }
 
             // 5. Queue Management
