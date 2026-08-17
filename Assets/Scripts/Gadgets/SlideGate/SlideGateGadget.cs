@@ -64,5 +64,34 @@ public class SlideGateGadget : PlayerGadget
         
     }
 
+    private void Update()
+    {
+        if (myStats == null) return; // Safety check
+
+        // Are we currently on cooldown?
+        if (Time.time < nextFireTime)
+        {
+            // Calculate the drain math
+            float timeRemaining = nextFireTime - Time.time;
+            float timePassed = myStats.cooldownTime - timeRemaining;
+            
+            // Push the 0-to-1 decimal to the UI
+            float fillPercentage = timePassed / myStats.cooldownTime;
+            
+            if (EquipmentUI.instance != null)
+            {
+                EquipmentUI.instance.UpdateGadgetCooldownUI(fillPercentage);
+            }
+        }
+        else
+        {
+            // Cooldown finished, ensure UI is locked at 100%
+            if (EquipmentUI.instance != null)
+            {
+                EquipmentUI.instance.UpdateGadgetCooldownUI(1f);
+            }
+        }
+    }
+
     
 }

@@ -18,6 +18,12 @@ public class GadgetPedestal : MonoBehaviour, IInteractable
         {
             pc.EquipGadget(gadgetToEquip, gadgetScriptName);
             Debug.Log("Player picked up: " + gadgetToEquip.name);
+
+            if (EquipmentUI.instance != null)
+            {
+                EquipmentUI.instance.EquipGadget(gadgetToEquip.iconSprite, gadgetToEquip.iconColor);
+            }
+        
         }
     }
 

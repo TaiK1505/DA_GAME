@@ -18,6 +18,8 @@ public class GrappleGadget : PlayerGadget
     private Vector2 grapplePoint;
     private bool isGrappling;
     private float currentMaxRopeLength;
+
+    private float nextFireTime = -100f;
     
     private void Awake()
     {
@@ -40,6 +42,8 @@ public class GrappleGadget : PlayerGadget
     
     public override void ActivateGadget()
     {
+        if (Time.time < nextFireTime) return;
+        
         Vector2 screenMousePos = Mouse.current.position.ReadValue();
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(screenMousePos);
         
@@ -68,10 +72,18 @@ public class GrappleGadget : PlayerGadget
 
     public override void DeactivateGadget()
     {
-        // Player let go of the button. Cut the rope!
-        isGadgetActive = false;
-        overridePlayerPhysics = false;
-        if (lineRenderer != null) lineRenderer.enabled = false;
+        if (isGadgetActive)
+        {
+            isGadgetActive = false;
+            overridePlayerPhysics = false;
+            if (lineRenderer != null) lineRenderer.enabled = false;
+
+            // Start the cooldown timer ONLY exactly when the rope snaps
+            if (myStats != null)
+            {
+                nextFireTime = Time.time + myStats.cooldownTime;
+            }
+        }
     }
 
     private void Update()
@@ -89,6 +101,34 @@ public class GrappleGadget : PlayerGadget
             if (currentHoldTime <= 0)
             {   
                 DeactivateGadget(); 
+            }
+
+            if (EquipmentUI.instance != null) 
+            {
+                EquipmentUI.instance.UpdateGadgetCooldownUI(0f);
+            }
+        }
+        // --- NEW UI COOLDOWN REFILL LOGIC ---
+        else if (myStats != null && Time.time < nextFireTime)
+        {
+            // Calculate the drain math
+            float timeRemaining = nextFireTime - Time.time;
+            float timePassed = myStats.cooldownTime - timeRemaining;
+            
+            // Push the 0-to-1 decimal to the UI
+            float fillPercentage = timePassed / myStats.cooldownTime;
+            
+            if (EquipmentUI.instance != null)
+            {
+                EquipmentUI.instance.UpdateGadgetCooldownUI(fillPercentage);
+            }
+        }
+        else
+        {
+            // Cooldown finished, ensure UI is locked at 100%
+            if (EquipmentUI.instance != null)
+            {
+                EquipmentUI.instance.UpdateGadgetCooldownUI(1f);
             }
         }
     }   

@@ -16,6 +16,8 @@ MonoBehaviour:
   description: 
   icon: {fileID: 0}
   cooldownTime: 3
+  iconSprite: {fileID: 0}
+  iconColor: {r: 0.7058824, g: 0.9098039, b: 1, a: 1}
   grenadePrefab: {fileID: 2231858823183755870, guid: ece1b7888f980c643a3741c1700afb39, type: 3}
   blastRadius: 4
   blastForce: 35

@@ -53,4 +53,33 @@ public class BurstGrenadeGadget : PlayerGadget
        
     }
 
+    private void Update()
+    {
+        if (myStats == null) return; // Don't run if we haven't picked it up
+
+        // Are we currently on cooldown?
+        if (Time.time < nextFireTime)
+        {
+            // Calculate the drain math
+            float timeRemaining = nextFireTime - Time.time;
+            float timePassed = myStats.cooldownTime - timeRemaining;
+            
+            // Push the 0-1 decimal to the UI
+            float fillPercentage = timePassed / myStats.cooldownTime;
+            
+            if (EquipmentUI.instance != null)
+            {
+                EquipmentUI.instance.UpdateGadgetCooldownUI(fillPercentage);
+            }
+        }
+        else
+        {
+            // Cooldown finished, ensure UI is locked at 100%
+            if (EquipmentUI.instance != null)
+            {
+                EquipmentUI.instance.UpdateGadgetCooldownUI(1f);
+            }
+        }
+    }
+
 }

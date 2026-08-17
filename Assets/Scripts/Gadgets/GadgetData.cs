@@ -9,4 +9,8 @@ public class GadgetData : ScriptableObject
 
     [Header("Universal Stats")]
     public float cooldownTime;
+
+    [Header("UI & Visuals")]
+    public Sprite iconSprite; 
+    public Color iconColor = Color.gray;
 }

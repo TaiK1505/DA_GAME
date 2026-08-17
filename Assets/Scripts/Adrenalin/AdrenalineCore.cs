@@ -38,14 +38,20 @@ public class AdrenalineCore : MonoBehaviour
 
     private void AttemptAdrenaline()
     {
-        if (Time.time >= lastAdrenalineTime + adrenalineCooldown)
+        // Calculate exactly how long the ability lasts right now
+        float finalDuration = baseDuration + bonusDuration;
+        
+        // Total time before we can use it again = Active Time + Cooldown Time
+        float totalLockoutTime = finalDuration + adrenalineCooldown;
+
+        if (Time.time >= lastAdrenalineTime + totalLockoutTime)
         {
             ActivateAdrenaline();
         }
         else
         {
-            float timeLeft = (lastAdrenalineTime + adrenalineCooldown) - Time.time;
-            Debug.Log("Adrenaline is on cooldown! Wait " + timeLeft.ToString("F1") + " seconds.");
+            float timeLeft = (lastAdrenalineTime + totalLockoutTime) - Time.time;
+            Debug.Log("Adrenaline is active/on cooldown! Wait " + timeLeft.ToString("F1") + " seconds.");
         }
     }
 
@@ -80,5 +86,32 @@ public class AdrenalineCore : MonoBehaviour
             );
             myStats.AddModifier(newTicket);
         }
+    }
+
+    public float GetAdrenalineFillPercentage()
+    {
+        float timeSinceActivation = Time.time - lastAdrenalineTime;
+        float finalDuration = baseDuration + bonusDuration;
+        float totalCycleTime = finalDuration + adrenalineCooldown;
+
+        // PHASE 1: Ready to use (Both duration AND cooldown are fully finished)
+        if (timeSinceActivation >= totalCycleTime)
+        {
+            return 1f; // 1 = 100% Full Green Bar
+        }
+
+        // PHASE 2: Active and Draining (e.g. The 3 seconds you are buffed)
+        if (timeSinceActivation <= finalDuration)
+        {
+            // This math drains it from 1 down to 0 over the duration
+            return 1f - (timeSinceActivation / finalDuration);
+        }
+
+        // PHASE 3: Duration ended, now we are on Cooldown and Refilling
+        // We subtract the duration to find out exactly how many seconds we've been recharging
+        float timeSpentRecharging = timeSinceActivation - finalDuration;
+        
+        // This math fills it from 0 back up to 1 over the cooldown length!
+        return timeSpentRecharging / adrenalineCooldown;
     }
 }

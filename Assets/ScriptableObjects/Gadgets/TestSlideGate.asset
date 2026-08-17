@@ -16,6 +16,8 @@ MonoBehaviour:
   description: 
   icon: {fileID: 0}
   cooldownTime: 3
+  iconSprite: {fileID: 0}
+  iconColor: {r: 0.32156864, g: 1, b: 0.68235296, a: 1}
   slidePadPrefab: {fileID: 622609131268857258, guid: 8210624fe8796264b993b028ced8016f, type: 3}
   maxActivePads: 3
   boostForce: 30
