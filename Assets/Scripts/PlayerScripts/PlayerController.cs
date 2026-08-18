@@ -26,6 +26,32 @@ public class PlayerController : MonoBehaviour
     [Header("Ramming Stats")]
     public float ramForceMultiplier = 1.2f;
 
+    [Header("Wall Boost Mechanics")]
+    public float wallBoostThreshold = 12f;     // minimum speed required to trigger a boost
+    public float wallBoostMultiplier = 1.3f;   // Multiplies incoming speed by 1.3x (30% increase)
+    public float maxWallBoostSpeed = 40f;      // The hard cap so players don't break the physics engine
+    public float wallBoostCoyoteTime = 0.5f;
+
+    [Header("Wall Boost Limits")]
+    public int maxWallBoosts = 3;            // Total number of charges
+    public float boostRechargeTime = 2f;     // Time it takes to recharge ONE charge
+
+    public int currentWallBoosts;            
+    public float boostRechargeTimer;
+    private int currentBoostCount = 0;
+    private float boostCooldownTimer = 0f;
+    private float currentComboTimer = 0f;
+    private Vector2 lastFrameVelocity;
+    private bool canWallBoost;
+    private float wallBoostTimer;
+    private Vector2 currentWallNormal;
+    private Vector2 capturedImpactVelocity;
+
+    [Header("Input Buffering")]
+    public float boostBufferTime = 0.15f; // How early they can press the button before hitting the wall
+    private float lastBoostInputTime = -100f; // Memory of the exact time they pressed the button
+
+
     [Header("Gadget Stats")]
     public float grappleStrafeForce = 15f;
     public float activeBoostFriction = 0.5f;
@@ -61,7 +87,7 @@ public class PlayerController : MonoBehaviour
         controls = new PlayerControls();
 
         // 4. The "Tripwire": When the Dash button is performed, fire the AttemptDash method!
-        controls.Player.Dash.performed += ctx => AttemptDash();
+        controls.Player.Dash.performed += ctx => HandleDashInput();
         controls.Player.Slide.performed += ctx => AttemptSlide();
         
         controls.Player.Gadget.started += ctx => currentActiveGadget?.ActivateGadget();
@@ -83,11 +109,40 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         currentState = State.Idle;
+        currentWallBoosts = maxWallBoosts;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (canWallBoost)
+        {
+            wallBoostTimer -= Time.deltaTime;
+            
+            if (wallBoostTimer <= 0)
+            {
+                canWallBoost = false;
+                // Debug.Log("Wall Boost Window CLOSED."); 
+            }
+        }
+        if (currentWallBoosts < maxWallBoosts)
+        {
+            // Tick the clock UP
+            boostRechargeTimer += Time.deltaTime;
+            
+            // Did we hit the 2-second mark?
+            if (boostRechargeTimer >= boostRechargeTime)
+            {
+                currentWallBoosts++;           // Give them 1 charge back!
+                boostRechargeTimer = 0f;       // Reset the clock to start building the NEXT charge
+            }
+        }
+        else
+        {
+            // Keep the clock completely zeroed out when the tank is full
+            boostRechargeTimer = 0f; 
+        }
+        
         movementInput = controls.Player.Move.ReadValue<Vector2>();
 
         bool isGadgetPulling = currentActiveGadget != null && currentActiveGadget.overridePlayerPhysics;
@@ -179,6 +234,11 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         bool isGadgetPulling = currentActiveGadget != null && currentActiveGadget.overridePlayerPhysics;
+
+        if (rb.linearVelocity.magnitude > 1f) 
+        {
+            lastFrameVelocity = rb.linearVelocity;
+        }
 
         if (isGadgetPulling && movementInput != Vector2.zero)
         {
@@ -378,6 +438,80 @@ public class PlayerController : MonoBehaviour
                     currentSlideSpeed *= 0.85f; 
                 }
             }
+        }
+
+        if (collision.gameObject.CompareTag("Wall")) 
+        {
+            if (boostCooldownTimer > 0) return;
+            
+            if (lastFrameVelocity.magnitude >= wallBoostThreshold)
+            {
+                canWallBoost = true;
+                wallBoostTimer = wallBoostCoyoteTime;
+                currentWallNormal = collision.contacts[0].normal;
+
+                capturedImpactVelocity = lastFrameVelocity; 
+                
+                // Did they press the button just before hitting the wall?
+                if (Time.time - lastBoostInputTime <= boostBufferTime && currentWallBoosts > 0)
+                {
+                    TryWallBoost(); // Launch them IMMEDIATELY!
+                    
+                    // Consume the input so it doesn't double-fire
+                    lastBoostInputTime = -100f; 
+                }
+                else
+                {
+                    // If they didn't pre-press it, just open the Coyote Time window like normal
+                    Debug.Log("Wall Boost Window OPEN! Captured speed: " + capturedImpactVelocity.magnitude);
+                }
+            }
+        }
+    }
+
+    public void TryWallBoost() 
+    {
+        if (!canWallBoost) return; 
+        if (currentWallBoosts <= 0) return;
+
+        if (boostCooldownTimer > 0) return;
+
+        // 1. Calculate using the CAPTURED velocity snapshot!
+        Vector2 boostDirection = Vector2.Reflect(capturedImpactVelocity.normalized, currentWallNormal);
+
+        // 2. Multiply their CAPTURED incoming speed!
+        float incomingSpeed = capturedImpactVelocity.magnitude;
+        float outgoingSpeed = incomingSpeed * wallBoostMultiplier;
+
+        // 3. Cap the speed
+        outgoingSpeed = Mathf.Min(outgoingSpeed, maxWallBoostSpeed);
+
+        // 4. Hijack the Sliding State to physically launch the player!
+        currentState = State.Sliding;
+        currentSlideSpeed = outgoingSpeed;
+        slideDirection = boostDirection;
+
+        canWallBoost = false;
+
+        currentWallBoosts--;
+
+        Debug.Log("KICKSTART! Hijacked Slide Speed: " + outgoingSpeed);
+    }
+    
+    private void HandleDashInput()
+    {
+        // 1. STAMP THE TIME! We remember exactly when they pressed the button.
+        lastBoostInputTime = Time.time; 
+
+        // PRIORITY 1: Are we against a wall with high momentum?
+        if (canWallBoost && currentWallBoosts > 0)
+        {
+            TryWallBoost();
+        }
+        // PRIORITY 2: If no wall boost is available, do a normal dash.
+        else
+        {
+            AttemptDash();
         }
     }
 }
