@@ -466,6 +466,18 @@ public class PlayerController : MonoBehaviour
                     Debug.Log("Wall Boost Window OPEN! Captured speed: " + capturedImpactVelocity.magnitude);
                 }
             }
+
+            ScrubWallMomentum(collision, true);
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Wall")) 
+        {
+            // Constantly scrub velocity pushing into the wall, but pass 'false' 
+            // so we don't aggressively kill your speed while you are just gliding along it!
+            ScrubWallMomentum(collision, false); 
         }
     }
 
@@ -512,6 +524,40 @@ public class PlayerController : MonoBehaviour
         else
         {
             AttemptDash();
+        }
+    }
+
+    private void ScrubWallMomentum(Collision2D collision, bool isInitialImpact)
+    {
+        if (currentState != State.Sliding) return;
+
+        Vector2 wallNormal = collision.contacts[0].normal;
+
+        // A Vector Dot Product checks if two directions are facing opposite ways. 
+        // If it's less than 0, it means our slide is actively pushing INTO the wall!
+        if (Vector2.Dot(slideDirection, wallNormal) < 0)
+        {
+            // Calculate a new direction that runs perfectly PARALLEL to the wall (Wall Gliding!)
+            Vector2 slideAlongWall = slideDirection - (Vector2.Dot(slideDirection, wallNormal) * wallNormal);
+
+            // On the very first frame we hit the wall, we apply a "crash tax"
+            if (isInitialImpact)
+            {
+                // If we hit head-on, magnitude is 0 (we stop dead). 
+                // If it's a glancing blow, we keep almost all our speed!
+                currentSlideSpeed *= slideAlongWall.magnitude;
+            }
+
+            // Re-direct the player
+            if (slideAlongWall.magnitude > 0.01f)
+            {
+                slideDirection = slideAlongWall.normalized;
+            }
+            else
+            {
+                // We are stuffed perfectly in a corner. Kill the phantom momentum!
+                currentSlideSpeed = 0f;
+            }
         }
     }
 }
