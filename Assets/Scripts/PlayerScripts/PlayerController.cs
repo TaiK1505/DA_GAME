@@ -60,6 +60,9 @@ public class PlayerController : MonoBehaviour
     public float interactRange = 1.5f;
     public LayerMask interactableLayer;
 
+    [Header("Arsenal")]
+    public ArsenalManager arsenal;
+
     public PlayerGadget currentActiveGadget;
     
     private Rigidbody2D rb;
@@ -86,7 +89,14 @@ public class PlayerController : MonoBehaviour
         // Initialize the controls
         controls = new PlayerControls();
 
-        // 4. The "Tripwire": When the Dash button is performed, fire the AttemptDash method!
+        if (arsenal == null)
+        {
+            arsenal = GetComponent<ArsenalManager>();
+        }
+
+        controls.Player.Fire.started += ctx => arsenal.PullTrigger();
+        controls.Player.Fire.canceled += ctx => arsenal.ReleaseTrigger();
+
         controls.Player.Dash.performed += ctx => HandleDashInput();
         controls.Player.Slide.performed += ctx => AttemptSlide();
         
@@ -94,6 +104,12 @@ public class PlayerController : MonoBehaviour
         controls.Player.Gadget.canceled += ctx => currentActiveGadget?.DeactivateGadget();
 
         controls.Player.Interact.performed += ctx => TryInteract();
+
+        controls.Player.ToggleMelee.performed += ctx => arsenal.ToggleMelee();
+
+
+        controls.Player.NextWeapon.performed += ctx => arsenal.CycleNext();
+        controls.Player.PreviousWeapon.performed += ctx => arsenal.CyclePrevious();
     }
     
         void OnEnable()
