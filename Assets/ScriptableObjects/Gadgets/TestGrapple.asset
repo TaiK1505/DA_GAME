@@ -15,7 +15,7 @@ MonoBehaviour:
   gadgetName: TestGrapple
   description: 
   icon: {fileID: 0}
-  cooldownTime: 1
+  cooldownTime: 0
   iconSprite: {fileID: 0}
   iconColor: {r: 0.84705883, g: 0.42745098, b: 1, a: 1}
   grappleRange: 10
