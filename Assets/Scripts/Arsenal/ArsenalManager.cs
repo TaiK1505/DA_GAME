@@ -8,7 +8,8 @@ public class ArsenalManager : MonoBehaviour
     public Transform weaponPivot; // Where the weapons actually spawn/live!
 
     [Header("The Dedicated Melee")]
-    public GameObject meleeWeapon; // Your Katana Dummy goes here
+    public GameObject starterMeleePrefab;
+    public GameObject meleeWeapon; 
     public bool isMeleeActive = false;
     public float meleeSpeedBuff = 1.15f; 
 
@@ -25,6 +26,16 @@ public class ArsenalManager : MonoBehaviour
         // Auto-link the player script if forgotten
         if (player == null) player = GetComponent<PlayerController>();
 
+        if (starterMeleePrefab != null)
+        {
+            meleeWeapon = Instantiate(starterMeleePrefab, weaponPivot);
+            meleeWeapon.transform.localPosition = Vector3.zero;
+            meleeWeapon.transform.localRotation = Quaternion.identity;
+            
+            // Force it to be holstered when the game starts
+            meleeWeapon.SetActive(false); 
+        }
+
         // If we assigned a starter gun, spawn it on the shoulder!
         if (starterGunPrefab != null)
         {
@@ -40,8 +51,15 @@ public class ArsenalManager : MonoBehaviour
 
     public void CycleNext()
     {
-        if (gunInventory.Count <= 1) return; // Need at least 2 guns to cycle
-        if (isMeleeActive) ToggleMelee(true, false); // Put away the sword if it's out!
+        // 1. If the Katana is out, scrolling ALWAYS puts it away and brings out your last gun.
+        if (isMeleeActive) 
+        {
+            ToggleMelee(true, false); 
+            return; // We successfully swapped back to the gun, so stop reading code here!
+        }
+
+        // 2. If we are already holding a gun, we need at least 2 guns to cycle to a new one.
+        if (gunInventory.Count <= 1) return; 
 
         currentGunIndex = (currentGunIndex + 1) % gunInventory.Count;
         EquipGun(currentGunIndex);
@@ -49,8 +67,15 @@ public class ArsenalManager : MonoBehaviour
 
     public void CyclePrevious()
     {
+        // 1. Always check the Katana first!
+        if (isMeleeActive) 
+        {
+            ToggleMelee(true, false);
+            return;
+        }
+
+        // 2. Need at least 2 guns to cycle.
         if (gunInventory.Count <= 1) return; 
-        if (isMeleeActive) ToggleMelee(true, false);
 
         currentGunIndex--;
         if (currentGunIndex < 0) currentGunIndex = gunInventory.Count - 1;
@@ -147,8 +172,12 @@ public class ArsenalManager : MonoBehaviour
     {
         if (isMeleeActive)
         {
-            Debug.Log("Swinging the Katana!");
-            // TODO: Katana slash logic!
+            // Find the Katana script on our dummy and tell it to swing!
+            if (meleeWeapon != null)
+            {
+                Katana katanaScript = meleeWeapon.GetComponent<Katana>();
+                if (katanaScript != null) katanaScript.Swing();
+            }
             return;
         }
 
@@ -168,6 +197,15 @@ public class ArsenalManager : MonoBehaviour
         {
             WeaponBase currentGun = gunInventory[currentGunIndex].GetComponent<WeaponBase>();
             if (currentGun != null) currentGun.StopShooting();
+        }
+    }
+
+    public void AltFire()
+    {
+        if (isMeleeActive && meleeWeapon != null)
+        {
+            Katana katanaScript = meleeWeapon.GetComponent<Katana>();
+            if (katanaScript != null) katanaScript.Throw();
         }
     }
 }

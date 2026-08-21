@@ -97,6 +97,8 @@ public class PlayerController : MonoBehaviour
         controls.Player.Fire.started += ctx => arsenal.PullTrigger();
         controls.Player.Fire.canceled += ctx => arsenal.ReleaseTrigger();
 
+        controls.Player.AltFire.started += ctx => arsenal.AltFire();
+
         controls.Player.Dash.performed += ctx => HandleDashInput();
         controls.Player.Slide.performed += ctx => AttemptSlide();
         

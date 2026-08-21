@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b56a6036f21e1094bb56f70acc61757d, type: 3}
+  m_Name: TestKatana
+  m_EditorClassIdentifier: Assembly-CSharp::MeleeWeaponData
+  weaponName: TestKatana
+  damage: 25
+  attackCooldown: 0.3
+  attackRange: 0.5
+  canLunge: 1
+  lungeDistance: 6
+  lungeDuration: 0.2
+  canThrow: 1
+  throwDamage: 10
+  stunDuration: 2
+  maxThrowDistance: 8
+  throwSpeed: 30
+  throwSpinSpeed: 1500
+  throwHitboxRadius: 1
+  scalesOffStat: Speed
+  slashVFXPrefab: {fileID: 1058646173525682040, guid: c508ec889bbeea6459b839bb1cb3608e, type: 3}
