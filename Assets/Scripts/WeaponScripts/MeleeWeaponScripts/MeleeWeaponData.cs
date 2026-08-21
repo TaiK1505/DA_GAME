@@ -10,11 +10,16 @@ public class MeleeWeaponData : ScriptableObject
     public float damage = 25f;
     public float attackCooldown = 0.3f; // Fast swings!
     public float attackRange = 1.5f;    // How wide the phantom hitbox is
+   
     
-    [Header("Kinetic Lunge")]
+    [Header("Base Lunge")]
     public bool canLunge = true;
-    public float lungeDistance = 4f;    // How close you need to be to auto-dash
-    public float lungeDuration = 0.15f;
+    public float lungeDistance = 2.5f;   // How close they must be to trigger normal lunge
+    public float lungeDuration = 0.05f;  // Instant micro-step!
+
+    [Header("Enhanced Lunge")]
+    public float executionRangeMultiplier = 4f; // 2.5 range becomes 10 range!
+    public float executionDuration = 0.15f;     // A slightly longer, dramatic dash across the room
 
     [Header("Throw Mechanics")]
     public bool canThrow = true;
@@ -24,6 +29,7 @@ public class MeleeWeaponData : ScriptableObject
     public float throwSpeed = 25f;        
     public float throwSpinSpeed = 1500f;  
     public float throwHitboxRadius = 1f; 
+    
     
     [Header("Scaling (Phase 5 Prep)")]
     public string scalesOffStat = "None"; 

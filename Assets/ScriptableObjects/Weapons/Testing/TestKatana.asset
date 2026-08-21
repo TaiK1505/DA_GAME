@@ -13,16 +13,18 @@ MonoBehaviour:
   m_Name: TestKatana
   m_EditorClassIdentifier: Assembly-CSharp::MeleeWeaponData
   weaponName: TestKatana
-  damage: 25
+  damage: 15
   attackCooldown: 0.3
   attackRange: 0.5
   canLunge: 1
-  lungeDistance: 6
-  lungeDuration: 0.2
+  lungeDistance: 2.5
+  lungeDuration: 0.05
+  executionRangeMultiplier: 6
+  executionDuration: 0.2
   canThrow: 1
-  throwDamage: 10
+  throwDamage: 3
   stunDuration: 2
-  maxThrowDistance: 8
+  maxThrowDistance: 10
   throwSpeed: 30
   throwSpinSpeed: 1500
   throwHitboxRadius: 1

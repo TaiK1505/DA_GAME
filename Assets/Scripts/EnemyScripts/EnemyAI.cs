@@ -4,7 +4,7 @@ using Pathfinding;
 [RequireComponent(typeof(AIDestinationSetter))]
 [RequireComponent(typeof(AIPath))]
 [RequireComponent(typeof(HealthComponent))]
-public class EnemyAI : MonoBehaviour
+public class EnemyAI : MonoBehaviour, IStunnable
 {
     [Header("Enemy Data")]
     public EnemyData enemyStats;
@@ -71,6 +71,31 @@ public class EnemyAI : MonoBehaviour
         if (rb != null)
         {
             rb.linearVelocity = force * knockbackMultiplier;
+        }
+    }
+
+    public bool IsCurrentlyStunned()
+    {
+        return isStunned;
+    }
+
+    // 2. The Boomerang uses this to freeze them!
+    public void Stun(float duration)
+    {
+        isStunned = true;
+        controlRegainTimer = duration; 
+
+        // Stop the A* brain completely
+        if (aiPath != null)
+        {
+            aiPath.enabled = false; 
+        }
+
+        // Stop physical sliding momentum
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero; 
         }
     }
 

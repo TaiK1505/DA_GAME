@@ -34,18 +34,15 @@ public class Katana : MonoBehaviour
         
         if (weaponData == null || Time.time < nextAttackTime) return;
 
-        // 1. Set cooldown instantly so you can't spam while dashing
         nextAttackTime = Time.time + weaponData.attackCooldown;
 
         bool isLunging = false;
         
-        // 2. Try to perform the auto-target dash
         if (weaponData.canLunge && playerRb != null)
         {
             isLunging = TryLunge();
         }
 
-        // 3. If we DID NOT dash, slash immediately!
         if (!isLunging)
         {
             ExecuteSlash();
@@ -57,7 +54,9 @@ public class Katana : MonoBehaviour
         Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
 
-        Collider2D[] potentialTargets = Physics2D.OverlapCircleAll(transform.position, weaponData.lungeDistance, enemyLayers);
+        // Scan huge area to account for potential Executions!
+        float maxPossibleRange = weaponData.lungeDistance * weaponData.executionRangeMultiplier;
+        Collider2D[] potentialTargets = Physics2D.OverlapCircleAll(transform.position, maxPossibleRange, enemyLayers);
         
         Transform bestTarget = null;
         float closestToMouse = Mathf.Infinity;
@@ -85,11 +84,21 @@ public class Katana : MonoBehaviour
 
         if (bestTarget != null)
         {
+            // --- THE EXECUTION CHECK ---
+            IStunnable stunnableTarget = bestTarget.GetComponent<IStunnable>();
+            bool targetIsStunned = (stunnableTarget != null && stunnableTarget.IsCurrentlyStunned());
+
+            // Dynamically scale the allowed dash range!
+            float currentAllowedRange = targetIsStunned ? 
+                (weaponData.lungeDistance * weaponData.executionRangeMultiplier) : 
+                weaponData.lungeDistance;
+
             float distToPlayer = Vector2.Distance(playerPos, bestTarget.position);
 
-            if (distToPlayer > weaponData.attackRange * 0.8f)
+            if (distToPlayer > weaponData.attackRange * 0.8f && distToPlayer <= currentAllowedRange)
             {
-                StartCoroutine(LungeRoutine(bestTarget));
+                // Pass the boolean into the routine so it knows how fast to dash!
+                StartCoroutine(LungeRoutine(bestTarget, targetIsStunned));
                 return true; 
             }
         }
@@ -97,7 +106,7 @@ public class Katana : MonoBehaviour
         return false; 
     }
 
-    private IEnumerator LungeRoutine(Transform target)
+    private IEnumerator LungeRoutine(Transform target, bool isStunned)
     {
         Vector2 startPos = playerRb.position;
         Vector2 targetPos = target.position; 
@@ -105,7 +114,8 @@ public class Katana : MonoBehaviour
         
         Vector2 destination = targetPos - (direction * (weaponData.attackRange * 0.5f));
 
-        float dashDuration = weaponData.lungeDuration;
+        // --- DYNAMIC DURATION ---
+        float dashDuration = isStunned ? weaponData.executionDuration : weaponData.lungeDuration;
         float elapsed = 0f;
 
         playerRb.linearVelocity = Vector2.zero;
@@ -153,16 +163,16 @@ public class Katana : MonoBehaviour
             
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, weaponData.lungeDistance);
+
+            // Draw the massive Execution range in blue!
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawWireSphere(transform.position, weaponData.lungeDistance * weaponData.executionRangeMultiplier);
         }
     }
 
     public void Throw()
     {
-        if (!weaponData.canThrow || isThrown)
-        {
-            return;
-        }
-
+        if (!weaponData.canThrow || isThrown) return;
         StartCoroutine(BoomerangRoutine());
     }
 
@@ -170,21 +180,17 @@ public class Katana : MonoBehaviour
     {
         isThrown = true;
 
-        // 1. HIDE THE REAL SWORD
         SpriteRenderer realSprite = GetComponentInChildren<SpriteRenderer>();
         if (realSprite != null) realSprite.enabled = false;
 
-        // 2. SPAWN THE SPINNING DUMMY 
         GameObject dummy = new GameObject("SpinningDummy");
         
-        // Match the exact position of the visual blade so it spins perfectly centered
         if (realSprite != null) {
             dummy.transform.position = realSprite.transform.position;
         } else {
             dummy.transform.position = transform.position;
         }
         
-        // Copy the art over to the dummy
         SpriteRenderer dummyRenderer = dummy.AddComponent<SpriteRenderer>();
         if (realSprite != null)
         {
@@ -192,8 +198,7 @@ public class Katana : MonoBehaviour
             dummyRenderer.color = realSprite.color;
             dummyRenderer.sortingLayerID = realSprite.sortingLayerID;
             dummyRenderer.sortingOrder = realSprite.sortingOrder;
-
-            dummy.transform.localScale = realSprite.transform.lossyScale;
+            dummy.transform.localScale = realSprite.transform.lossyScale; 
         }
 
         Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
@@ -217,39 +222,29 @@ public class Katana : MonoBehaviour
         // --- PHASE 1: FLY OUT ---
         while (Vector2.Distance(dummy.transform.position, targetPos) > 0.2f)
         {
-            // Move the dummy out!
             dummy.transform.position = Vector2.MoveTowards(dummy.transform.position, targetPos, weaponData.throwSpeed * Time.fixedDeltaTime);
-            
-            // Spin the dummy like a buzzsaw! Your aiming script can't stop this!
             dummy.transform.Rotate(0, 0, -weaponData.throwSpinSpeed * Time.fixedDeltaTime);
             
-            // Deal damage dynamically around the flying dummy
             DamageEnemiesInFlight(dummy.transform.position);
-            
             yield return new WaitForFixedUpdate();
         }
 
         // --- PHASE 2: RETURN TO SENDER ---
-        // It flies back to the player's current position, so you can catch it while moving
         while (Vector2.Distance(dummy.transform.position, transform.position) > 0.2f)
         {
             dummy.transform.position = Vector2.MoveTowards(dummy.transform.position, transform.position, weaponData.throwSpeed * Time.fixedDeltaTime);
-            
             dummy.transform.Rotate(0, 0, -weaponData.throwSpinSpeed * Time.fixedDeltaTime);
             
             DamageEnemiesInFlight(dummy.transform.position);
-            
             yield return new WaitForFixedUpdate();
         }
 
-        // 3. CATCH IT! Delete the fake sword, show the real sword!
         Destroy(dummy);
         if (realSprite != null) realSprite.enabled = true;
         
         isThrown = false;
     }
 
-    // UPDATED: Now requires a position so it tracks the dummy!
     private void DamageEnemiesInFlight(Vector2 currentHitboxPos)
     {
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(currentHitboxPos, weaponData.throwHitboxRadius, enemyLayers);
@@ -260,6 +255,13 @@ public class Katana : MonoBehaviour
             if (damageable != null)
             {
                 damageable.TakeDamage(weaponData.throwDamage * Time.fixedDeltaTime * 10f); 
+            }
+
+            // --- THE STUN TRIGGER ---
+            IStunnable stunnable = enemy.GetComponent<IStunnable>();
+            if (stunnable != null)
+            {
+                stunnable.Stun(weaponData.stunDuration);
             }
         }
     }
