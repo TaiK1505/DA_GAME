@@ -25,8 +25,9 @@ MonoBehaviour:
   throwDamage: 3
   stunDuration: 2
   maxThrowDistance: 10
-  throwSpeed: 30
+  throwSpeed: 35
   throwSpinSpeed: 1500
   throwHitboxRadius: 1
+  dummyPrefab: {fileID: 1601938504807066080, guid: fe9a3a6033ea18642b442d742ab3f72d, type: 3}
   scalesOffStat: Speed
   slashVFXPrefab: {fileID: 1058646173525682040, guid: c508ec889bbeea6459b839bb1cb3608e, type: 3}

@@ -29,6 +29,8 @@ public class MeleeWeaponData : ScriptableObject
     public float throwSpeed = 25f;        
     public float throwSpinSpeed = 1500f;  
     public float throwHitboxRadius = 1f; 
+    public float throwCooldown = 1.5f;
+    public GameObject dummyPrefab;
     
     
     [Header("Scaling (Phase 5 Prep)")]

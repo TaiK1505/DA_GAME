@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,34 +15,24 @@ public class Katana : MonoBehaviour
 
     [Header("Throw Setup")]
     public bool isThrown = false;
+    private GameObject activeDummy; // Tracks the pooled dummy so we can delete it if you swap weapons!
 
-    private Transform originalParent;
-    private Vector3 originalLocalPos;
-    
     private float nextAttackTime = 0f;
+    private float nextThrowTime = 0f;
     private Rigidbody2D playerRb; 
 
     private void Start()
     {
         playerRb = GetComponentInParent<Rigidbody2D>();
-        originalParent = transform.parent;
-        originalLocalPos = transform.localPosition;
     }
 
     public void Swing()
     {
-        if (isThrown) return;
-        
-        if (weaponData == null || Time.time < nextAttackTime) return;
+        if (isThrown || weaponData == null || Time.time < nextAttackTime) return;
 
         nextAttackTime = Time.time + weaponData.attackCooldown;
 
-        bool isLunging = false;
-        
-        if (weaponData.canLunge && playerRb != null)
-        {
-            isLunging = TryLunge();
-        }
+        bool isLunging = weaponData.canLunge && playerRb != null && TryLunge();
 
         if (!isLunging)
         {
@@ -54,12 +45,12 @@ public class Katana : MonoBehaviour
         Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
 
-        // Scan huge area to account for potential Executions!
+        // Scan the massive execution area
         float maxPossibleRange = weaponData.lungeDistance * weaponData.executionRangeMultiplier;
         Collider2D[] potentialTargets = Physics2D.OverlapCircleAll(transform.position, maxPossibleRange, enemyLayers);
         
         Transform bestTarget = null;
-        float closestToMouse = Mathf.Infinity;
+        float bestTargetScore = Mathf.Infinity; // Changed from 'closestToMouse' to a generic 'Score'
 
         Vector2 playerPos = playerRb.transform.position;
         Vector2 aimDirection = (mousePos - playerPos).normalized;
@@ -67,28 +58,32 @@ public class Katana : MonoBehaviour
         foreach (Collider2D enemy in potentialTargets)
         {
             Vector2 dirToEnemy = ((Vector2)enemy.transform.position - playerPos).normalized;
-            float angleToEnemy = Vector2.Angle(aimDirection, dirToEnemy);
-
-            if (angleToEnemy > 75f) continue; 
+            if (Vector2.Angle(aimDirection, dirToEnemy) > 75f) continue; 
 
             float distToMouse = Vector2.Distance(mousePos, enemy.transform.position);
             
+            // The "Reasonable Range": You still have to aim within 4 units of the target
             if (distToMouse > 4f) continue; 
 
-            if (distToMouse < closestToMouse)
+            // --- THE STUN MAGNETISM ---
+            EnemyAI enemyAI = enemy.GetComponent<EnemyAI>();
+            bool isStunned = (enemyAI != null && enemyAI.isStunned);
+
+            // If they are stunned, subtract 100 from their score so they ALWAYS win the priority check!
+            float score = isStunned ? (distToMouse - 100f) : distToMouse;
+
+            if (score < bestTargetScore)
             {
-                closestToMouse = distToMouse;
+                bestTargetScore = score;
                 bestTarget = enemy.transform;
             }
         }
 
         if (bestTarget != null)
         {
-            // --- THE EXECUTION CHECK ---
-            IStunnable stunnableTarget = bestTarget.GetComponent<IStunnable>();
-            bool targetIsStunned = (stunnableTarget != null && stunnableTarget.IsCurrentlyStunned());
+            EnemyAI enemyAI = bestTarget.GetComponent<EnemyAI>();
+            bool targetIsStunned = (enemyAI != null && enemyAI.isStunned);
 
-            // Dynamically scale the allowed dash range!
             float currentAllowedRange = targetIsStunned ? 
                 (weaponData.lungeDistance * weaponData.executionRangeMultiplier) : 
                 weaponData.lungeDistance;
@@ -97,7 +92,6 @@ public class Katana : MonoBehaviour
 
             if (distToPlayer > weaponData.attackRange * 0.8f && distToPlayer <= currentAllowedRange)
             {
-                // Pass the boolean into the routine so it knows how fast to dash!
                 StartCoroutine(LungeRoutine(bestTarget, targetIsStunned));
                 return true; 
             }
@@ -111,10 +105,8 @@ public class Katana : MonoBehaviour
         Vector2 startPos = playerRb.position;
         Vector2 targetPos = target.position; 
         Vector2 direction = (targetPos - startPos).normalized;
-        
         Vector2 destination = targetPos - (direction * (weaponData.attackRange * 0.5f));
 
-        // --- DYNAMIC DURATION ---
         float dashDuration = isStunned ? weaponData.executionDuration : weaponData.lungeDuration;
         float elapsed = 0f;
 
@@ -124,10 +116,7 @@ public class Katana : MonoBehaviour
         {
             elapsed += Time.fixedDeltaTime;
             float t = elapsed / dashDuration;
-            float easeOut = t * (2f - t); 
-            
-            playerRb.MovePosition(Vector2.Lerp(startPos, destination, easeOut));
-            
+            playerRb.MovePosition(Vector2.Lerp(startPos, destination, t * (2f - t)));
             yield return new WaitForFixedUpdate(); 
         }
 
@@ -141,38 +130,26 @@ public class Katana : MonoBehaviour
         foreach (Collider2D enemy in hitEnemies)
         {
             IDamageable damageable = enemy.GetComponent<IDamageable>();
-            if (damageable != null)
-            {
-                damageable.TakeDamage(weaponData.damage);
-            }
+            if (damageable != null) damageable.TakeDamage(weaponData.damage);
         }
 
         if (weaponData.slashVFXPrefab != null)
         {
-            GameObject slash = Instantiate(weaponData.slashVFXPrefab, attackPoint.position, attackPoint.rotation, attackPoint);
-            Destroy(slash, 0.15f); 
-        }
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        if (attackPoint != null && weaponData != null)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(attackPoint.position, weaponData.attackRange);
+            // 1. Ask the Object Pool for the slash!
+            GameObject slash = ObjectPoolManager.Instance.SpawnObject(weaponData.slashVFXPrefab, attackPoint.position, attackPoint.rotation);
             
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, weaponData.lungeDistance);
-
-            // Draw the massive Execution range in blue!
-            Gizmos.color = Color.cyan;
-            Gizmos.DrawWireSphere(transform.position, weaponData.lungeDistance * weaponData.executionRangeMultiplier);
+            // 2. Parent it to the attackPoint so it perfectly follows the player's arm as they move!
+            // (The PooledVFX script will safely un-parent it when it dies)
+            slash.transform.SetParent(attackPoint);
         }
     }
 
     public void Throw()
     {
-        if (!weaponData.canThrow || isThrown) return;
+        if (!weaponData.canThrow || isThrown || Time.time < nextThrowTime) return;
+        
+        nextThrowTime = Time.time + weaponData.throwCooldown;
+        
         StartCoroutine(BoomerangRoutine());
     }
 
@@ -183,86 +160,110 @@ public class Katana : MonoBehaviour
         SpriteRenderer realSprite = GetComponentInChildren<SpriteRenderer>();
         if (realSprite != null) realSprite.enabled = false;
 
-        GameObject dummy = new GameObject("SpinningDummy");
+        // 1. SPAWN FROM OBJECT POOL
+        activeDummy = ObjectPoolManager.Instance.SpawnObject(weaponData.dummyPrefab, transform.position, transform.rotation);
         
-        if (realSprite != null) {
-            dummy.transform.position = realSprite.transform.position;
-        } else {
-            dummy.transform.position = transform.position;
-        }
-        
-        SpriteRenderer dummyRenderer = dummy.AddComponent<SpriteRenderer>();
+        SpriteRenderer dummyRenderer = activeDummy.GetComponent<SpriteRenderer>();
+        if (dummyRenderer == null) dummyRenderer = activeDummy.AddComponent<SpriteRenderer>();
+
         if (realSprite != null)
         {
             dummyRenderer.sprite = realSprite.sprite;
             dummyRenderer.color = realSprite.color;
             dummyRenderer.sortingLayerID = realSprite.sortingLayerID;
             dummyRenderer.sortingOrder = realSprite.sortingOrder;
-            dummy.transform.localScale = realSprite.transform.lossyScale; 
+            activeDummy.transform.localScale = realSprite.transform.lossyScale; 
         }
 
         Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
-        
         Vector2 startPos = transform.position;
         Vector2 direction = (mousePos - startPos).normalized;
         
-        float desiredDistance = Mathf.Clamp(Vector2.Distance(startPos, mousePos), 1f, weaponData.maxThrowDistance);
-        
+       float desiredDistance = weaponData.maxThrowDistance;
         RaycastHit2D hit = Physics2D.Raycast(startPos, direction, desiredDistance, obstacleLayers);
-        float actualThrowDistance = desiredDistance;
-
-        if (hit.collider != null)
-        {
-            actualThrowDistance = Mathf.Max(hit.distance - 0.5f, 0.5f); 
-        }
+        float actualThrowDistance = hit.collider != null ? Mathf.Max(hit.distance - 0.5f, 0.5f) : desiredDistance;
 
         Vector2 targetPos = startPos + (direction * actualThrowDistance);
+        HashSet<Collider2D> alreadyHit = new HashSet<Collider2D>();
 
         // --- PHASE 1: FLY OUT ---
-        while (Vector2.Distance(dummy.transform.position, targetPos) > 0.2f)
+        while (Vector2.Distance(activeDummy.transform.position, targetPos) > 0.2f)
         {
-            dummy.transform.position = Vector2.MoveTowards(dummy.transform.position, targetPos, weaponData.throwSpeed * Time.fixedDeltaTime);
-            dummy.transform.Rotate(0, 0, -weaponData.throwSpinSpeed * Time.fixedDeltaTime);
+            activeDummy.transform.position = Vector2.MoveTowards(activeDummy.transform.position, targetPos, weaponData.throwSpeed * Time.fixedDeltaTime);
+            activeDummy.transform.Rotate(0, 0, -weaponData.throwSpinSpeed * Time.fixedDeltaTime);
             
-            DamageEnemiesInFlight(dummy.transform.position);
+            // IF IT HITS, STOP DEAD!
+            if (DamageEnemiesInFlight(activeDummy.transform.position, false, alreadyHit)) break;
+            
             yield return new WaitForFixedUpdate();
         }
 
         // --- PHASE 2: RETURN TO SENDER ---
-        while (Vector2.Distance(dummy.transform.position, transform.position) > 0.2f)
+        while (Vector2.Distance(activeDummy.transform.position, transform.position) > 0.2f)
         {
-            dummy.transform.position = Vector2.MoveTowards(dummy.transform.position, transform.position, weaponData.throwSpeed * Time.fixedDeltaTime);
-            dummy.transform.Rotate(0, 0, -weaponData.throwSpinSpeed * Time.fixedDeltaTime);
+            activeDummy.transform.position = Vector2.MoveTowards(activeDummy.transform.position, transform.position, weaponData.throwSpeed * Time.fixedDeltaTime);
+            activeDummy.transform.Rotate(0, 0, -weaponData.throwSpinSpeed * Time.fixedDeltaTime);
             
-            DamageEnemiesInFlight(dummy.transform.position);
+            // PIERCES AND DAMAGES EVERYTHING ON THE WAY BACK!
+            DamageEnemiesInFlight(activeDummy.transform.position, true, alreadyHit);
+            
             yield return new WaitForFixedUpdate();
         }
 
-        Destroy(dummy);
+        // 3. RETURN TO OBJECT POOL
+        ObjectPoolManager.Instance.ReturnObject(activeDummy); 
         if (realSprite != null) realSprite.enabled = true;
         
         isThrown = false;
+        activeDummy = null;
     }
 
-    private void DamageEnemiesInFlight(Vector2 currentHitboxPos)
+    private bool DamageEnemiesInFlight(Vector2 currentHitboxPos, bool isReturning, HashSet<Collider2D> alreadyHit)
     {
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(currentHitboxPos, weaponData.throwHitboxRadius, enemyLayers);
         
         foreach (Collider2D enemy in hitEnemies)
         {
+            // Ignore anyone already on the hit list!
+            if (alreadyHit.Contains(enemy)) continue;
+
             IDamageable damageable = enemy.GetComponent<IDamageable>();
             if (damageable != null)
             {
-                damageable.TakeDamage(weaponData.throwDamage * Time.fixedDeltaTime * 10f); 
+                damageable.TakeDamage(weaponData.throwDamage); 
+                alreadyHit.Add(enemy); 
             }
 
-            // --- THE STUN TRIGGER ---
-            IStunnable stunnable = enemy.GetComponent<IStunnable>();
-            if (stunnable != null)
+            // Stun and Stop only happens on the way OUT
+            if (!isReturning)
             {
-                stunnable.Stun(weaponData.stunDuration);
+                EnemyAI enemyAI = enemy.GetComponent<EnemyAI>();
+                if (enemyAI != null) enemyAI.Stun(weaponData.stunDuration);
+                
+                return true; 
             }
+        }
+        return false;
+    }
+
+    // --- WEAPON SWAP TELEPORT (SAFETY NET) ---
+    private void OnDisable()
+    {
+        if (isThrown)
+        {
+            // Instantly send the dummy back to the pool!
+            if (activeDummy != null)
+            {
+                ObjectPoolManager.Instance.ReturnObject(activeDummy);
+                activeDummy = null;
+            }
+
+            // Visually restore the sword to the player's hip
+            SpriteRenderer realSprite = GetComponentInChildren<SpriteRenderer>();
+            if (realSprite != null) realSprite.enabled = true;
+            
+            isThrown = false;
         }
     }
 }
