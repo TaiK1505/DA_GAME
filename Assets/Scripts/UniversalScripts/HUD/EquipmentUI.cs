@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class EquipmentUI : MonoBehaviour
 {
@@ -10,7 +11,15 @@ public class EquipmentUI : MonoBehaviour
     public Image gadgetIcon;
     
     [Header("Cooldown Overlays")]
-    public Image gadgetOverlay; // Drag your new GadgetOverlay image here!
+    public Image gadgetOverlay; 
+
+    [Header("Weapon Meters")]
+    public Image altFireBar;
+
+    [Header("Ammo HUD")]
+    public TextMeshProUGUI ammoText;
+
+    public GameObject altFireRoot;
 
     private void Awake()
     {
@@ -39,6 +48,27 @@ public class EquipmentUI : MonoBehaviour
         }
     }
 
+    public void EquipWeapon(Sprite weaponSprite, Color customColor, bool hasAltFire)
+    {
+        // 1. Turn the Alt-Fire bar on or off! The Layout Group will automatically center the gun!
+        if (altFireRoot != null) 
+        {
+            altFireRoot.SetActive(hasAltFire);
+        }
+
+        // 2. Set the color and sprite
+        weaponIcon.color = customColor; 
+
+        if (weaponSprite != null)
+        {
+            weaponIcon.sprite = weaponSprite;
+        }
+        else
+        {
+            weaponIcon.sprite = null;
+        }
+    } 
+
     public void UpdateGadgetCooldownUI(float fillPercentage)
     {
         if (gadgetOverlay != null)
@@ -49,4 +79,41 @@ public class EquipmentUI : MonoBehaviour
             gadgetOverlay.fillAmount = 1f - fillPercentage;
         }
     }
+
+    public void UpdateAltFireUI(float fillPercentage)
+    {
+        if (altFireBar != null)
+        {
+            altFireBar.fillAmount = fillPercentage;
+        }
+    }   
+
+    public void UpdateAmmoUI(int currentAmmo, int reserveAmmo, bool hasInfiniteReserve, bool isBottomless)
+    {
+        if (ammoText == null) return;
+
+        // The Melee Fix: If we pass -1, it means we are holding the Katana. Hide the text!
+        if (currentAmmo == -1) 
+        {
+            ammoText.text = "";
+            return;
+        }
+
+        if (isBottomless)
+        {
+            // For laser beams or miniguns that never stop
+            ammoText.text = "∞";
+        }
+        else if (hasInfiniteReserve)
+        {
+            // For the Starter Gun! 
+            ammoText.text = $"{currentAmmo} / ∞";
+        }
+        else
+        {
+            // Standard Shooter Rules (e.g., 30 / 120)
+            ammoText.text = $"{currentAmmo} / {reserveAmmo}";
+        }
+    }
+
 }

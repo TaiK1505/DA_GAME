@@ -18,7 +18,6 @@ public class ArsenalManager : MonoBehaviour
     public List<GameObject> gunInventory = new List<GameObject>();
     public int currentGunIndex = 0;
     
-    
     public GameObject starterGunPrefab; // Your real working gun prefab!
 
     void Start()
@@ -51,14 +50,12 @@ public class ArsenalManager : MonoBehaviour
 
     public void CycleNext()
     {
-        // 1. If the Katana is out, scrolling ALWAYS puts it away and brings out your last gun.
         if (isMeleeActive) 
         {
             ToggleMelee(true, false); 
-            return; // We successfully swapped back to the gun, so stop reading code here!
+            return; 
         }
 
-        // 2. If we are already holding a gun, we need at least 2 guns to cycle to a new one.
         if (gunInventory.Count <= 1) return; 
 
         currentGunIndex = (currentGunIndex + 1) % gunInventory.Count;
@@ -67,14 +64,12 @@ public class ArsenalManager : MonoBehaviour
 
     public void CyclePrevious()
     {
-        // 1. Always check the Katana first!
         if (isMeleeActive) 
         {
             ToggleMelee(true, false);
             return;
         }
 
-        // 2. Need at least 2 guns to cycle.
         if (gunInventory.Count <= 1) return; 
 
         currentGunIndex--;
@@ -90,15 +85,16 @@ public class ArsenalManager : MonoBehaviour
         if (gunInventory[currentGunIndex] != null)
         {
             gunInventory[currentGunIndex].SetActive(true);
+            
+            // ---> NEW: Tell the HUD we swapped guns! <---
+            UpdateWeaponUI(gunInventory[currentGunIndex]);
         }
     }
 
     private void HideAllGuns()
     {
-        // 1. Force the current gun to stop shooting before we put it away!
         ReleaseTrigger(); 
 
-        // 2. Put them all away
         foreach (GameObject gun in gunInventory)
         {
             if (gun != null) gun.SetActive(false);
@@ -109,15 +105,18 @@ public class ArsenalManager : MonoBehaviour
 
     public void ToggleMelee(bool forceState = false, bool targetState = false)
     {
-        // Allow us to forcefully turn it off, or just naturally toggle it
         isMeleeActive = forceState ? targetState : !isMeleeActive;
 
         if (isMeleeActive)
         {
             HideAllGuns();
-            if (meleeWeapon != null) meleeWeapon.SetActive(true);
+            if (meleeWeapon != null) 
+            {
+                meleeWeapon.SetActive(true);
+                // ---> NEW: Tell the HUD we pulled out the Sword! <---
+                UpdateWeaponUI(meleeWeapon);
+            }
             
-            // TODO: player.ApplyMeleeSpeedBuff(meleeSpeedBuff); 
             Debug.Log("KATANA EQUIPPED: +15% Traversal Speed Active!");
         }
         else
@@ -125,7 +124,6 @@ public class ArsenalManager : MonoBehaviour
             if (meleeWeapon != null) meleeWeapon.SetActive(false);
             EquipGun(currentGunIndex);
 
-            // TODO: player.RemoveMeleeSpeedBuff();
             Debug.Log("GUN EQUIPPED: Combat Speed Normal.");
         }
     }
@@ -134,10 +132,8 @@ public class ArsenalManager : MonoBehaviour
 
     public void SpawnAndPickupGun(GameObject gunPrefab)
     {
-        // Spawn the gun and parent it to the invisible aiming pivot
         GameObject newGun = Instantiate(gunPrefab, weaponPivot);
         
-        // Zero out its transform so it orbits perfectly
         newGun.transform.localPosition = Vector3.zero;
         newGun.transform.localRotation = Quaternion.identity;
 
@@ -154,8 +150,6 @@ public class ArsenalManager : MonoBehaviour
         else
         {
             Debug.Log("Dropping old gun: " + gunInventory[currentGunIndex].name);
-            // TODO: Actually drop the weapon on the floor here later
-            
             gunInventory[currentGunIndex] = newGun;
             EquipGun(currentGunIndex);
         }
@@ -164,7 +158,6 @@ public class ArsenalManager : MonoBehaviour
     public void UpgradeWeaponCapacity(int extraSlots)
     {
         maxGunCapacity += extraSlots;
-        Debug.Log("CYBERWARE UPGRADE: Arsenal capacity increased to " + maxGunCapacity);
     }
 
     // COMBAT LOGIC
@@ -172,16 +165,14 @@ public class ArsenalManager : MonoBehaviour
     {
         if (isMeleeActive)
         {
-            // Find the Katana script on our dummy and tell it to swing!
             if (meleeWeapon != null)
             {
-                Katana katanaScript = meleeWeapon.GetComponent<Katana>();
-                if (katanaScript != null) katanaScript.Swing();
+                MeleeWeaponController meleeScript = meleeWeapon.GetComponent<MeleeWeaponController>();
+                if (meleeScript != null) meleeScript.Swing();
             }
             return;
         }
 
-        // Tell the currently equipped gun to shoot!
         if (gunInventory.Count > 0 && gunInventory[currentGunIndex] != null)
         {
             WeaponBase currentGun = gunInventory[currentGunIndex].GetComponent<WeaponBase>();
@@ -204,8 +195,50 @@ public class ArsenalManager : MonoBehaviour
     {
         if (isMeleeActive && meleeWeapon != null)
         {
-            Katana katanaScript = meleeWeapon.GetComponent<Katana>();
-            if (katanaScript != null) katanaScript.Throw();
+            MeleeWeaponController meleeScript = meleeWeapon.GetComponent<MeleeWeaponController>();
+            if (meleeScript != null) meleeScript.Throw();
+        }
+    }
+
+    public void ReloadActiveWeapon()
+    {
+        // Katanas don't reload!
+        if (isMeleeActive) return;
+
+        // Tell the currently equipped gun to reload!
+        if (gunInventory.Count > 0 && gunInventory[currentGunIndex] != null)
+        {
+            WeaponBase currentGun = gunInventory[currentGunIndex].GetComponent<WeaponBase>();
+            if (currentGun != null)
+            {
+                currentGun.TryReload();
+            }
+        }
+    }
+
+    
+    private void UpdateWeaponUI(GameObject activeWeapon)
+    {
+        if (EquipmentUI.instance == null || activeWeapon == null) return;
+
+        SpriteRenderer sr = activeWeapon.GetComponentInChildren<SpriteRenderer>();
+        
+        // This controls if the left UI box opens up. 
+        // (Later, when guns get alt-fires, we will update this line to check for them too!)
+        bool hasAltFire = activeWeapon.GetComponent<MeleeWeaponController>() != null;
+
+        if (sr != null)
+        {
+            EquipmentUI.instance.EquipWeapon(sr.sprite, sr.color, hasAltFire);
+        }
+        else
+        {
+            EquipmentUI.instance.EquipWeapon(null, Color.gray, hasAltFire);
+        }
+
+        if (isMeleeActive)
+        {
+            EquipmentUI.instance.UpdateAmmoUI(-1, 0, false, false); 
         }
     }
 }

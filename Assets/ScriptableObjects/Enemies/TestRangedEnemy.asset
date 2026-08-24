@@ -16,5 +16,5 @@ MonoBehaviour:
   maxHealth: 30
   moveSpeed: 5
   stoppingDistance: 10
-  damageToPlayer: 10
+  damageToPlayer: 5
   attackRate: 1

@@ -16,6 +16,10 @@ MonoBehaviour:
   damage: 10
   fireRate: 0.2
   maxAmmo: 30
-  reloadTime: 1.5
   scalesOffStat: None
   bulletPrefab: {fileID: 3981464719375659004, guid: 239850449edc2634eb91441e19292fed, type: 3}
+  magazineSize: 30
+  maxReserveAmmo: 150
+  reloadTime: 1.5
+  infiniteReserveAmmo: 0
+  bottomlessClip: 0

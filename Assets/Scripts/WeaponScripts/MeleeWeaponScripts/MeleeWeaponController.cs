@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Katana : MonoBehaviour
+public class MeleeWeaponController : MonoBehaviour
 {
     [Header("Weapon Data")]
     public MeleeWeaponData weaponData;
@@ -21,21 +21,60 @@ public class Katana : MonoBehaviour
     private float nextThrowTime = 0f;
     private Rigidbody2D playerRb; 
 
+    private PlayerController playerController;
+    private Coroutine currentStepCoroutine;
+
     private void Start()
     {
         playerRb = GetComponentInParent<Rigidbody2D>();
+        playerController = GetComponentInParent<PlayerController>();
+    }
+
+    private void Update()
+    {
+        // 1. Safety check!
+        if (weaponData == null || !weaponData.canThrow) return;
+
+        // 2. Are we currently on cooldown?
+        if (Time.time < nextThrowTime)
+        {
+            float timeRemaining = nextThrowTime - Time.time;
+            
+            // This calculates how much of the cooldown has already finished
+            float timePassed = weaponData.throwCooldown - timeRemaining;
+            
+            // Convert to a 0-to-1 decimal and push it to the UI!
+            float fillPercentage = timePassed / weaponData.throwCooldown;
+            
+            if (EquipmentUI.instance != null)
+            {
+                EquipmentUI.instance.UpdateAltFireUI(fillPercentage);
+            }
+        }
+        else
+        {
+            // Cooldown is completely finished, make sure the bar is totally full and ready!
+            if (EquipmentUI.instance != null)
+            {
+                EquipmentUI.instance.UpdateAltFireUI(1f);
+            }
+        }
     }
 
     public void Swing()
     {
         if (isThrown || weaponData == null || Time.time < nextAttackTime) return;
-
         nextAttackTime = Time.time + weaponData.attackCooldown;
 
-        bool isLunging = weaponData.canLunge && playerRb != null && TryLunge();
+        bool isExecuting = weaponData.canLunge && playerRb != null && TryLunge();
 
-        if (!isLunging)
+        if (!isExecuting)
         {
+            // ---> THE SPAM CLICK FIX <---
+            // Stop the previous step if we swing again quickly so they never overlap!
+            if (currentStepCoroutine != null) StopCoroutine(currentStepCoroutine);
+            
+            currentStepCoroutine = StartCoroutine(AttackStepRoutine());
             ExecuteSlash();
         }
     }
@@ -45,54 +84,40 @@ public class Katana : MonoBehaviour
         Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
 
-        // Scan the massive execution area
-        float maxPossibleRange = weaponData.lungeDistance * weaponData.executionRangeMultiplier;
+        float maxPossibleRange = weaponData.executionLungeDistance;
         Collider2D[] potentialTargets = Physics2D.OverlapCircleAll(transform.position, maxPossibleRange, enemyLayers);
         
         Transform bestTarget = null;
-        float bestTargetScore = Mathf.Infinity; // Changed from 'closestToMouse' to a generic 'Score'
+        float bestTargetScore = Mathf.Infinity; 
 
-        Vector2 playerPos = playerRb.transform.position;
-        Vector2 aimDirection = (mousePos - playerPos).normalized;
-
+        // ---> THE MICRO-STEP NUKE <---
+        // We now completely ignore all enemies unless they are STUNNED.
         foreach (Collider2D enemy in potentialTargets)
         {
-            Vector2 dirToEnemy = ((Vector2)enemy.transform.position - playerPos).normalized;
-            if (Vector2.Angle(aimDirection, dirToEnemy) > 75f) continue; 
+            EnemyAI enemyAI = enemy.GetComponent<EnemyAI>();
+            
+            // If they aren't stunned, skip them entirely! No more micro-stepping!
+            if (enemyAI == null || !enemyAI.isStunned) continue; 
 
             float distToMouse = Vector2.Distance(mousePos, enemy.transform.position);
             
-            // The "Reasonable Range": You still have to aim within 4 units of the target
             if (distToMouse > 4f) continue; 
 
-            // --- THE STUN MAGNETISM ---
-            EnemyAI enemyAI = enemy.GetComponent<EnemyAI>();
-            bool isStunned = (enemyAI != null && enemyAI.isStunned);
-
-            // If they are stunned, subtract 100 from their score so they ALWAYS win the priority check!
-            float score = isStunned ? (distToMouse - 100f) : distToMouse;
-
-            if (score < bestTargetScore)
+            if (distToMouse < bestTargetScore)
             {
-                bestTargetScore = score;
+                bestTargetScore = distToMouse;
                 bestTarget = enemy.transform;
             }
         }
 
         if (bestTarget != null)
         {
-            EnemyAI enemyAI = bestTarget.GetComponent<EnemyAI>();
-            bool targetIsStunned = (enemyAI != null && enemyAI.isStunned);
+            float distToPlayer = Vector2.Distance(playerRb.position, bestTarget.position);
 
-            float currentAllowedRange = targetIsStunned ? 
-                (weaponData.lungeDistance * weaponData.executionRangeMultiplier) : 
-                weaponData.lungeDistance;
-
-            float distToPlayer = Vector2.Distance(playerPos, bestTarget.position);
-
-            if (distToPlayer > weaponData.attackRange * 0.8f && distToPlayer <= currentAllowedRange)
+            // Just check if they are within our new fixed execution range!
+            if (distToPlayer <= weaponData.executionLungeDistance)
             {
-                StartCoroutine(LungeRoutine(bestTarget, targetIsStunned));
+                StartCoroutine(LungeRoutine(bestTarget, true));
                 return true; 
             }
         }
@@ -100,28 +125,79 @@ public class Katana : MonoBehaviour
         return false; 
     }
 
-    private IEnumerator LungeRoutine(Transform target, bool isStunned)
+    private IEnumerator AttackStepRoutine()
     {
-        Vector2 startPos = playerRb.position;
-        Vector2 targetPos = target.position; 
-        Vector2 direction = (targetPos - startPos).normalized;
-        Vector2 destination = targetPos - (direction * (weaponData.attackRange * 0.5f));
+        if (playerController == null) playerController = GetComponentInParent<PlayerController>();
+        if (playerController != null) playerController.canMove = false; // LOCK WASD!
 
-        float dashDuration = isStunned ? weaponData.executionDuration : weaponData.lungeDuration;
+        Vector2 mouseScreenPos = Mouse.current.position.ReadValue();
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
+        Vector2 startPos = playerRb.position;
+        Vector2 direction = (mousePos - startPos).normalized;
+
+       
+        float stepDistance = weaponData.attackStepDistance; 
+        float stepDuration = weaponData.attackStepDuration;
         float elapsed = 0f;
 
+        
+        float startingSpeed = stepDistance / stepDuration;
+
+        while (elapsed < stepDuration)
+        {
+            elapsed += Time.fixedDeltaTime;
+            //  drain the speed from max down to zero to simulate friction
+            float currentSpeed = Mathf.Lerp(startingSpeed, 0f, elapsed / stepDuration);
+            playerRb.linearVelocity = direction * currentSpeed;
+            
+            yield return new WaitForFixedUpdate();
+        }
+
         playerRb.linearVelocity = Vector2.zero;
+        if (playerController != null) playerController.canMove = true; // UNLOCK WASD!
+    }
+
+    private IEnumerator LungeRoutine(Transform target, bool isStunned)
+    {
+        // LOCK MOVEMENT
+        if (playerController == null) playerController = GetComponentInParent<PlayerController>();
+        if (playerController != null) playerController.canMove = false;
+
+        Vector2 startPos = playerRb.position;
+        
+        // Find the enemy's physical hitbox
+        Collider2D targetCollider = target.GetComponent<Collider2D>();
+
+        // Find the exact outer edge 
+        Vector2 targetEdge = targetCollider != null ? targetCollider.ClosestPoint(startPos) : (Vector2)target.position;
+        Vector2 direction = (targetEdge - startPos).normalized;
+
+        // Stop away from their physical edge. 
+        Vector2 destination = targetEdge - (direction * 0.5f);
+
+        float dashDuration = weaponData.executionDuration;
+        float elapsed = 0f;
 
         while (elapsed < dashDuration)
         {
             elapsed += Time.fixedDeltaTime;
             float t = elapsed / dashDuration;
-            playerRb.MovePosition(Vector2.Lerp(startPos, destination, t * (2f - t)));
+            
+            //  calculate the sweet ease-out curve position...
+            Vector2 nextPos = Vector2.Lerp(startPos, destination, t * (2f - t));
+            
+            // ---> THE SPEEDOMETER FIX <---
+            playerRb.linearVelocity = (nextPos - playerRb.position) / Time.fixedDeltaTime;
+            
             yield return new WaitForFixedUpdate(); 
         }
 
-        playerRb.MovePosition(destination); 
+        // Stop dead and execute the slash!
+        playerRb.linearVelocity = Vector2.zero; 
         ExecuteSlash();
+
+        //UNLOCK MOVEMENT
+        if (playerController != null) playerController.canMove = true;
     }
 
     private void ExecuteSlash()
@@ -135,11 +211,9 @@ public class Katana : MonoBehaviour
 
         if (weaponData.slashVFXPrefab != null)
         {
-            // 1. Ask the Object Pool for the slash!
+            // Ask the Object Pool for the slash!
             GameObject slash = ObjectPoolManager.Instance.SpawnObject(weaponData.slashVFXPrefab, attackPoint.position, attackPoint.rotation);
-            
-            // 2. Parent it to the attackPoint so it perfectly follows the player's arm as they move!
-            // (The PooledVFX script will safely un-parent it when it dies)
+
             slash.transform.SetParent(attackPoint);
         }
     }
@@ -187,19 +261,19 @@ public class Katana : MonoBehaviour
         Vector2 targetPos = startPos + (direction * actualThrowDistance);
         HashSet<Collider2D> alreadyHit = new HashSet<Collider2D>();
 
-        // --- PHASE 1: FLY OUT ---
+        // FLY OUT
         while (Vector2.Distance(activeDummy.transform.position, targetPos) > 0.2f)
         {
             activeDummy.transform.position = Vector2.MoveTowards(activeDummy.transform.position, targetPos, weaponData.throwSpeed * Time.fixedDeltaTime);
             activeDummy.transform.Rotate(0, 0, -weaponData.throwSpinSpeed * Time.fixedDeltaTime);
             
-            // IF IT HITS, STOP DEAD!
+            // IF IT HITS, STOP 
             if (DamageEnemiesInFlight(activeDummy.transform.position, false, alreadyHit)) break;
             
             yield return new WaitForFixedUpdate();
         }
 
-        // --- PHASE 2: RETURN TO SENDER ---
+        // RETURN TO SENDER
         while (Vector2.Distance(activeDummy.transform.position, transform.position) > 0.2f)
         {
             activeDummy.transform.position = Vector2.MoveTowards(activeDummy.transform.position, transform.position, weaponData.throwSpeed * Time.fixedDeltaTime);
@@ -211,7 +285,7 @@ public class Katana : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        // 3. RETURN TO OBJECT POOL
+        // RETURN TO OBJECT POOL
         ObjectPoolManager.Instance.ReturnObject(activeDummy); 
         if (realSprite != null) realSprite.enabled = true;
         
@@ -247,7 +321,7 @@ public class Katana : MonoBehaviour
         return false;
     }
 
-    // --- WEAPON SWAP TELEPORT (SAFETY NET) ---
+    // WEAPON SWAP TELEPORT
     private void OnDisable()
     {
         if (isThrown)

@@ -11,7 +11,7 @@ public class WeaponData : ScriptableObject
     public float damage = 10f;
     public float fireRate = 0.2f; // Time in seconds between shots
     public int maxAmmo = 30;
-    public float reloadTime = 1.5f;
+
     
     [Header("Scaling (Phase 5 Prep)")]
     
@@ -19,4 +19,13 @@ public class WeaponData : ScriptableObject
 
     [Header("Prefabs")]
     public GameObject bulletPrefab;
+
+    [Header("Ammo & Reloading")]
+    public int magazineSize = 30;       
+    public int maxReserveAmmo = 300;    
+    public float reloadTime = 1.5f;     
+    
+    [Header("Special Ammo Rules")]
+    public bool infiniteReserveAmmo = false; 
+    public bool bottomlessClip = false;
 }

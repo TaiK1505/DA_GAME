@@ -63,6 +63,9 @@ public class PlayerController : MonoBehaviour
     [Header("Arsenal")]
     public ArsenalManager arsenal;
 
+    [Header("Combat Lock")]
+    public bool canMove = true;
+
     public PlayerGadget currentActiveGadget;
     
     private Rigidbody2D rb;
@@ -96,6 +99,8 @@ public class PlayerController : MonoBehaviour
 
         controls.Player.Fire.started += ctx => arsenal.PullTrigger();
         controls.Player.Fire.canceled += ctx => arsenal.ReleaseTrigger();
+
+        controls.Player.Reload.performed += ctx => arsenal.ReloadActiveWeapon();
 
         controls.Player.AltFire.started += ctx => arsenal.AltFire();
 
@@ -160,8 +165,14 @@ public class PlayerController : MonoBehaviour
             // Keep the clock completely zeroed out when the tank is full
             boostRechargeTimer = 0f; 
         }
+
         
         movementInput = controls.Player.Move.ReadValue<Vector2>();
+
+        if (!canMove) 
+        {
+            movementInput = Vector2.zero;
+        }
 
         bool isGadgetPulling = currentActiveGadget != null && currentActiveGadget.overridePlayerPhysics;
 
@@ -262,6 +273,8 @@ public class PlayerController : MonoBehaviour
         {
             rb.AddForce(movementInput.normalized * grappleStrafeForce, ForceMode2D.Force);
         }
+
+        if (!canMove) return;
         
         switch (currentState)
         {
