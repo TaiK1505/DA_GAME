@@ -324,6 +324,18 @@ public class MeleeWeaponController : MonoBehaviour
     // WEAPON SWAP TELEPORT
     private void OnDisable()
     {
+        // 1. THE SLIDE FIX: Forcefully stop momentum and unlock WASD if disabled mid-swing
+        if (playerRb != null)
+        {
+            playerRb.linearVelocity = Vector2.zero;
+        }
+        
+        if (playerController != null)
+        {
+            playerController.canMove = true;
+        }
+
+        // 2. THE THROW FIX: Clean up the boomerang
         if (isThrown)
         {
             // Instantly send the dummy back to the pool!

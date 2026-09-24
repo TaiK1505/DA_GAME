@@ -36,6 +36,11 @@ public class ObjectPoolManager : MonoBehaviour
         if (poolDictionary[poolKey].Count > 0)
         {
             GameObject objectToSpawn = poolDictionary[poolKey].Dequeue();
+            
+            // AAA TRICK MOVED HERE: Detach the object from its previous parent (like the player's arm)
+            // before resetting its position and waking it up.
+            objectToSpawn.transform.SetParent(null);
+            
             objectToSpawn.transform.position = position;
             objectToSpawn.transform.rotation = rotation;
             objectToSpawn.SetActive(true);
@@ -43,10 +48,9 @@ public class ObjectPoolManager : MonoBehaviour
         }
         else
         {
-            // 3. Bucket is empty We must create a brand new bullet.
+            // 3. Bucket is empty. We must create a brand new bullet.
             GameObject newObj = Instantiate(prefab, position, rotation);
             
-           
             //rename so it exactly matches our dictionary key when returning!
             newObj.name = poolKey; 
             

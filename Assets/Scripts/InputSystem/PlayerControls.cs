@@ -335,7 +335,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""9ff48f7d-7d51-4e5a-8472-6df0d5cadb26"",
-                    ""path"": ""<Keyboard>/v"",
+                    ""path"": ""<Mouse>/backButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

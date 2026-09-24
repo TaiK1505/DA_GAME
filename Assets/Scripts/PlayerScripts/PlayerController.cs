@@ -69,6 +69,7 @@ public class PlayerController : MonoBehaviour
     public PlayerGadget currentActiveGadget;
     
     private Rigidbody2D rb;
+    private Animator anim;
     private Vector2 movementInput;
     private Vector2 dashDirection;
     private float dashTimeLeft;
@@ -86,6 +87,7 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
 
         myStats = GetComponent<PlayerStats>();
 
@@ -174,6 +176,12 @@ public class PlayerController : MonoBehaviour
             movementInput = Vector2.zero;
         }
 
+        if (movementInput.sqrMagnitude > 0)
+        {
+            anim.SetFloat("MoveX", movementInput.x);
+            anim.SetFloat("MoveY", movementInput.y);
+        }
+
         bool isGadgetPulling = currentActiveGadget != null && currentActiveGadget.overridePlayerPhysics;
 
         switch (currentState)
@@ -257,6 +265,10 @@ public class PlayerController : MonoBehaviour
                 }
                 break;
         }
+
+        // Sync the Animator to our C# State Machine!
+        // (int) converts our Enum into the numbers 0, 1, 2, or 3
+        anim.SetInteger("AnimState", (int)currentState);
 
     }
 
