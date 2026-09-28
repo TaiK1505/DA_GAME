@@ -1,10 +1,37 @@
 fileFormatVersion: 2
-guid: 96a7bf2149a4598499137f3815a1bc30
+guid: b0b3c9e9984a01340a37720e02d59641
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1286490597820893924
-    second: ScientistBottomAngleRun(RightArm)_0
+      213: -6089675763924563076
+    second: ScientistBottomRightRun(Body)_0
+  - first:
+      213: -4767052448687888077
+    second: ScientistBottomRightRun(Body)_1
+  - first:
+      213: 4128222782092830201
+    second: ScientistBottomRightRun(Body)_2
+  - first:
+      213: -8779442178660065277
+    second: ScientistBottomRightRun(Body)_3
+  - first:
+      213: -8681284017827932207
+    second: ScientistBottomRightRun(Body)_4
+  - first:
+      213: 339529207215837557
+    second: ScientistBottomRightRun(Body)_5
+  - first:
+      213: 4303084642004856622
+    second: ScientistBottomRightRun(Body)_6
+  - first:
+      213: -9035172642641553404
+    second: ScientistBottomRightRun(Body)_7
+  - first:
+      213: 5405454633960373745
+    second: ScientistBottomRightRun(Body)_8
+  - first:
+      213: -8347063858995499403
+    second: ScientistBottomRightRun(Body)_9
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -139,7 +166,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ScientistBottomAngleRun(RightArm)_0
+      name: ScientistBottomRightRun(Body)_0
       rect:
         serializedVersion: 2
         x: 0
@@ -154,14 +181,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4ea8ef1f1688ad110800000000000000
-      internalID: 1286490597820893924
+      spriteID: c7b88fd38202d7ba0800000000000000
+      internalID: -6089675763924563076
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ScientistBottomAngleRun(RightArm)_1
+      name: ScientistBottomRightRun(Body)_1
       rect:
         serializedVersion: 2
         x: 48
@@ -174,16 +201,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 70fd0d93a1102c54583d152b9f61d149
-      internalID: -502465327
+      spriteID: 3396d4a0e0708ddb0800000000000000
+      internalID: -4767052448687888077
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ScientistBottomAngleRun(RightArm)_2
+      name: ScientistBottomRightRun(Body)_2
       rect:
         serializedVersion: 2
         x: 96
@@ -196,16 +223,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 56070420cac7f1342ac336babeb89a18
-      internalID: 1721476196
+      spriteID: 9f561508fb46a4930800000000000000
+      internalID: 4128222782092830201
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ScientistBottomAngleRun(RightArm)_3
+      name: ScientistBottomRightRun(Body)_3
       rect:
         serializedVersion: 2
         x: 144
@@ -218,16 +245,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 87cea4c6638959b43a059595566a730e
-      internalID: -28589420
+      spriteID: 300a2ee9ad7292680800000000000000
+      internalID: -8779442178660065277
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ScientistBottomAngleRun(RightArm)_4
+      name: ScientistBottomRightRun(Body)_4
       rect:
         serializedVersion: 2
         x: 192
@@ -240,16 +267,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 1cdb72c66a592184da2444719afb78d0
-      internalID: -311147405
+      spriteID: 1d717136e22e58780800000000000000
+      internalID: -8681284017827932207
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ScientistBottomAngleRun(RightArm)_5
+      name: ScientistBottomRightRun(Body)_5
       rect:
         serializedVersion: 2
         x: 240
@@ -262,16 +289,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 4fa235e3200d5684a99a822f03f3cfa2
-      internalID: 217477396
+      spriteID: 57158fad30046b400800000000000000
+      internalID: 339529207215837557
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ScientistBottomAngleRun(RightArm)_6
+      name: ScientistBottomRightRun(Body)_6
       rect:
         serializedVersion: 2
         x: 288
@@ -284,16 +311,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 7f52f04d2d54c104d9cd7a53423d38d6
-      internalID: -844661476
+      spriteID: e2f6325eea0a7bb30800000000000000
+      internalID: 4303084642004856622
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ScientistBottomAngleRun(RightArm)_7
+      name: ScientistBottomRightRun(Body)_7
       rect:
         serializedVersion: 2
         x: 336
@@ -306,16 +333,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 353ca164acde46148bd276a18dda7b94
-      internalID: -106593867
+      spriteID: 408d5071a5e9c9280800000000000000
+      internalID: -9035172642641553404
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ScientistBottomAngleRun(RightArm)_8
+      name: ScientistBottomRightRun(Body)_8
       rect:
         serializedVersion: 2
         x: 384
@@ -328,16 +355,16 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: e74a96548b3830b499ccda89554e66df
-      internalID: -1501508218
+      spriteID: 1fd72baa958040b40800000000000000
+      internalID: 5405454633960373745
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ScientistBottomAngleRun(RightArm)_9
+      name: ScientistBottomRightRun(Body)_9
       rect:
         serializedVersion: 2
         x: 432
@@ -350,10 +377,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 10b0174c98af6df45a090558b58915cd
-      internalID: -237674362
+      spriteID: 57e621715a5492c80800000000000000
+      internalID: -8347063858995499403
       vertices: []
       indices: 
       edges: []
@@ -362,7 +389,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 4de58ef8ac2e8164da1e51a0797d3794
+    spriteID: c47d92f7b1544824e9f8da56a471ebc8
     internalID: 0
     vertices: []
     indices: 
@@ -374,16 +401,16 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":10.0,"y":1.0},"gridSpriteSize":{"x":48.0,"y":48.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      ScientistBottomAngleRun(RightArm)_0: 1286490597820893924
-      ScientistBottomAngleRun(RightArm)_1: -502465327
-      ScientistBottomAngleRun(RightArm)_2: 1721476196
-      ScientistBottomAngleRun(RightArm)_3: -28589420
-      ScientistBottomAngleRun(RightArm)_4: -311147405
-      ScientistBottomAngleRun(RightArm)_5: 217477396
-      ScientistBottomAngleRun(RightArm)_6: -844661476
-      ScientistBottomAngleRun(RightArm)_7: -106593867
-      ScientistBottomAngleRun(RightArm)_8: -1501508218
-      ScientistBottomAngleRun(RightArm)_9: -237674362
+      ScientistBottomRightRun(Body)_0: -6089675763924563076
+      ScientistBottomRightRun(Body)_1: -4767052448687888077
+      ScientistBottomRightRun(Body)_2: 4128222782092830201
+      ScientistBottomRightRun(Body)_3: -8779442178660065277
+      ScientistBottomRightRun(Body)_4: -8681284017827932207
+      ScientistBottomRightRun(Body)_5: 339529207215837557
+      ScientistBottomRightRun(Body)_6: 4303084642004856622
+      ScientistBottomRightRun(Body)_7: -9035172642641553404
+      ScientistBottomRightRun(Body)_8: 5405454633960373745
+      ScientistBottomRightRun(Body)_9: -8347063858995499403
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

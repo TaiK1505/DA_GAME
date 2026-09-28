@@ -64,7 +64,8 @@ public class WeaponController : MonoBehaviour
 
         if (currentGunSprite != null)
         {
-            if (mousePosition.x < transform.position.x)
+            // CRITICAL FIX: Compare World Space to World Space!
+            if (worldMousePosition.x < transform.position.x)
             {
                 // A "Real" flip! Flips the art AND perfectly mirrors the FirePoint child
                 currentGunSprite.transform.localScale = new Vector3(1, -1, 1);
@@ -75,8 +76,6 @@ public class WeaponController : MonoBehaviour
                 currentGunSprite.transform.localScale = new Vector3(1, 1, 1);
             }
         }
-        
-        
     }
 
    

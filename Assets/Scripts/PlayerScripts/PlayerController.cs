@@ -176,11 +176,42 @@ public class PlayerController : MonoBehaviour
             movementInput = Vector2.zero;
         }
 
-        if (movementInput.sqrMagnitude > 0)
+        Vector2 animDirection = Vector2.zero;
+
+        // 1. Are we doing a momentum-based ability?
+        if (currentState == State.Sliding)
         {
-            anim.SetFloat("MoveX", movementInput.x);
-            anim.SetFloat("MoveY", movementInput.y);
+            animDirection = slideDirection; // Lock body to physical slide momentum!
         }
+        else if (currentState == State.Dashing)
+        {
+            animDirection = dashDirection; // Lock body to physical dash momentum!
+        }
+        else 
+        {
+            // 2. We are Idle or Running: Lock body to the Mouse!
+            Vector2 mouseScreenPos = UnityEngine.InputSystem.Mouse.current.position.ReadValue();
+            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
+
+            animDirection = ((Vector2)mouseWorldPos - (Vector2)transform.position).normalized;
+            // 3. The Moonwalk Fix: Are we running away from where we are aiming?
+            if (currentState == State.Running)
+            {
+                // Vector2.Dot checks if two directions are facing opposite ways
+                float lookMoveDot = Vector2.Dot(movementInput.normalized, animDirection);
+                
+                // If the dot product is negative, we are backpedaling! Play animation at -1 speed.
+                anim.SetFloat("RunMultiplier", lookMoveDot < 0 ? -1f : 1f);
+            }
+        }
+
+        // 4. Feed the steering wheel!
+        if (animDirection.sqrMagnitude > 0)
+        {
+            anim.SetFloat("MoveX", animDirection.x);
+            anim.SetFloat("MoveY", animDirection.y);
+        }
+        Debug.DrawRay(transform.position, animDirection * 5f, Color.red);
 
         bool isGadgetPulling = currentActiveGadget != null && currentActiveGadget.overridePlayerPhysics;
 

@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: b14b6f7f2685d5747b118f44d229d061
+guid: 8daba47a4c51ade41be8b2db9c8b7096
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5720055038873187198
-    second: ScientistTopAngleSlide(Body)_0
+      213: -853095328395478820
+    second: ScientistLeftDash(Body)_0
   - first:
-      213: 9159381748821437236
-    second: ScientistTopAngleSlide(Body)_1
+      213: 5086129188519325367
+    second: ScientistLeftDash(Body)_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -142,7 +142,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ScientistTopAngleSlide(Body)_0
+      name: ScientistLeftDash(Body)_0
       rect:
         serializedVersion: 2
         x: 0
@@ -157,14 +157,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 28cc7409f384e90b0800000000000000
-      internalID: -5720055038873187198
+      spriteID: cd8317791523924f0800000000000000
+      internalID: -853095328395478820
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ScientistTopAngleSlide(Body)_1
+      name: ScientistLeftDash(Body)_1
       rect:
         serializedVersion: 2
         x: 48
@@ -179,8 +179,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 43ba2bc0c29ac1f70800000000000000
-      internalID: 9159381748821437236
+      spriteID: 7bea07bac8f859640800000000000000
+      internalID: 5086129188519325367
       vertices: []
       indices: 
       edges: []
@@ -189,7 +189,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 18b986ad01c2a9f46859e98d754eff4a
+    spriteID: 6145c770ae9ffc248b9f694e75eeae62
     internalID: 0
     vertices: []
     indices: 
@@ -201,8 +201,8 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":2.0,"y":1.0},"gridSpriteSize":{"x":48.0,"y":48.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      ScientistTopAngleSlide(Body)_0: -5720055038873187198
-      ScientistTopAngleSlide(Body)_1: 9159381748821437236
+      ScientistLeftDash(Body)_0: -853095328395478820
+      ScientistLeftDash(Body)_1: 5086129188519325367
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

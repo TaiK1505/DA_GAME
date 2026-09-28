@@ -1,37 +1,37 @@
 fileFormatVersion: 2
-guid: e9e25a469924cde43a24fa8c41f04739
+guid: 2bcd6a5db09484d4599ffbbd5d1a65ea
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6659983681353562433
-    second: ScientistSideRun(RightArm)_0
+      213: -8777776728141250749
+    second: ScientistLeftRun(Body)_0
   - first:
-      213: -3126653196370920810
-    second: ScientistSideRun(RightArm)_1
+      213: 8326037937377374580
+    second: ScientistLeftRun(Body)_1
   - first:
-      213: 3638188261863080602
-    second: ScientistSideRun(RightArm)_2
+      213: 4195311578550543537
+    second: ScientistLeftRun(Body)_2
   - first:
-      213: -3576205860137607387
-    second: ScientistSideRun(RightArm)_3
+      213: -819864834679449877
+    second: ScientistLeftRun(Body)_3
   - first:
-      213: -3138680912380208039
-    second: ScientistSideRun(RightArm)_4
+      213: 8092490881789960618
+    second: ScientistLeftRun(Body)_4
   - first:
-      213: 1475143744050750274
-    second: ScientistSideRun(RightArm)_5
+      213: -358085718706002901
+    second: ScientistLeftRun(Body)_5
   - first:
-      213: -6766211051296913495
-    second: ScientistSideRun(RightArm)_6
+      213: -3663228684721153704
+    second: ScientistLeftRun(Body)_6
   - first:
-      213: -4359099348091545043
-    second: ScientistSideRun(RightArm)_7
+      213: -8166201030174057528
+    second: ScientistLeftRun(Body)_7
   - first:
-      213: 671820964804295968
-    second: ScientistSideRun(RightArm)_8
+      213: 2750472252522108791
+    second: ScientistLeftRun(Body)_8
   - first:
-      213: 8926078591987922581
-    second: ScientistSideRun(RightArm)_9
+      213: 1807463321583375054
+    second: ScientistLeftRun(Body)_9
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -166,7 +166,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ScientistSideRun(RightArm)_0
+      name: ScientistLeftRun(Body)_0
       rect:
         serializedVersion: 2
         x: 0
@@ -181,14 +181,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1493af04fd30d6c50800000000000000
-      internalID: 6659983681353562433
+      spriteID: 34f337982921f2680800000000000000
+      internalID: -8777776728141250749
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ScientistSideRun(RightArm)_1
+      name: ScientistLeftRun(Body)_1
       rect:
         serializedVersion: 2
         x: 48
@@ -203,14 +203,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 69ab87ecb75eb94d0800000000000000
-      internalID: -3126653196370920810
+      spriteID: 471fdcb04670c8370800000000000000
+      internalID: 8326037937377374580
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ScientistSideRun(RightArm)_2
+      name: ScientistLeftRun(Body)_2
       rect:
         serializedVersion: 2
         x: 96
@@ -225,14 +225,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a92485eb2f07d7230800000000000000
-      internalID: 3638188261863080602
+      spriteID: 1b4a69927adb83a30800000000000000
+      internalID: 4195311578550543537
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ScientistSideRun(RightArm)_3
+      name: ScientistLeftRun(Body)_3
       rect:
         serializedVersion: 2
         x: 144
@@ -247,14 +247,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 52fd3deb7b3ce5ec0800000000000000
-      internalID: -3576205860137607387
+      spriteID: be6d815d6414f94f0800000000000000
+      internalID: -819864834679449877
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ScientistSideRun(RightArm)_4
+      name: ScientistLeftRun(Body)_4
       rect:
         serializedVersion: 2
         x: 192
@@ -269,14 +269,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 95c5742f65a2174d0800000000000000
-      internalID: -3138680912380208039
+      spriteID: aa1ad25c49d4e4070800000000000000
+      internalID: 8092490881789960618
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ScientistSideRun(RightArm)_5
+      name: ScientistLeftRun(Body)_5
       rect:
         serializedVersion: 2
         x: 240
@@ -291,14 +291,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 243e8c86b63c87410800000000000000
-      internalID: 1475143744050750274
+      spriteID: b246361afe2d70bf0800000000000000
+      internalID: -358085718706002901
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ScientistSideRun(RightArm)_6
+      name: ScientistLeftRun(Body)_6
       rect:
         serializedVersion: 2
         x: 288
@@ -313,14 +313,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9a70024d5e69912a0800000000000000
-      internalID: -6766211051296913495
+      spriteID: 8599c2c7be8992dc0800000000000000
+      internalID: -3663228684721153704
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ScientistSideRun(RightArm)_7
+      name: ScientistLeftRun(Body)_7
       rect:
         serializedVersion: 2
         x: 336
@@ -335,14 +335,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d2add580d3e5183c0800000000000000
-      internalID: -4359099348091545043
+      spriteID: 8cbdb00fd63dbae80800000000000000
+      internalID: -8166201030174057528
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ScientistSideRun(RightArm)_8
+      name: ScientistLeftRun(Body)_8
       rect:
         serializedVersion: 2
         x: 384
@@ -357,14 +357,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 02df1d7ab99c25900800000000000000
-      internalID: 671820964804295968
+      spriteID: 7771628e0f3ab2620800000000000000
+      internalID: 2750472252522108791
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ScientistSideRun(RightArm)_9
+      name: ScientistLeftRun(Body)_9
       rect:
         serializedVersion: 2
         x: 432
@@ -379,8 +379,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 596b8a0ef2dcfdb70800000000000000
-      internalID: 8926078591987922581
+      spriteID: ec2568b8056651910800000000000000
+      internalID: 1807463321583375054
       vertices: []
       indices: 
       edges: []
@@ -389,7 +389,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 2361724daadfdd84cab88f67fed62a48
+    spriteID: 2b83fb66d6177d943a842ae3d1501f54
     internalID: 0
     vertices: []
     indices: 
@@ -401,16 +401,16 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":10.0,"y":1.0},"gridSpriteSize":{"x":48.0,"y":48.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      ScientistSideRun(RightArm)_0: 6659983681353562433
-      ScientistSideRun(RightArm)_1: -3126653196370920810
-      ScientistSideRun(RightArm)_2: 3638188261863080602
-      ScientistSideRun(RightArm)_3: -3576205860137607387
-      ScientistSideRun(RightArm)_4: -3138680912380208039
-      ScientistSideRun(RightArm)_5: 1475143744050750274
-      ScientistSideRun(RightArm)_6: -6766211051296913495
-      ScientistSideRun(RightArm)_7: -4359099348091545043
-      ScientistSideRun(RightArm)_8: 671820964804295968
-      ScientistSideRun(RightArm)_9: 8926078591987922581
+      ScientistLeftRun(Body)_0: -8777776728141250749
+      ScientistLeftRun(Body)_1: 8326037937377374580
+      ScientistLeftRun(Body)_2: 4195311578550543537
+      ScientistLeftRun(Body)_3: -819864834679449877
+      ScientistLeftRun(Body)_4: 8092490881789960618
+      ScientistLeftRun(Body)_5: -358085718706002901
+      ScientistLeftRun(Body)_6: -3663228684721153704
+      ScientistLeftRun(Body)_7: -8166201030174057528
+      ScientistLeftRun(Body)_8: 2750472252522108791
+      ScientistLeftRun(Body)_9: 1807463321583375054
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
