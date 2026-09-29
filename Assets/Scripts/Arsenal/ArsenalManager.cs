@@ -5,7 +5,8 @@ public class ArsenalManager : MonoBehaviour
 {
     [Header("Component Links")]
     public PlayerController player;
-    public Transform weaponPivot; // Where the weapons actually spawn/live!
+    public Transform weaponPivot; // Where the weapons actually spawn
+    public WeaponController aimingScript;
 
     [Header("The Dedicated Melee")]
     public GameObject starterMeleePrefab;
@@ -223,8 +224,13 @@ public class ArsenalManager : MonoBehaviour
 
         SpriteRenderer sr = activeWeapon.GetComponentInChildren<SpriteRenderer>();
         
-        // This controls if the left UI box opens up. 
-        // (Later, when guns get alt-fires, we will update this line to check for them too!)
+        WeaponDirectionalSprites dirSprites = activeWeapon.GetComponentInChildren<WeaponDirectionalSprites>();
+        if (aimingScript != null && sr != null && dirSprites != null)
+        {
+            // Pass the SpriteRenderer AND the data package
+            aimingScript.UpdateWeaponSprite(sr, dirSprites);
+        }
+
         bool hasAltFire = activeWeapon.GetComponent<MeleeWeaponController>() != null;
 
         if (sr != null)

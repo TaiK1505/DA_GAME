@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 621371486885626106}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.5, y: 0, z: 0}
+  m_LocalPosition: {x: 1.836, y: 0.028, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -57,12 +57,12 @@ Transform:
   m_GameObject: {fileID: 4109361414621142999}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 0.15, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5987838565268530840}
   - {fileID: 8663175491679959767}
+  - {fileID: 5987838565268530840}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4236352737583416677
@@ -85,7 +85,6 @@ MonoBehaviour:
   obstacleLayers:
     serializedVersion: 2
     m_Bits: 8
-  bladeVisual: {fileID: 8663175491679959767}
   isThrown: 0
 --- !u!1 &5644528633206239484
 GameObject:
@@ -97,6 +96,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8663175491679959767}
   - component: {fileID: 3882989427761541279}
+  - component: {fileID: 7217208129642491806}
   m_Layer: 0
   m_Name: Blade
   m_TagString: Untagged
@@ -112,8 +112,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5644528633206239484}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -166,10 +166,10 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.74509805, g: 0.96862745, b: 0.9647059, a: 1}
+  m_Sprite: {fileID: 3408637463066895643, guid: 9bfc20e9e9a8c0c41a483edda912ab19, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -178,3 +178,22 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &7217208129642491806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5644528633206239484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c538548fa31406d4ab67cae784a640e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponDirectionalSprites
+  sideSprite: {fileID: 3408637463066895643, guid: 9bfc20e9e9a8c0c41a483edda912ab19, type: 3}
+  upSprite: {fileID: -2064050735223165836, guid: 9bfc20e9e9a8c0c41a483edda912ab19, type: 3}
+  downSprite: {fileID: 1527539543324914343, guid: 9bfc20e9e9a8c0c41a483edda912ab19, type: 3}
+  firePoint: {fileID: 5987838565268530840}
+  sideFireOffset: {x: 1.8, y: 0}
+  upFireOffset: {x: 1.5, y: 0}
+  downFireOffset: {x: 1.5, y: 0}

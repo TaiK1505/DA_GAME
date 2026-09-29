@@ -80,7 +80,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.0020079315, y: -0.21648365}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -90,7 +90,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.5381823, y: 1.5695046}
   m_EdgeRadius: 0
 --- !u!50 &2316564485674503521
 Rigidbody2D:
@@ -223,6 +223,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponController
   weaponPivot: {fileID: 585636735104915335}
   playerSprite: {fileID: 0}
+  currentGunSprite: {fileID: 0}
 --- !u!114 &487878976747015608
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,6 +285,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ArsenalManager
   player: {fileID: 5732129671971716746}
   weaponPivot: {fileID: 585636735104915335}
+  aimingScript: {fileID: 0}
   starterMeleePrefab: {fileID: 4109361414621142999, guid: 9907e460fa4c85e4480ba5ecf2823ad0, type: 3}
   meleeWeapon: {fileID: 0}
   isMeleeActive: 0
@@ -503,7 +505,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: -6160023179662807533, guid: ff8ac3c75ce310443af8cc23e51878c9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
