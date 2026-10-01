@@ -15,6 +15,9 @@ public class MeleeWeaponData : ScriptableObject
     public float attackStepDistance = 1.5f;
     public float attackStepDuration = 0.15f;
 
+    [Header("Combo Timings")]
+    public float[] comboStepDurations = new float[] { 0.2f, 0.5f, 0.3f };
+
     [Header("Enhanced Lunge")]
     public bool canLunge = true;
     public float executionLungeDistance = 10f; 
@@ -36,5 +39,5 @@ public class MeleeWeaponData : ScriptableObject
     public string scalesOffStat = "None"; 
 
     [Header("Visuals")]
-    public GameObject slashVFXPrefab;
+    public GameObject[] comboVFXPrefabs = new GameObject[3];
 }

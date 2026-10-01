@@ -85,7 +85,11 @@ MonoBehaviour:
   obstacleLayers:
     serializedVersion: 2
     m_Bits: 8
+  standardSwingAngle: 30
+  doubleSwingAngle: 15
+  finisherSwingAngle: 60
   isThrown: 0
+  comboResetWindow: 1.2
 --- !u!1 &5644528633206239484
 GameObject:
   m_ObjectHideFlags: 0
@@ -190,10 +194,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c538548fa31406d4ab67cae784a640e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponDirectionalSprites
+  isMelee: 1
   sideSprite: {fileID: 3408637463066895643, guid: 9bfc20e9e9a8c0c41a483edda912ab19, type: 3}
   upSprite: {fileID: -2064050735223165836, guid: 9bfc20e9e9a8c0c41a483edda912ab19, type: 3}
   downSprite: {fileID: 1527539543324914343, guid: 9bfc20e9e9a8c0c41a483edda912ab19, type: 3}
+  horizontalDistance: 0.2
+  verticalDistance: 0
   firePoint: {fileID: 5987838565268530840}
-  sideFireOffset: {x: 1.8, y: 0}
-  upFireOffset: {x: 1.5, y: 0}
-  downFireOffset: {x: 1.5, y: 0}
+  sideFireOffset: {x: 1.75, y: 0}
+  upFireOffset: {x: 1.35, y: 0}
+  downFireOffset: {x: 1.35, y: 0}

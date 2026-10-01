@@ -50,6 +50,7 @@ GameObject:
   - component: {fileID: 7815332838212933278}
   - component: {fileID: 7852076935224670536}
   - component: {fileID: 9138007427460598118}
+  - component: {fileID: 7418572972667367040}
   m_Layer: 7
   m_Name: TestRangedEnemy
   m_TagString: Enemy
@@ -341,6 +342,21 @@ MonoBehaviour:
   aiPath: {fileID: 625562459011939796}
   destinationSetter: {fileID: 7815332838212933278}
   healthComponent: {fileID: 3718585974271944075}
+--- !u!114 &7418572972667367040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3458384298365180062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91bad4b89d232024cba58a9101050c3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HitFlash
+  spriteRenderer: {fileID: 6303311596426326617}
+  flashMaterial: {fileID: 2100000, guid: 1778a4c860557584cbc138d664c3fcda, type: 2}
+  flashDuration: 0.1
 --- !u!1 &3508305746693243028
 GameObject:
   m_ObjectHideFlags: 0

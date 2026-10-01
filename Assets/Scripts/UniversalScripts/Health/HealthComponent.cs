@@ -25,6 +25,10 @@ public class HealthComponent : MonoBehaviour, IDamageable
         CurrentHealth -= damageAmount;
         Debug.Log(gameObject.name + " took " + damageAmount + " damage! Current HP: " + CurrentHealth);
 
+        // ---> NEW: Trigger the flash if this object has the HitFlash script <---
+        HitFlash hitFlash = GetComponent<HitFlash>();
+        if (hitFlash != null) hitFlash.Flash();
+
         if (CurrentHealth <= 0)
         {
             Die();

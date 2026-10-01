@@ -38,9 +38,9 @@ public class PlayerController : MonoBehaviour
 
     public int currentWallBoosts;            
     public float boostRechargeTimer;
-    private int currentBoostCount = 0;
+    //private int currentBoostCount = 0;
     private float boostCooldownTimer = 0f;
-    private float currentComboTimer = 0f;
+    //private float currentComboTimer = 0f;
     private Vector2 lastFrameVelocity;
     private bool canWallBoost;
     private float wallBoostTimer;

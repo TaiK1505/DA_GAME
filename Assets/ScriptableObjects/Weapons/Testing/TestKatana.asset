@@ -15,9 +15,13 @@ MonoBehaviour:
   weaponName: TestKatana
   damage: 15
   attackCooldown: 0.3
-  attackRange: 0.5
+  attackRange: 1
   attackStepDistance: 2
   attackStepDuration: 0.15
+  comboStepDurations:
+  - 0.2
+  - 0.2
+  - 0.3
   canLunge: 1
   executionLungeDistance: 10
   executionDuration: 0.2
@@ -31,4 +35,7 @@ MonoBehaviour:
   throwCooldown: 1.5
   dummyPrefab: {fileID: 1601938504807066080, guid: fe9a3a6033ea18642b442d742ab3f72d, type: 3}
   scalesOffStat: Speed
-  slashVFXPrefab: {fileID: 1058646173525682040, guid: c508ec889bbeea6459b839bb1cb3608e, type: 3}
+  comboVFXPrefabs:
+  - {fileID: 281444010599336255, guid: 1f931b1b83a734544aa173b7c4a7b4d2, type: 3}
+  - {fileID: 281444010599336255, guid: b65e1c1e95710834d8d10c9b43ea9c03, type: 3}
+  - {fileID: 281444010599336255, guid: 811600e85b11ce447827e85fafb76fa7, type: 3}

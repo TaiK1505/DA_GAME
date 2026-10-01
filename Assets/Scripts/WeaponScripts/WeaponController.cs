@@ -8,7 +8,9 @@ public class WeaponController : MonoBehaviour
     public SpriteRenderer playerSprite;
     public SpriteRenderer currentGunSprite;
 
-
+    public bool isAttacking = false;
+    public float swingOffset = 0f;
+    
     private WeaponDirectionalSprites currentWeaponDirection;
 
     private PlayerControls controls;
@@ -58,6 +60,24 @@ public class WeaponController : MonoBehaviour
         Vector3 aimDirection = (worldMousePosition - transform.position).normalized;
         
         float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
+
+        // ---> NEW: THE NINJA RUN (Drags the sword behind you) <---
+        // We check currentWeaponDirection to see if the isMelee box is checked
+        if (currentWeaponDirection != null && currentWeaponDirection.isMelee)
+    {
+        if (!isAttacking)
+        {
+            angle -= 135f; 
+            if (angle <= -180f) angle += 360f; 
+            if (angle > 180f) angle -= 360f;
+        }
+        else
+        {
+            // Snaps forward and applies the physical swing offset
+            angle += swingOffset; 
+        }
+    }
+
         weaponPivot.eulerAngles = new Vector3(0, 0, angle);
 
         if (currentGunSprite != null && currentWeaponDirection != null)
@@ -79,23 +99,31 @@ public class WeaponController : MonoBehaviour
                 currentWeaponDirection.firePoint.localPosition = currentWeaponDirection.sideFireOffset;
             }
 
-            float horizontalRadius = 0.3f; // Distance from center when aiming Left/Right
-        float verticalRadius = 0.2f;   // Distance from center when aiming Up/Down
+            // 2. ELLIPTICAL ORBIT
+            float horizontalRadius = currentWeaponDirection.horizontalDistance; 
+            float verticalRadius = currentWeaponDirection.verticalDistance;   
 
-        // Mathf.Cos is 1 when horizontal (Right/Left), and 0 when vertical (Up/Down)
-        float anglePercentage = Mathf.Abs(Mathf.Cos(angle * Mathf.Deg2Rad));
+            // Mathf.Cos is 1 when horizontal (Right/Left), and 0 when vertical (Up/Down)
+            float anglePercentage = Mathf.Abs(Mathf.Cos(angle * Mathf.Deg2Rad));
 
-        // Smoothly blend between the vertical and horizontal distances
-        float dynamicRadius = Mathf.Lerp(verticalRadius, horizontalRadius, anglePercentage);
+            // Smoothly blend between the vertical and horizontal distances
+            float dynamicRadius = Mathf.Lerp(verticalRadius, horizontalRadius, anglePercentage);
 
-        // Push/pull the child weapon along its local X-axis
-        currentGunSprite.transform.localPosition = new Vector3(dynamicRadius, 0, 0);
+            // Push/pull the child weapon along its local X-axis
+            currentGunSprite.transform.localPosition = new Vector3(dynamicRadius, 0, 0);
 
-            // 2. THE FLIP FIX 
+            // 3. THE FLIP FIX 
             float flipY = (worldMousePosition.x < transform.position.x) ? -1f : 1f;
+            
+            // ---> NEW: Invert the flip if it's a melee weapon pointing backwards <---
+            if (currentWeaponDirection.isMelee) 
+            {
+                flipY *= -1f; 
+            }
+
             currentGunSprite.transform.localScale = new Vector3(1f, flipY, 1f);
 
-            // 3. THE LAYER FIX 
+            // 4. THE LAYER FIX 
             if (angle > 20 && angle < 160) 
             {
                 currentGunSprite.sortingOrder = 0; 
