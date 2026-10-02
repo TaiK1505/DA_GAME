@@ -11,6 +11,13 @@ public class AdrenalineCore : MonoBehaviour
     public float adrenalineCooldown = 10f;
     private float lastAdrenalineTime = -100f;
     public float baseDuration = 3f; 
+
+    [Header("Ghost Trail VFX")]
+    public float ghostSpawnRate = 0.1f;
+    public float ghostFadeDuration = 0.5f;
+    public Color ghostColor = new Color(1f, 1f, 1f, 0.5f);
+
+    private SpriteRenderer playerSprite;
     
     
     [HideInInspector] public float bonusDuration = 0f; 
@@ -29,6 +36,7 @@ public class AdrenalineCore : MonoBehaviour
         myStats = GetComponent<PlayerStats>();
         
         controls = new PlayerControls();
+        playerSprite = GetComponentInChildren<SpriteRenderer>();
 
         controls.Player.Adrenalin.performed += ctx => AttemptAdrenaline();
     }
@@ -64,6 +72,8 @@ public class AdrenalineCore : MonoBehaviour
         float finalDuration = baseDuration + bonusDuration;
 
         Debug.Log($"ADRENALINE INJECTED: {currentClass.className} for {finalDuration} seconds!");
+
+        StartCoroutine(GhostRoutine(finalDuration));
 
         // --- TRAY 1: Base Class Tickets ---
         foreach (StatModifier baseTicket in currentClass.baseAdrenalineModifiers)
@@ -113,5 +123,53 @@ public class AdrenalineCore : MonoBehaviour
         
         // This math fills it from 0 back up to 1 over the cooldown length!
         return timeSpentRecharging / adrenalineCooldown;
+    }
+
+    private System.Collections.IEnumerator GhostRoutine(float duration)
+    {
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            SpawnGhostFrame();
+            yield return new WaitForSeconds(ghostSpawnRate);
+            elapsed += ghostSpawnRate;
+        }
+    }
+
+    private void SpawnGhostFrame()
+    {
+        if (playerSprite == null || playerSprite.sprite == null) return;
+
+        // 1. Create a clone object
+        GameObject ghost = new GameObject("AdrenalineGhost");
+        ghost.transform.position = playerSprite.transform.position;
+        ghost.transform.rotation = playerSprite.transform.rotation;
+        ghost.transform.localScale = playerSprite.transform.lossyScale;
+
+        // 2. Copy the exact animation frame
+        SpriteRenderer sr = ghost.AddComponent<SpriteRenderer>();
+        sr.sprite = playerSprite.sprite;
+        sr.color = ghostColor;
+        sr.sortingLayerID = playerSprite.sortingLayerID;
+        sr.sortingOrder = playerSprite.sortingOrder - 1; // Draw behind player
+
+        // 3. Start the fade out on a standalone Coroutine
+        StartCoroutine(FadeOutAndDestroy(sr, ghost));
+    }
+
+    private System.Collections.IEnumerator FadeOutAndDestroy(SpriteRenderer sr, GameObject ghost)
+    {
+        float elapsed = 0f;
+        Color startColor = sr.color;
+
+        while (elapsed < ghostFadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            float alpha = Mathf.Lerp(startColor.a, 0f, elapsed / ghostFadeDuration);
+            sr.color = new Color(startColor.r, startColor.g, startColor.b, alpha);
+            yield return null;
+        }
+
+        Destroy(ghost);
     }
 }
