@@ -129,15 +129,12 @@ public class MeleeWeaponController : MonoBehaviour
         return null;
     }
 
-    private void ExecuteSlash(int comboStep, Vector2 attackCenter, Quaternion attackRotation)
-    {
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackCenter, weaponData.attackRange, enemyLayers);
-        foreach (Collider2D enemy in hitEnemies)
-        {
-            IDamageable damageable = enemy.GetComponent<IDamageable>();
-            if (damageable != null) damageable.TakeDamage(weaponData.damage);
-        }
+    // ==========================================
+    // ---> NEW LINGERING HITBOX METHODS <---
+    // ==========================================
 
+    private void SpawnSlashVFX(int comboStep, Vector2 attackCenter, Quaternion attackRotation)
+    {
         if (weaponData.comboVFXPrefabs != null && weaponData.comboVFXPrefabs.Length > 0)
         {
             int vfxIndex = Mathf.Clamp(comboStep - 1, 0, weaponData.comboVFXPrefabs.Length - 1);
@@ -153,24 +150,39 @@ public class MeleeWeaponController : MonoBehaviour
         }
     }
 
+    private void DamageEnemiesInSwing(HashSet<Collider2D> alreadyHit, Vector2 currentAttackCenter)
+    {
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(currentAttackCenter, weaponData.attackRange, enemyLayers);
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            if (alreadyHit.Contains(enemy)) continue;
+
+            IDamageable damageable = enemy.GetComponent<IDamageable>();
+            if (damageable != null) 
+            {
+                damageable.TakeDamage(weaponData.damage);
+                alreadyHit.Add(enemy);
+            }
+        }
+    }
+
+    // ==========================================
+
     private IEnumerator AttackStepRoutine(int comboStep)
     {
         isSwinging = true; 
         if (playerController != null) playerController.canMove = false; 
 
-        // ---> THE FIX: Flipped signs so Step 1 starts Top and ends Bottom <---
         float startSwing = standardSwingAngle; 
-        float endSwing = -standardSwingAngle;    
+        float endSwing = -standardSwingAngle;   
 
         if (comboStep == 2) 
         { 
-            // Step 2: Bottom to Top (Exact reverse of Step 1)
             startSwing = -standardSwingAngle;  
             endSwing = standardSwingAngle;   
         }
         else if (comboStep == 3) 
         { 
-            // ---> THE FIX: Flipped signs so Step 3 starts Top and ends Bottom <---
             startSwing = finisherSwingAngle; 
             endSwing = -finisherSwingAngle; 
         }
@@ -184,7 +196,10 @@ public class MeleeWeaponController : MonoBehaviour
         float distance = Vector2.Distance(transform.position, attackPoint.position);
         Vector2 attackCenter = (Vector2)transform.position + (direction * distance);
 
-        ExecuteSlash(comboStep, attackCenter, attackRotation);
+        // ---> 1. Spawn VFX and calculate offset <---
+        SpawnSlashVFX(comboStep, attackCenter, attackRotation);
+        HashSet<Collider2D> enemiesHit = new HashSet<Collider2D>();
+        Vector2 attackOffset = attackCenter - playerRb.position;
 
         float stepDuration = 0.2f; // Fallback
         if (weaponData.comboStepDurations != null && weaponData.comboStepDurations.Length > 0)
@@ -203,9 +218,11 @@ public class MeleeWeaponController : MonoBehaviour
             
             playerRb.linearVelocity = direction * Mathf.Lerp(startingSpeed, 0f, t);
 
+            // ---> 2. Constantly damage enemies with the moving offset <---
+            DamageEnemiesInSwing(enemiesHit, playerRb.position + attackOffset);
+
            if (aimingScript != null)
             {
-                // A single, fast, smooth sweep for every combo step
                 float easeT = 1f - Mathf.Pow(1f - t, 3f); 
                 aimingScript.swingOffset = Mathf.Lerp(startSwing, endSwing, easeT);
             }
@@ -229,7 +246,6 @@ public class MeleeWeaponController : MonoBehaviour
         isSwinging = true;
         if (playerController != null) playerController.canMove = false;
 
-        // ---> THE FIX: Flipped signs <---
         float startSwing = standardSwingAngle; 
         float endSwing = -standardSwingAngle; 
         
@@ -240,7 +256,6 @@ public class MeleeWeaponController : MonoBehaviour
         }
         else if (comboStep == 3) 
         { 
-            // ---> THE FIX: Flipped signs <---
             startSwing = -finisherSwingAngle; 
             endSwing = finisherSwingAngle; 
         }
@@ -255,7 +270,10 @@ public class MeleeWeaponController : MonoBehaviour
         float distance = Vector2.Distance(transform.position, attackPoint.position);
         Vector2 attackCenter = (Vector2)transform.position + (direction * distance);
 
-        ExecuteSlash(comboStep, attackCenter, attackRotation);
+        // ---> 1. Spawn VFX and calculate offset for the lunge <---
+        SpawnSlashVFX(comboStep, attackCenter, attackRotation);
+        HashSet<Collider2D> enemiesHitThisLunge = new HashSet<Collider2D>();
+        Vector2 attackOffset = attackCenter - playerRb.position;
 
         float baseDuration = weaponData.executionDuration;
         float dashDuration = (comboStep == 2) ? baseDuration * 1.5f : baseDuration;
@@ -270,6 +288,9 @@ public class MeleeWeaponController : MonoBehaviour
             
             Vector2 nextPos = Vector2.Lerp(startPos, destination, t * (2f - t));
             playerRb.linearVelocity = (nextPos - playerRb.position) / Time.fixedDeltaTime;
+
+            // ---> 2. Constantly damage enemies with the moving offset <---
+            DamageEnemiesInSwing(enemiesHitThisLunge, playerRb.position + attackOffset);
 
             if (aimingScript != null)
             {
@@ -301,7 +322,8 @@ public class MeleeWeaponController : MonoBehaviour
 
         isSwinging = false;
     }
-        public void Throw()
+
+    public void Throw()
     {
         if (!weaponData.canThrow || isThrown || Time.time < nextThrowTime) return;
         nextThrowTime = Time.time + weaponData.throwCooldown;
@@ -337,7 +359,7 @@ public class MeleeWeaponController : MonoBehaviour
         float actualThrowDistance = hit.collider != null ? Mathf.Max(hit.distance - 0.5f, 0.5f) : desiredDistance;
 
         Vector2 targetPos = startPos + (direction * actualThrowDistance);
-        System.Collections.Generic.HashSet<Collider2D> alreadyHit = new System.Collections.Generic.HashSet<Collider2D>();
+        HashSet<Collider2D> alreadyHit = new HashSet<Collider2D>();
 
         while (Vector2.Distance(activeDummy.transform.position, targetPos) > 0.2f)
         {
@@ -362,7 +384,7 @@ public class MeleeWeaponController : MonoBehaviour
         activeDummy = null;
     }
 
-    private bool DamageEnemiesInFlight(Vector2 currentHitboxPos, bool isReturning, System.Collections.Generic.HashSet<Collider2D> alreadyHit)
+    private bool DamageEnemiesInFlight(Vector2 currentHitboxPos, bool isReturning, HashSet<Collider2D> alreadyHit)
     {
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(currentHitboxPos, weaponData.throwHitboxRadius, enemyLayers);
         foreach (Collider2D enemy in hitEnemies)
@@ -415,4 +437,4 @@ public class MeleeWeaponController : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPoint.position, weaponData.attackRange);
     }
-} 
+}
