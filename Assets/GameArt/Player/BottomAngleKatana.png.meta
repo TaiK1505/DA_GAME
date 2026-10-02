@@ -1,16 +1,16 @@
 fileFormatVersion: 2
-guid: 70a04ce5732852e4c85743e5a83203dd
+guid: a6672296880a1de498343f49c4106a13
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8714824822756576688
-    second: ScientistKatana_0
+      213: -8263578972290384183
+    second: ScientistKatana+Hands 1_0
   - first:
-      213: -2974244892526192032
-    second: ScientistKatana_1
+      213: -7131882728272869136
+    second: ScientistKatana+Hands 1_1
   - first:
-      213: 970115256861765203
-    second: ScientistKatana_2
+      213: 6366792746087739059
+    second: ScientistKatana+Hands 1_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -145,32 +145,10 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ScientistKatana_0
+      name: ScientistKatana+Hands 1_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 48
-        height: 48
-      alignment: 9
-      pivot: {x: 0.5544432, y: 0.5597117}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 05276df2ff8be0780800000000000000
-      internalID: -8714824822756576688
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: ScientistKatana_1
-      rect:
-        serializedVersion: 2
-        x: 48
         y: 0
         width: 48
         height: 48
@@ -182,14 +160,36 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 06ad4f9470c59b6d0800000000000000
-      internalID: -2974244892526192032
+      spriteID: 9ce7e3ff4bed15d80800000000000000
+      internalID: -8263578972290384183
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ScientistKatana_2
+      name: ScientistKatana+Hands 1_1
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 48
+        height: 48
+      alignment: 9
+      pivot: {x: 0.2874956, y: 0.49121872}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f84d89e176760d90800000000000000
+      internalID: -7131882728272869136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ScientistKatana+Hands 1_2
       rect:
         serializedVersion: 2
         x: 96
@@ -204,8 +204,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 35eae6cafaa867d00800000000000000
-      internalID: 970115256861765203
+      spriteID: 3bee71515446b5850800000000000000
+      internalID: 6366792746087739059
       vertices: []
       indices: 
       edges: []
@@ -214,7 +214,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 8adaa3ea362f1a544974beec2908063a
+    spriteID: 0ba3ba4acb02a2d45bf772a41226944d
     internalID: 0
     vertices: []
     indices: 
@@ -226,9 +226,9 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":3.0,"y":1.0},"gridSpriteSize":{"x":48.0,"y":48.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      ScientistKatana_0: -8714824822756576688
-      ScientistKatana_1: -2974244892526192032
-      ScientistKatana_2: 970115256861765203
+      ScientistKatana+Hands 1_0: -8263578972290384183
+      ScientistKatana+Hands 1_1: -7131882728272869136
+      ScientistKatana+Hands 1_2: 6366792746087739059
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

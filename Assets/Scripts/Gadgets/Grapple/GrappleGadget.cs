@@ -19,6 +19,8 @@ public class GrappleGadget : PlayerGadget
     private bool isGrappling;
     private float currentMaxRopeLength;
 
+    private PlayerController playerController;
+
     private float nextFireTime = -100f;
     
     private void Awake()
@@ -26,6 +28,8 @@ public class GrappleGadget : PlayerGadget
         // Grab the components off the Player
         rb = GetComponent<Rigidbody2D>();
         lineRenderer = GetComponent<LineRenderer>();
+
+        playerController = GetComponent<PlayerController>();
         
         // Hide the rope when the game starts
         if (lineRenderer != null)
@@ -145,14 +149,11 @@ public class GrappleGadget : PlayerGadget
             // apply the inward thruster
             rb.AddForce(pullDir * myStats.grapplePullForce, ForceMode2D.Force);
 
-            // 2. THE WINCH: If the player gets pulled closer, shrink the maximum rope length!
-            // the rope can get shorter, but never longer.
             if (currentDistance < currentMaxRopeLength)
             {
                 currentMaxRopeLength = currentDistance;
             }
 
-            // 3. THE RIGID TETHER: Prevent the Bungee Cord!
             if (currentDistance >= currentMaxRopeLength)
             {
                 // Calculate which way is "Outward" (away from the pillar)
@@ -161,7 +162,6 @@ public class GrappleGadget : PlayerGadget
                 // Check if our current physics velocity is pushing us outward
                 float outwardSpeed = Vector2.Dot(rb.linearVelocity, outwardDir);
 
-                // If we are flying outward, cancel ONLY the outward speed!
                 if (outwardSpeed > 0)
                 {
                     // This strips away the bungee stretch
@@ -173,10 +173,25 @@ public class GrappleGadget : PlayerGadget
             }
 
             if (rb.linearVelocity.magnitude > maxGrappleSpeed)
-        {
-            // Strip the speed back down to the maximum allowed limit
-            rb.linearVelocity = rb.linearVelocity.normalized * maxGrappleSpeed;
-        }
+            {
+              
+                rb.linearVelocity = rb.linearVelocity.normalized * maxGrappleSpeed;
+            }
+
+            if (playerController != null)
+            {
+                // 1. Force the player into the Sliding state
+                playerController.currentState = PlayerController.State.Sliding;
+                
+                // 2. Feed the actual physical speed into the slide variable
+                playerController.currentSlideSpeed = rb.linearVelocity.magnitude;
+                
+                // 3. Keep the sliding animation pointing perfectly forward
+                if (rb.linearVelocity.sqrMagnitude > 0.1f)
+                {
+                    playerController.slideDirection = rb.linearVelocity.normalized;
+                }
+            }
         }
     }
 

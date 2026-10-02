@@ -40,4 +40,5 @@ public class MeleeWeaponData : ScriptableObject
 
     [Header("Visuals")]
     public GameObject[] comboVFXPrefabs = new GameObject[3];
+    public Sprite thrownSprite;
 }

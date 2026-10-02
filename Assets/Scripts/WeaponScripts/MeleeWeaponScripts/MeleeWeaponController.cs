@@ -321,7 +321,7 @@ public class MeleeWeaponController : MonoBehaviour
 
         if (realSprite != null)
         {
-            dummyRenderer.sprite = realSprite.sprite;
+           dummyRenderer.sprite = (weaponData.thrownSprite != null) ? weaponData.thrownSprite : realSprite.sprite;
             dummyRenderer.color = realSprite.color;
             dummyRenderer.sortingLayerID = realSprite.sortingLayerID;
             dummyRenderer.sortingOrder = realSprite.sortingOrder;

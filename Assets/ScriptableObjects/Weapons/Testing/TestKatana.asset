@@ -30,7 +30,7 @@ MonoBehaviour:
   stunDuration: 2
   maxThrowDistance: 10
   throwSpeed: 35
-  throwSpinSpeed: 1500
+  throwSpinSpeed: 2500
   throwHitboxRadius: 0.2
   throwCooldown: 1.5
   dummyPrefab: {fileID: 1601938504807066080, guid: fe9a3a6033ea18642b442d742ab3f72d, type: 3}
@@ -39,3 +39,4 @@ MonoBehaviour:
   - {fileID: 281444010599336255, guid: 1f931b1b83a734544aa173b7c4a7b4d2, type: 3}
   - {fileID: 281444010599336255, guid: b65e1c1e95710834d8d10c9b43ea9c03, type: 3}
   - {fileID: 281444010599336255, guid: 811600e85b11ce447827e85fafb76fa7, type: 3}
+  thrownSprite: {fileID: -8714824822756576688, guid: 70a04ce5732852e4c85743e5a83203dd, type: 3}

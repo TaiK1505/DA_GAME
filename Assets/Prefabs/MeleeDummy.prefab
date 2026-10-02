@@ -197,10 +197,10 @@ MonoBehaviour:
   isMelee: 1
   sideSprite: {fileID: 3408637463066895643, guid: 9bfc20e9e9a8c0c41a483edda912ab19, type: 3}
   upSprite: {fileID: -2064050735223165836, guid: 9bfc20e9e9a8c0c41a483edda912ab19, type: 3}
-  downSprite: {fileID: 1527539543324914343, guid: 9bfc20e9e9a8c0c41a483edda912ab19, type: 3}
+  downSprite: {fileID: -7131882728272869136, guid: a6672296880a1de498343f49c4106a13, type: 3}
   horizontalDistance: 0.2
   verticalDistance: 0
   firePoint: {fileID: 5987838565268530840}
   sideFireOffset: {x: 1.75, y: 0}
-  upFireOffset: {x: 1.35, y: 0}
-  downFireOffset: {x: 1.35, y: 0}
+  upFireOffset: {x: 1, y: 0}
+  downFireOffset: {x: 1.1, y: 0}

@@ -218,15 +218,16 @@ public class PlayerController : MonoBehaviour
         switch (currentState)
         {
             case State.Idle:
-                if (movementInput.sqrMagnitude > 0)
-                    {
-                        currentState = State.Running;
-                    }
-                    break;
+                // If we press a key, OR if we are locked in an attack but physically flying through the air
+                if (movementInput.sqrMagnitude > 0 || (!canMove && rb.linearVelocity.magnitude > 1f))
+                {
+                    currentState = State.Running;
+                }
+                break;
                 
-
             case State.Running:
-                if (movementInput.sqrMagnitude > 0) 
+                // Keep running if we press a key, OR if we are locked in an attack but physically moving
+                if (movementInput.sqrMagnitude > 0 || (!canMove && rb.linearVelocity.magnitude > 1f)) 
                 {
                     currentState = State.Running;
                 } 
