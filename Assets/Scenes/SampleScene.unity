@@ -1112,6 +1112,7 @@ MonoBehaviour:
   enemyPrefabs:
   - {fileID: 3458384298365180062, guid: e4f42e0487e6e1a4eb0aa325df265171, type: 3}
   - {fileID: 3458384298365180062, guid: 6a8d23fefef2b1f4eaf27b8a3d1a29a9, type: 3}
+  - {fileID: 6713156996498467176, guid: 3fd6ff4c54fcb5242828a482ed24de45, type: 3}
   spawnIndicatorPrefab: {fileID: 2534093849529061564, guid: 8e04ea1bdb8038445a586d749a4647b2, type: 3}
   spawnDelay: 1.5
 --- !u!61 &502706583
@@ -1287,9 +1288,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0.055555556
-    width: 0.33333334
-    height: 0.3333333
+    y: 0
+    width: 1
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -3530,6 +3531,7 @@ MonoBehaviour:
   enemyPrefabs:
   - {fileID: 3458384298365180062, guid: e4f42e0487e6e1a4eb0aa325df265171, type: 3}
   - {fileID: 3458384298365180062, guid: 6a8d23fefef2b1f4eaf27b8a3d1a29a9, type: 3}
+  - {fileID: 6713156996498467176, guid: 3fd6ff4c54fcb5242828a482ed24de45, type: 3}
   spawnIndicatorPrefab: {fileID: 2534093849529061564, guid: 8e04ea1bdb8038445a586d749a4647b2, type: 3}
   spawnDelay: 1.5
 --- !u!61 &1249793425
@@ -115574,7 +115576,7 @@ Transform:
   m_GameObject: {fileID: 1796470411}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -14.93, y: 18.03, z: 0}
+  m_LocalPosition: {x: -14.36, y: 18.03, z: 0}
   m_LocalScale: {x: 1, y: 5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -116329,8 +116331,9 @@ MonoBehaviour:
   - {fileID: 106470468}
   - {fileID: 205290628}
   enemyPrefabs:
+  - {fileID: 6713156996498467176, guid: 3fd6ff4c54fcb5242828a482ed24de45, type: 3}
   - {fileID: 3458384298365180062, guid: e4f42e0487e6e1a4eb0aa325df265171, type: 3}
-  - {fileID: 3458384298365180062, guid: 6a8d23fefef2b1f4eaf27b8a3d1a29a9, type: 3}
+  - {fileID: 3458384298365180062, guid: e4f42e0487e6e1a4eb0aa325df265171, type: 3}
   spawnIndicatorPrefab: {fileID: 2534093849529061564, guid: 8e04ea1bdb8038445a586d749a4647b2, type: 3}
   spawnDelay: 1.5
 --- !u!61 &2110410360
