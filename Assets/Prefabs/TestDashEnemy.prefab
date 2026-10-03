@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 832ec8d5cd5b0cb4496bbbc574bb8919, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthComponent
-  maxHealth: 30
+  maxHealth: 15
 --- !u!61 &6071254863969131028
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -315,4 +315,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MeleeDasher
   enemyStats: {fileID: 11400000, guid: 42571ec3ec1387447be99a79eee44d50, type: 2}
   telegraphColor: {r: 0, g: 0, b: 1, a: 1}
-  maxDashDuration: 0.4

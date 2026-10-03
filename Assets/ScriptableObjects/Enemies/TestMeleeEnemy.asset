@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: TestMeleeEnemy
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   enemyName: Basic Enemy
-  maxHealth: 50
+  maxHealth: 35
   moveSpeed: 7
   stoppingDistance: 1
-  damageToPlayer: 5
+  damageToPlayer: 10
   attackRate: 3
   attackRange: 1.5
   windupTime: 0.2
   cooldownTime: 0.6
   dashForce: 12
+  maxDashDuration: 0.4

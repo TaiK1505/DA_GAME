@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: TestDashEnemy
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   enemyName: Basic Enemy
-  maxHealth: 100
+  maxHealth: 15
   moveSpeed: 3
   stoppingDistance: 0.5
-  damageToPlayer: 10
+  damageToPlayer: 5
   attackRate: 1
-  attackRange: 1.5
-  windupTime: 0.4
-  cooldownTime: 1
-  dashForce: 12
+  attackRange: 6
+  windupTime: 0.5
+  cooldownTime: 1.2
+  dashForce: 25
+  maxDashDuration: 0.4

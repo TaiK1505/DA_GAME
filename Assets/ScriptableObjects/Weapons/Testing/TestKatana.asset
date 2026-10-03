@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MeleeWeaponData
   weaponName: TestKatana
   damage: 15
-  attackCooldown: 0.3
+  attackCooldown: 0.2
   attackRange: 1
   attackStepDistance: 2
   attackStepDuration: 0.15

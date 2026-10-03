@@ -5,6 +5,9 @@ public class MeleeDasher : MonoBehaviour
 {
     [Header("Enemy Data")]
     public EnemyData enemyStats;
+    
+    // ---> NEW: Hooked up the HealthComponent! <---
+    public HealthComponent healthComponent;
 
     [Header("Visuals")]
     public Color telegraphColor = Color.blue;
@@ -31,6 +34,9 @@ public class MeleeDasher : MonoBehaviour
         aiPath = GetComponent<AIPath>();
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        
+        // Failsafe: Grab the health component if you forget to drag it in the inspector
+        if (healthComponent == null) healthComponent = GetComponent<HealthComponent>();
 
         if (spriteRenderer != null)
         {
@@ -44,6 +50,12 @@ public class MeleeDasher : MonoBehaviour
         if (playerObj != null) player = playerObj.transform;
 
         if (spriteRenderer != null) spriteRenderer.color = originalColor;
+        
+        // ---> NEW: Feed the ScriptableObject health into the component! <---
+        if (enemyStats != null && healthComponent != null)
+        {
+            healthComponent.InitializeHealth(enemyStats.maxHealth);
+        }
     }
 
     private void Update()
@@ -71,7 +83,6 @@ public class MeleeDasher : MonoBehaviour
                     stateTimer = enemyStats.windupTime;
                     aiPath.canMove = false;
 
-                    // THE TELEGRAPH: Uses the Inspector color!
                     if (spriteRenderer != null) spriteRenderer.color = telegraphColor;
                 }
                 break;
@@ -96,7 +107,6 @@ public class MeleeDasher : MonoBehaviour
                 
                 if (rb != null) rb.linearVelocity = dashDirection * enemyStats.dashForce;
 
-                // Pulls max duration from the ScriptableObject!
                 if (currentDashTime >= enemyStats.maxDashDuration)
                 {
                     StartCooldown();
@@ -113,12 +123,10 @@ public class MeleeDasher : MonoBehaviour
         }
     }
 
-    // 3. THE COLLISION FILTER
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (currentState == DasherState.Dashing)
         {
-            // Only stop the dash if we hit the Player or a Wall
             if (collision.gameObject.CompareTag("Player"))
             {
                 HealthComponent playerHealth = collision.gameObject.GetComponent<HealthComponent>();
@@ -132,8 +140,6 @@ public class MeleeDasher : MonoBehaviour
             {
                 StartCooldown();
             }
-            // If they hit another enemy, the code ignores it. 
-            // Unity's physics will just let them slide past each other!
         }
     }
 
