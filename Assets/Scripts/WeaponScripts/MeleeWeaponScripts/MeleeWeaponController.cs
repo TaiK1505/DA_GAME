@@ -312,7 +312,11 @@ public class MeleeWeaponController : MonoBehaviour
         }
 
         playerRb.linearVelocity = Vector2.zero; 
-        if (playerController != null) playerController.canMove = true;
+        if (playerController != null)
+        {
+            playerController.canMove = true;
+            playerController.ActivateKnockbackMuzzle(0.3f);
+        } 
         
         if (aimingScript != null) 
         {

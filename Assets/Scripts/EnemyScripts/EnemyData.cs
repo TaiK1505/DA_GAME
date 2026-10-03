@@ -9,11 +9,17 @@ public class EnemyData : ScriptableObject
     [Header("Health")]
     public float maxHealth = 100f; 
 
-    [Header("Movement ")]
+    [Header("Movement")]
     public float moveSpeed = 3f;
-    public float stoppingDistance = 0.5f; // 0.5 for Melee, 5 for Ranged
+    public float stoppingDistance = 0.5f; 
 
-    [Header("Combat")]
+    [Header("Combat Core")]
     public float damageToPlayer = 10f;
     public float attackRate = 1f;
+
+    [Header("State Machine Combat")]
+    public float attackRange = 1.5f;
+    public float windupTime = 0.4f;
+    public float cooldownTime = 1.0f;
+    public float dashForce = 12f;
 }

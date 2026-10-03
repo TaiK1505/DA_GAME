@@ -56,6 +56,18 @@ public class EnemyAI : MonoBehaviour, IStunnable
         }
     }
 
+    private void FixedUpdate()
+    {
+        if (isStunned && !isKnockedBack)
+        {
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.linearVelocity = Vector2.zero;
+            }
+        }
+    }
+
     public void ApplyKnockback(Vector2 force, float duration)
     {
         isKnockedBack = true;

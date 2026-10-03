@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     
     [Header("Ramming Stats")]
     public float ramForceMultiplier = 1.2f;
+    public float knockbackMuzzleTimer = 0f;
 
     [Header("Wall Boost Mechanics")]
     public float wallBoostThreshold = 12f;     // minimum speed required to trigger a boost
@@ -140,6 +141,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (knockbackMuzzleTimer > 0)
+        {
+            knockbackMuzzleTimer -= Time.deltaTime;
+        }
+        
         if (canWallBoost)
         {
             wallBoostTimer -= Time.deltaTime;
@@ -489,7 +495,7 @@ public class PlayerController : MonoBehaviour
         else myRawSpeed = rb.linearVelocity.magnitude;
 
         // 2. Are we going fast enough to ram?
-        if (myRawSpeed > GetMaxNaturalSpeed() + 1f)
+        if (knockbackMuzzleTimer <= 0 && myRawSpeed > GetMaxNaturalSpeed() + 1f)
         {
             EnemyAI enemy = collision.gameObject.GetComponent<EnemyAI>();
             
@@ -634,5 +640,10 @@ public class PlayerController : MonoBehaviour
                 currentSlideSpeed = 0f;
             }
         }
+    }
+
+    public void ActivateKnockbackMuzzle(float duration)
+    {
+        knockbackMuzzleTimer = duration;
     }
 }

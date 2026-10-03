@@ -18,3 +18,7 @@ MonoBehaviour:
   stoppingDistance: 1
   damageToPlayer: 5
   attackRate: 3
+  attackRange: 1.5
+  windupTime: 0.2
+  cooldownTime: 0.6
+  dashForce: 12
