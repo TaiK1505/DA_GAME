@@ -22,4 +22,5 @@ public class EnemyData : ScriptableObject
     public float windupTime = 0.4f;
     public float cooldownTime = 1.0f;
     public float dashForce = 12f;
+    public float maxDashDuration = 0.4f;
 }
