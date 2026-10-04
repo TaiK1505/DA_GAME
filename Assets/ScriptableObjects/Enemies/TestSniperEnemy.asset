@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7f338cbc770d07c4dbd323031350ca17, type: 3}
-  m_Name: TestRangedEnemy
+  m_Name: TestSniperEnemy
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   enemyName: Basic Enemy
-  maxHealth: 30
-  moveSpeed: 3
-  damageToPlayer: 5
+  maxHealth: 20
+  moveSpeed: 1
+  damageToPlayer: 10
   attackRate: 1
-  attackRange: 6
-  stoppingDistance: 4
-  retreatDistance: 3
-  windupTime: 0.2
+  attackRange: 10
+  stoppingDistance: 8
+  retreatDistance: 4
+  windupTime: 1
   cooldownTime: 1
   dashForce: 12
   maxDashDuration: 0.4

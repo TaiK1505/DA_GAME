@@ -2,15 +2,31 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 
+[System.Serializable]
+public class EnemySpawnWeight
+{
+    public GameObject enemyPrefab;
+    [Tooltip("Higher number = more likely to spawn compared to others in this list")]
+    public float spawnWeight = 1f; 
+}
+
+[System.Serializable]
+public class Wave
+{
+    public string waveName = "Wave 1"; 
+    public int minEnemies = 3;
+    public int maxEnemies = 5;
+    public List<EnemySpawnWeight> enemyPool; 
+}
+
 public class RoomManager : MonoBehaviour
 {
-    
     [Header("Room Setup")]
     public GameObject[] doors;
     public Transform[] spawnPoints;      
 
-    [Header("Enemy Spawning")]
-    public GameObject[] enemyPrefabs;    
+    [Header("Wave Spawning")]
+    public List<Wave> waves;                 
     public GameObject spawnIndicatorPrefab; 
     public float spawnDelay = 1.5f;      
 
@@ -19,13 +35,15 @@ public class RoomManager : MonoBehaviour
     private bool roomCleared = false;
     private int enemiesStillSpawning = 0;
     
+    private int currentWaveIndex = 0; 
+    
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player") && !hasTriggered)
         {
             hasTriggered = true;
             LockDoors();
-            SpawnEnemies();
+            StartNextWave(); 
         }
     }
 
@@ -37,42 +55,76 @@ public class RoomManager : MonoBehaviour
         }
     }
 
-    private void SpawnEnemies()
+    private void StartNextWave()
     {
-        enemiesStillSpawning = spawnPoints.Length;
-        foreach (Transform point in spawnPoints)
+        if (currentWaveIndex >= waves.Count)
         {
-            StartCoroutine(SpawnSequence(point));
+            UnlockDoors();
+            return;
+        }
+
+        Wave currentWave = waves[currentWaveIndex];
+
+        int spawnCount = Random.Range(currentWave.minEnemies, currentWave.maxEnemies + 1);
+        spawnCount = Mathf.Min(spawnCount, spawnPoints.Length);
+        
+        enemiesStillSpawning = spawnCount;
+
+        List<Transform> availableSpawns = new List<Transform>(spawnPoints);
+
+        for (int i = 0; i < spawnCount; i++)
+        {
+            int randSpawnIndex = Random.Range(0, availableSpawns.Count);
+            Transform selectedPoint = availableSpawns[randSpawnIndex];
+            availableSpawns.RemoveAt(randSpawnIndex);
+
+            GameObject enemyToSpawn = GetRandomEnemyFromWave(currentWave);
+
+            StartCoroutine(SpawnSequence(selectedPoint, enemyToSpawn));
         }
     }
 
-    private IEnumerator SpawnSequence(Transform spawnPoint)
+    private GameObject GetRandomEnemyFromWave(Wave wave)
     {
-        // Pick a random enemy blueprint
-        int randomEnemyType = Random.Range(0, enemyPrefabs.Length);
-        GameObject enemyToSpawn = enemyPrefabs[randomEnemyType];
+        float totalWeight = 0f;
+        foreach (EnemySpawnWeight ew in wave.enemyPool) 
+        {
+            totalWeight += ew.spawnWeight;
+        }
 
-        // Spawn the Indicator using the Object Pool
+        float randomVal = Random.Range(0f, totalWeight);
+        
+        foreach (EnemySpawnWeight ew in wave.enemyPool)
+        {
+            if (randomVal < ew.spawnWeight)
+            {
+                return ew.enemyPrefab;
+            }
+            randomVal -= ew.spawnWeight;
+        }
+        
+        return wave.enemyPool[0].enemyPrefab;
+    }
+
+    private IEnumerator SpawnSequence(Transform spawnPoint, GameObject enemyToSpawn)
+    {
         GameObject indicatorObj = ObjectPoolManager.Instance.SpawnObject(
             spawnIndicatorPrefab, 
             spawnPoint.position, 
             Quaternion.identity
         );
 
-        // Initialize the indicator (so it can show the correct warning visual)
         EnemySpawnIndicator indicatorScript = indicatorObj.GetComponent<EnemySpawnIndicator>();
         if (indicatorScript != null)
         {
             indicatorScript.Initialize(enemyToSpawn);
         }
 
-        // Wait for the delay
+        // THIS IS THE WAITING PART!
         yield return new WaitForSeconds(spawnDelay);
 
-        // Return indicator to pool (Turning it off usually returns it in standard pools)
         indicatorObj.SetActive(false); 
 
-        // Spawn the REAL enemy from the Object Pool!
         GameObject newEnemy = ObjectPoolManager.Instance.SpawnObject(
             enemyToSpawn, 
             spawnPoint.position, 
@@ -93,18 +145,18 @@ public class RoomManager : MonoBehaviour
 
     private void CheckEnemies()
     {
-        // check if the object pool turned the enemy off!
         activeEnemies.RemoveAll(enemy => !enemy.activeInHierarchy);
 
         if (activeEnemies.Count == 0 && enemiesStillSpawning == 0)
         {
-            UnlockDoors();
+            currentWaveIndex++;
+            StartNextWave();
         }
     }
 
     private void UnlockDoors()
     {
-        Debug.Log("ROOM CLEARED!");
+        Debug.Log("ALL WAVES CLEARED!");
         roomCleared = true;
         foreach (GameObject door in doors)
         {
