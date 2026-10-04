@@ -15,10 +15,11 @@ MonoBehaviour:
   enemyName: Basic Enemy
   maxHealth: 15
   moveSpeed: 3
-  stoppingDistance: 0.5
   damageToPlayer: 5
   attackRate: 1
-  attackRange: 6
+  attackRange: 5
+  stoppingDistance: 0.5
+  retreatDistance: 3
   windupTime: 0.5
   cooldownTime: 1.2
   dashForce: 25
