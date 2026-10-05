@@ -3825,7 +3825,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OffScreenEnemyIndicator
   uiArrowPrefab: {fileID: 4773908103701916789, guid: 713e4011dc8db634491683c271fd2a3a, type: 3}
   mainCanvas: {fileID: 1232132120}
-  screenPadding: 50
+  screenPadding: 100
+  fanOutSpacing: 100
 --- !u!1 &1249793423
 GameObject:
   m_ObjectHideFlags: 0

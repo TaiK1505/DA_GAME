@@ -23,7 +23,7 @@ MonoBehaviour:
   - 0.2
   - 0.3
   canLunge: 1
-  executionLungeDistance: 10
+  executionLungeDistance: 15
   executionDuration: 0.2
   canThrow: 1
   throwDamage: 5
