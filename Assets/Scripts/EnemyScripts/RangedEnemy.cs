@@ -14,8 +14,6 @@ public class RangedEnemy : MonoBehaviour
     public GameObject enemyBulletPrefab; 
     public Transform firePoint;          
     public Transform gunPivot;
-    
-    // NEW: Adds random inaccuracy to the shots (in degrees)
     public float bulletSpread = 15f; 
 
     [Header("Line of Sight")]
@@ -38,7 +36,6 @@ public class RangedEnemy : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         myBaseAI = GetComponent<EnemyAI>();
         if (healthComponent == null) healthComponent = GetComponent<HealthComponent>();
-
         if (spriteRenderer != null) originalColor = spriteRenderer.color;
     }
     
@@ -46,7 +43,6 @@ public class RangedEnemy : MonoBehaviour
     {
         GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
         if (playerObject != null) player = playerObject.transform; 
-        
         if (spriteRenderer != null) spriteRenderer.color = originalColor;
 
         if (enemyStats != null)
@@ -59,7 +55,8 @@ public class RangedEnemy : MonoBehaviour
 
     private void Update()
     {
-        if (myBaseAI != null && (myBaseAI.isKnockedBack || myBaseAI.isStunned))
+        // ---> THE FIX <---
+        if (myBaseAI != null && (myBaseAI.IsCurrentlyKnockedBack() || myBaseAI.IsCurrentlyStunned()))
         {
             ResetState();
             return; 
@@ -77,21 +74,16 @@ public class RangedEnemy : MonoBehaviour
         {
             case GunnerState.Chasing:
                 HandleMovement(distanceToPlayer, hasLineOfSight);
-
                 if (distanceToPlayer <= enemyStats.attackRange && hasLineOfSight)
                 {
                     currentState = GunnerState.WindingUp;
                     stateTimer = enemyStats.windupTime;
-                    
-                    // We removed the brakes here! They keep running!
                     if (spriteRenderer != null) spriteRenderer.color = telegraphColor;
                 }
                 break;
 
             case GunnerState.WindingUp:
                 stateTimer -= Time.deltaTime;
-                
-                // NEW: Call movement logic during the windup so they run and gun!
                 HandleMovement(distanceToPlayer, hasLineOfSight);
 
                 if (stateTimer <= 0)
@@ -99,7 +91,6 @@ public class RangedEnemy : MonoBehaviour
                     Shoot();
                     currentState = GunnerState.Cooldown;
                     stateTimer = enemyStats.cooldownTime;
-                    
                     if (spriteRenderer != null) spriteRenderer.color = originalColor;
                 }
                 break;
@@ -108,10 +99,7 @@ public class RangedEnemy : MonoBehaviour
                 stateTimer -= Time.deltaTime;
                 HandleMovement(distanceToPlayer, hasLineOfSight); 
 
-                if (stateTimer <= 0)
-                {
-                    currentState = GunnerState.Chasing;
-                }
+                if (stateTimer <= 0) currentState = GunnerState.Chasing;
                 break;
         }
     }
@@ -147,13 +135,10 @@ public class RangedEnemy : MonoBehaviour
         
         Vector2 aimDirection = (player.position - firePoint.position).normalized;
         float baseAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
-        
-        // NEW: Calculate a random cone of inaccuracy!
         float randomSpread = Random.Range(-bulletSpread, bulletSpread);
         float finalAngle = baseAngle + randomSpread;
 
         GameObject spawnedBullet = ObjectPoolManager.Instance.SpawnObject(enemyBulletPrefab, firePoint.position, Quaternion.Euler(0, 0, finalAngle));
-
         ProjectileScript projectile = spawnedBullet.GetComponent<ProjectileScript>();
         if (projectile != null) projectile.damage = enemyStats.damageToPlayer;
     }
@@ -164,5 +149,4 @@ public class RangedEnemy : MonoBehaviour
         if (aiPath != null) aiPath.canMove = true;
         if (spriteRenderer != null) spriteRenderer.color = originalColor;
     }
-
 }

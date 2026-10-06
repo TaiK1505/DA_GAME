@@ -30,7 +30,6 @@ public class MeleeWeaponController : MonoBehaviour
     private float nextAttackTime = 0f;
     private float nextThrowTime = 0f;
     
-    // ---> NEW: Locks your inputs while a swing is active <---
     private bool isSwinging = false; 
 
     private Rigidbody2D playerRb; 
@@ -65,7 +64,6 @@ public class MeleeWeaponController : MonoBehaviour
 
     public void Swing()
     {
-        // ---> NEW: Blocks the click if a swing is currently happening <---
         if (isThrown || isSwinging || weaponData == null || Time.time < nextAttackTime) return;
         
         nextAttackTime = Time.time + weaponData.attackCooldown;
@@ -106,7 +104,9 @@ public class MeleeWeaponController : MonoBehaviour
         foreach (Collider2D enemy in potentialTargets)
         {
             EnemyAI enemyAI = enemy.GetComponent<EnemyAI>();
-            if (enemyAI == null || !enemyAI.isStunned) continue; 
+            
+            // ---> THE FIX: Safely asking the State Machine <---
+            if (enemyAI == null || !enemyAI.IsCurrentlyStunned()) continue; 
 
             float distToMouse = Vector2.Distance(mousePos, enemy.transform.position);
             if (distToMouse > 4f) continue; 
@@ -121,17 +121,10 @@ public class MeleeWeaponController : MonoBehaviour
         if (bestTarget != null)
         {
             float distToPlayer = Vector2.Distance(playerRb.position, bestTarget.position);
-            if (distToPlayer <= weaponData.executionLungeDistance)
-            {
-                return bestTarget;
-            }
+            if (distToPlayer <= weaponData.executionLungeDistance) return bestTarget;
         }
         return null;
     }
-
-    // ==========================================
-    // ---> NEW LINGERING HITBOX METHODS <---
-    // ==========================================
 
     private void SpawnSlashVFX(int comboStep, Vector2 attackCenter, Quaternion attackRotation)
     {
@@ -166,8 +159,6 @@ public class MeleeWeaponController : MonoBehaviour
         }
     }
 
-    // ==========================================
-
     private IEnumerator AttackStepRoutine(int comboStep)
     {
         isSwinging = true; 
@@ -196,12 +187,11 @@ public class MeleeWeaponController : MonoBehaviour
         float distance = Vector2.Distance(transform.position, attackPoint.position);
         Vector2 attackCenter = (Vector2)transform.position + (direction * distance);
 
-        // ---> 1. Spawn VFX and calculate offset <---
         SpawnSlashVFX(comboStep, attackCenter, attackRotation);
         HashSet<Collider2D> enemiesHit = new HashSet<Collider2D>();
         Vector2 attackOffset = attackCenter - playerRb.position;
 
-        float stepDuration = 0.2f; // Fallback
+        float stepDuration = 0.2f; 
         if (weaponData.comboStepDurations != null && weaponData.comboStepDurations.Length > 0)
         {
             int index = Mathf.Clamp(comboStep - 1, 0, weaponData.comboStepDurations.Length - 1);
@@ -217,8 +207,6 @@ public class MeleeWeaponController : MonoBehaviour
             float t = elapsed / stepDuration;
             
             playerRb.linearVelocity = direction * Mathf.Lerp(startingSpeed, 0f, t);
-
-            // ---> 2. Constantly damage enemies with the moving offset <---
             DamageEnemiesInSwing(enemiesHit, playerRb.position + attackOffset);
 
            if (aimingScript != null)
@@ -270,7 +258,6 @@ public class MeleeWeaponController : MonoBehaviour
         float distance = Vector2.Distance(transform.position, attackPoint.position);
         Vector2 attackCenter = (Vector2)transform.position + (direction * distance);
 
-        // ---> 1. Spawn VFX and calculate offset for the lunge <---
         SpawnSlashVFX(comboStep, attackCenter, attackRotation);
         HashSet<Collider2D> enemiesHitThisLunge = new HashSet<Collider2D>();
         Vector2 attackOffset = attackCenter - playerRb.position;
@@ -289,7 +276,6 @@ public class MeleeWeaponController : MonoBehaviour
             Vector2 nextPos = Vector2.Lerp(startPos, destination, t * (2f - t));
             playerRb.linearVelocity = (nextPos - playerRb.position) / Time.fixedDeltaTime;
 
-            // ---> 2. Constantly damage enemies with the moving offset <---
             DamageEnemiesInSwing(enemiesHitThisLunge, playerRb.position + attackOffset);
 
             if (aimingScript != null)
@@ -437,7 +423,6 @@ public class MeleeWeaponController : MonoBehaviour
     {
         if (attackPoint == null || weaponData == null) return;
 
-        // Draws a red wireframe circle in the Scene view
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPoint.position, weaponData.attackRange);
     }

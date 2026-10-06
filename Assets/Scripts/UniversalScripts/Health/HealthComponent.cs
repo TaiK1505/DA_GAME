@@ -2,32 +2,37 @@ using UnityEngine;
 
 public class HealthComponent : MonoBehaviour, IDamageable
 {
-
     [Header("Health Stats")]
     public float maxHealth = 100f;
-
     public float CurrentHealth { get; private set; }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    
     private void Awake()
     {
-        // When the object spawns, fill its health bar
         CurrentHealth = maxHealth;
     }
 
     public void InitializeHealth(float newMaxHealth)
-{
-    maxHealth = newMaxHealth;
-    CurrentHealth = newMaxHealth;
-}
+    {
+        maxHealth = newMaxHealth;
+        CurrentHealth = newMaxHealth;
+    }
 
     public void TakeDamage(float damageAmount)
     {
         CurrentHealth -= damageAmount;
         Debug.Log(gameObject.name + " took " + damageAmount + " damage! Current HP: " + CurrentHealth);
 
-        // ---> NEW: Trigger the flash if this object has the HitFlash script <---
         HitFlash hitFlash = GetComponent<HitFlash>();
         if (hitFlash != null) hitFlash.Flash();
+
+        // ---> CLEANED UP: Just tells the GameFeelManager what happened <---
+        if (gameObject.CompareTag("Player"))
+        {
+            if (GameFeelManager.Instance != null)
+            {
+                GameFeelManager.Instance.TriggerPlayerDamageFeel();
+            }
+        }
 
         if (CurrentHealth <= 0)
         {
@@ -39,7 +44,6 @@ public class HealthComponent : MonoBehaviour, IDamageable
     {
         CurrentHealth += healAmount;
         
-        // This  ensures an item can never heal past Max Health
         if (CurrentHealth > maxHealth)
         {
             CurrentHealth = maxHealth;

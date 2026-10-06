@@ -3,14 +3,13 @@ using Pathfinding;
 
 public class SniperEnemy : MonoBehaviour
 {
-   [Header("Enemy Data")]
+    [Header("Enemy Data")]
     public EnemyData enemyStats;
     public HealthComponent healthComponent;
 
     [Header("Visuals")]
-    public Color telegraphColor = new Color(1f, 0.4f, 0f); // Deep Orange warning
+    public Color telegraphColor = new Color(1f, 0.4f, 0f); 
     
-    // ---> NEW: The Laser Sight! <---
     [Header("Laser Sight")]
     public LineRenderer laserLine;
     public float maxLaserDistance = 30f;
@@ -21,7 +20,7 @@ public class SniperEnemy : MonoBehaviour
     public Transform gunPivot;
 
     [Header("Line of Sight")]
-    public LayerMask obstacleLayer; // The laser will use this to stop at walls!
+    public LayerMask obstacleLayer; 
     public AIPath aiPath;   
 
     private EnemyAI myBaseAI;
@@ -42,8 +41,6 @@ public class SniperEnemy : MonoBehaviour
         if (healthComponent == null) healthComponent = GetComponent<HealthComponent>();
 
         if (spriteRenderer != null) originalColor = spriteRenderer.color;
-        
-        // Ensure laser is off when they spawn
         if (laserLine != null) laserLine.enabled = false;
     }
     
@@ -64,7 +61,8 @@ public class SniperEnemy : MonoBehaviour
 
     private void Update()
     {
-        if (myBaseAI != null && (myBaseAI.isKnockedBack || myBaseAI.isStunned))
+        // ---> THE FIX <---
+        if (myBaseAI != null && (myBaseAI.IsCurrentlyKnockedBack() || myBaseAI.IsCurrentlyStunned()))
         {
             ResetState();
             return; 
@@ -77,8 +75,6 @@ public class SniperEnemy : MonoBehaviour
         bool hasLineOfSight = Physics2D.Raycast(transform.position, directionToPlayer, distanceToPlayer, obstacleLayer).collider == null;
 
         FacePlayerAndAim();
-        
-        // ---> NEW: Constantly draw the laser if aiming! <---
         HandleLaserSight();
 
         switch (currentState)
@@ -91,7 +87,6 @@ public class SniperEnemy : MonoBehaviour
                     currentState = SniperState.Aiming;
                     stateTimer = enemyStats.windupTime;
                     aiPath.canMove = false; 
-                    
                     if (spriteRenderer != null) spriteRenderer.color = telegraphColor;
                 }
                 break;
@@ -100,7 +95,6 @@ public class SniperEnemy : MonoBehaviour
                 stateTimer -= Time.deltaTime;
                 if (rb != null) rb.linearVelocity = Vector2.zero; 
 
-                // If player breaks line of sight while aiming, cancel the shot!
                 if (!hasLineOfSight)
                 {
                     ResetState();
@@ -113,8 +107,6 @@ public class SniperEnemy : MonoBehaviour
                     currentState = SniperState.Reloading;
                     stateTimer = enemyStats.cooldownTime;
                     if (spriteRenderer != null) spriteRenderer.color = originalColor;
-                    
-                    // Turn laser off when shot fires
                     if (laserLine != null) laserLine.enabled = false; 
                 }
                 break;
@@ -122,18 +114,11 @@ public class SniperEnemy : MonoBehaviour
             case SniperState.Reloading:
                 stateTimer -= Time.deltaTime;
                 HandleMovement(distanceToPlayer, hasLineOfSight);
-
-                if (stateTimer <= 0)
-                {
-                    currentState = SniperState.Repositioning;
-                }
+                if (stateTimer <= 0) currentState = SniperState.Repositioning;
                 break;
         }
     }
 
-    // =========================================
-    // ---> THE NEW LASER LOGIC <---
-    // =========================================
     private void HandleLaserSight()
     {
         if (laserLine == null || firePoint == null) return;
@@ -141,29 +126,16 @@ public class SniperEnemy : MonoBehaviour
         if (currentState == SniperState.Aiming)
         {
             laserLine.enabled = true;
-            
-            // Start the laser at the gun barrel
             laserLine.SetPosition(0, firePoint.position);
 
             Vector2 aimDirection = (player.position - firePoint.position).normalized;
-            
-            // Cast a ray out to see if a wall is in the way
             RaycastHit2D hit = Physics2D.Raycast(firePoint.position, aimDirection, maxLaserDistance, obstacleLayer);
 
-            if (hit.collider != null)
-            {
-                // The laser hit a wall! Stop the red line exactly at the wall.
-                laserLine.SetPosition(1, hit.point);
-            }
-            else
-            {
-                // No wall hit, shoot the laser far off-screen
-                laserLine.SetPosition(1, (Vector2)firePoint.position + (aimDirection * maxLaserDistance));
-            }
+            if (hit.collider != null) laserLine.SetPosition(1, hit.point);
+            else laserLine.SetPosition(1, (Vector2)firePoint.position + (aimDirection * maxLaserDistance));
         }
         else
         {
-            // Turn off the laser if they are reloading or repositioning
             laserLine.enabled = false;
         }
     }
@@ -215,8 +187,6 @@ public class SniperEnemy : MonoBehaviour
         currentState = SniperState.Repositioning;
         if (aiPath != null) aiPath.canMove = true;
         if (spriteRenderer != null) spriteRenderer.color = originalColor;
-        
-        // Failsafe laser shutdown
         if (laserLine != null) laserLine.enabled = false;
     }
 }

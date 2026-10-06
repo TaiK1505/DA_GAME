@@ -162,5 +162,15 @@ public class RoomManager : MonoBehaviour
         {
             if (door != null) door.SetActive(false);
         }
+
+        if (GameFeelManager.Instance != null)
+        {
+            GameFeelManager.Instance.TriggerRoomClearSlowMo();
+        }
+
+        foreach (GameObject door in doors)
+        {
+            if (door != null) door.SetActive(false);
+        }
     }
 }

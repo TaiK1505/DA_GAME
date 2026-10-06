@@ -218,7 +218,7 @@ Transform:
   m_GameObject: {fileID: 103312519}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4, y: 14, z: 0}
+  m_LocalPosition: {x: -21.71, y: 4.73, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3891,9 +3891,9 @@ MonoBehaviour:
     maxEnemies: 6
     enemyPool:
     - enemyPrefab: {fileID: 3458384298365180062, guid: e4f42e0487e6e1a4eb0aa325df265171, type: 3}
-      spawnWeight: 60
+      spawnWeight: 50
     - enemyPrefab: {fileID: 3458384298365180062, guid: 6a8d23fefef2b1f4eaf27b8a3d1a29a9, type: 3}
-      spawnWeight: 20
+      spawnWeight: 30
     - enemyPrefab: {fileID: 6713156996498467176, guid: 3fd6ff4c54fcb5242828a482ed24de45, type: 3}
       spawnWeight: 20
   spawnIndicatorPrefab: {fileID: 2534093849529061564, guid: 8e04ea1bdb8038445a586d749a4647b2, type: 3}
@@ -95218,7 +95218,7 @@ Transform:
   m_GameObject: {fileID: 1424473001}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4, y: 14, z: 0}
+  m_LocalPosition: {x: -12.95, y: 13.94, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -95249,7 +95249,7 @@ Transform:
   m_GameObject: {fileID: 1432461733}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4, y: 14, z: 0}
+  m_LocalPosition: {x: -12.24, y: -6.48, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

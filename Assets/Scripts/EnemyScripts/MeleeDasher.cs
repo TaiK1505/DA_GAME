@@ -5,8 +5,6 @@ public class MeleeDasher : MonoBehaviour
 {
     [Header("Enemy Data")]
     public EnemyData enemyStats;
-    
-    // ---> NEW: Hooked up the HealthComponent! <---
     public HealthComponent healthComponent;
 
     [Header("Visuals")]
@@ -17,14 +15,12 @@ public class MeleeDasher : MonoBehaviour
     private AIPath aiPath;
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
-
     private Color originalColor;
 
     private enum DasherState { Chasing, WindingUp, Dashing, Cooldown }
     private DasherState currentState = DasherState.Chasing;
     private float stateTimer = 0f;
     
-    // Dash specifics
     private Vector2 dashDirection;
     private float currentDashTime;
 
@@ -35,13 +31,8 @@ public class MeleeDasher : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         
-        // Failsafe: Grab the health component if you forget to drag it in the inspector
         if (healthComponent == null) healthComponent = GetComponent<HealthComponent>();
-
-        if (spriteRenderer != null)
-        {
-            originalColor = spriteRenderer.color;
-        }
+        if (spriteRenderer != null) originalColor = spriteRenderer.color;
     }
 
     private void OnEnable()
@@ -50,18 +41,13 @@ public class MeleeDasher : MonoBehaviour
         if (playerObj != null) player = playerObj.transform;
 
         if (spriteRenderer != null) spriteRenderer.color = originalColor;
-        
-        // ---> NEW: Feed the ScriptableObject health into the component! <---
-        if (enemyStats != null && healthComponent != null)
-        {
-            healthComponent.InitializeHealth(enemyStats.maxHealth);
-        }
+        if (enemyStats != null && healthComponent != null) healthComponent.InitializeHealth(enemyStats.maxHealth);
     }
 
     private void Update()
     {
-        // 1. THE INTERRUPT
-        if (myBaseAI != null && (myBaseAI.isKnockedBack || myBaseAI.isStunned))
+        // ---> THE FIX: Cleanly checks the Global Brain <---
+        if (myBaseAI != null && (myBaseAI.IsCurrentlyKnockedBack() || myBaseAI.IsCurrentlyStunned()))
         {
             ResetToChase();
             return;
@@ -71,25 +57,21 @@ public class MeleeDasher : MonoBehaviour
 
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
 
-        // 2. THE STATE MACHINE
         switch (currentState)
         {
             case DasherState.Chasing:
                 aiPath.canMove = true;
-
                 if (distanceToPlayer <= enemyStats.attackRange)
                 {
                     currentState = DasherState.WindingUp;
                     stateTimer = enemyStats.windupTime;
                     aiPath.canMove = false;
-
                     if (spriteRenderer != null) spriteRenderer.color = telegraphColor;
                 }
                 break;
 
             case DasherState.WindingUp:
                 stateTimer -= Time.deltaTime;
-
                 if (rb != null) rb.linearVelocity = Vector2.zero;
 
                 if (stateTimer <= 0)
@@ -97,14 +79,12 @@ public class MeleeDasher : MonoBehaviour
                     dashDirection = (player.position - transform.position).normalized;
                     currentState = DasherState.Dashing;
                     currentDashTime = 0f;
-                    
                     if (spriteRenderer != null) spriteRenderer.color = originalColor;
                 }
                 break;
 
             case DasherState.Dashing:
                 currentDashTime += Time.deltaTime;
-                
                 if (rb != null) rb.linearVelocity = dashDirection * enemyStats.dashForce;
 
                 if (currentDashTime >= enemyStats.maxDashDuration)
@@ -130,10 +110,7 @@ public class MeleeDasher : MonoBehaviour
             if (collision.gameObject.CompareTag("Player"))
             {
                 HealthComponent playerHealth = collision.gameObject.GetComponent<HealthComponent>();
-                if (playerHealth != null)
-                {
-                    playerHealth.TakeDamage(enemyStats.damageToPlayer);
-                }
+                if (playerHealth != null) playerHealth.TakeDamage(enemyStats.damageToPlayer);
                 StartCooldown();
             }
             else if (collision.gameObject.CompareTag("Wall"))
