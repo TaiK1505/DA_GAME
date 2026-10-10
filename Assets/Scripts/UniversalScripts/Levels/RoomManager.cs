@@ -30,6 +30,14 @@ public class RoomManager : MonoBehaviour
     public GameObject spawnIndicatorPrefab; 
     public float spawnDelay = 1.5f;      
 
+    // ---> NEW: Reward variables <---
+    [Header("Room Rewards")]
+    public GameObject healthDropPrefab;
+    [Tooltip("Where the health drop spawns. If left empty, it spawns at the RoomManager's position.")]
+    public Transform rewardSpawnPoint;
+    [Range(0f, 100f)]
+    public float healthDropChance = 100f;
+
     private List<GameObject> activeEnemies = new List<GameObject>();
     private bool hasTriggered = false;
     private bool roomCleared = false;
@@ -120,7 +128,6 @@ public class RoomManager : MonoBehaviour
             indicatorScript.Initialize(enemyToSpawn);
         }
 
-        // THIS IS THE WAITING PART!
         yield return new WaitForSeconds(spawnDelay);
 
         indicatorObj.SetActive(false); 
@@ -158,6 +165,7 @@ public class RoomManager : MonoBehaviour
     {
         Debug.Log("ALL WAVES CLEARED!");
         roomCleared = true;
+        
         foreach (GameObject door in doors)
         {
             if (door != null) door.SetActive(false);
@@ -168,9 +176,23 @@ public class RoomManager : MonoBehaviour
             GameFeelManager.Instance.TriggerRoomClearSlowMo();
         }
 
-        foreach (GameObject door in doors)
+        // ---> NEW: Spawn the reward <---
+        if (healthDropPrefab != null)
         {
-            if (door != null) door.SetActive(false);
+            float roll = Random.Range(0f, 100f);
+            if (roll <= healthDropChance)
+            {
+                // Use the dedicated point, or default to the RoomManager's position
+                Vector3 spawnPos = rewardSpawnPoint != null ? rewardSpawnPoint.position : transform.position;
+                
+                ObjectPoolManager.Instance.SpawnObject(
+                    healthDropPrefab, 
+                    spawnPos, 
+                    Quaternion.identity
+                );
+                
+                Debug.Log("Room cleared! Dropped health.");
+            }
         }
     }
 }
