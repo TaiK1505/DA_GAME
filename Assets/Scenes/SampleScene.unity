@@ -2033,6 +2033,9 @@ MonoBehaviour:
       spawnWeight: 50
   spawnIndicatorPrefab: {fileID: 2534093849529061564, guid: 8e04ea1bdb8038445a586d749a4647b2, type: 3}
   spawnDelay: 1.5
+  healthDropPrefab: {fileID: 0}
+  rewardSpawnPoint: {fileID: 0}
+  healthDropChance: 100
 --- !u!61 &502706583
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2207,9 +2210,9 @@ Camera:
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
-    y: 0.055555556
-    width: 0.33333334
-    height: 0.3333333
+    y: 0
+    width: 1
+    height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -2940,6 +2943,9 @@ MonoBehaviour:
       spawnWeight: 50
   spawnIndicatorPrefab: {fileID: 2534093849529061564, guid: 8e04ea1bdb8038445a586d749a4647b2, type: 3}
   spawnDelay: 1.5
+  healthDropPrefab: {fileID: 0}
+  rewardSpawnPoint: {fileID: 0}
+  healthDropChance: 100
 --- !u!61 &714175747
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5047,6 +5053,9 @@ MonoBehaviour:
       spawnWeight: 33
   spawnIndicatorPrefab: {fileID: 2534093849529061564, guid: 8e04ea1bdb8038445a586d749a4647b2, type: 3}
   spawnDelay: 1.5
+  healthDropPrefab: {fileID: 0}
+  rewardSpawnPoint: {fileID: 0}
+  healthDropChance: 100
 --- !u!61 &1157581145
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5559,6 +5568,9 @@ MonoBehaviour:
       spawnWeight: 20
   spawnIndicatorPrefab: {fileID: 2534093849529061564, guid: 8e04ea1bdb8038445a586d749a4647b2, type: 3}
   spawnDelay: 1.5
+  healthDropPrefab: {fileID: 0}
+  rewardSpawnPoint: {fileID: 0}
+  healthDropChance: 100
 --- !u!61 &1249793425
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5741,6 +5753,9 @@ MonoBehaviour:
       spawnWeight: 50
   spawnIndicatorPrefab: {fileID: 2534093849529061564, guid: 8e04ea1bdb8038445a586d749a4647b2, type: 3}
   spawnDelay: 1.5
+  healthDropPrefab: {fileID: 0}
+  rewardSpawnPoint: {fileID: 0}
+  healthDropChance: 100
 --- !u!61 &1329708594
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -96971,6 +96986,9 @@ MonoBehaviour:
       spawnWeight: 50
   spawnIndicatorPrefab: {fileID: 2534093849529061564, guid: 8e04ea1bdb8038445a586d749a4647b2, type: 3}
   spawnDelay: 1.5
+  healthDropPrefab: {fileID: 0}
+  rewardSpawnPoint: {fileID: 0}
+  healthDropChance: 100
 --- !u!61 &1389398456
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -119033,6 +119051,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1249793426}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!1 &1841080382
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1841080383}
+  m_Layer: 0
+  m_Name: OHealthSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1841080383
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1841080382}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2110410361}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1850758468
 GameObject:
   m_ObjectHideFlags: 0
@@ -119241,6 +119290,9 @@ MonoBehaviour:
       spawnWeight: 25
   spawnIndicatorPrefab: {fileID: 2534093849529061564, guid: 8e04ea1bdb8038445a586d749a4647b2, type: 3}
   spawnDelay: 1.5
+  healthDropPrefab: {fileID: 0}
+  rewardSpawnPoint: {fileID: 0}
+  healthDropChance: 100
 --- !u!61 &1851055289
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -120088,6 +120140,9 @@ MonoBehaviour:
       spawnWeight: 33
   spawnIndicatorPrefab: {fileID: 2534093849529061564, guid: 8e04ea1bdb8038445a586d749a4647b2, type: 3}
   spawnDelay: 1.5
+  healthDropPrefab: {fileID: 0}
+  rewardSpawnPoint: {fileID: 0}
+  healthDropChance: 100
 --- !u!61 &2097925267
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -120213,6 +120268,9 @@ MonoBehaviour:
       spawnWeight: 20
   spawnIndicatorPrefab: {fileID: 2534093849529061564, guid: 8e04ea1bdb8038445a586d749a4647b2, type: 3}
   spawnDelay: 1.5
+  healthDropPrefab: {fileID: 8853349245387604636, guid: 0183444296c478641af75304468f6dc3, type: 3}
+  rewardSpawnPoint: {fileID: 1841080383}
+  healthDropChance: 100
 --- !u!61 &2110410360
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -120285,6 +120343,7 @@ Transform:
   - {fileID: 1501418223}
   - {fileID: 199702712}
   - {fileID: 226143464}
+  - {fileID: 1841080383}
   m_Father: {fileID: 20667427}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2129771046
