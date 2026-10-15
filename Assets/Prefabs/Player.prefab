@@ -143,6 +143,7 @@ MonoBehaviour:
   slideCooldown: 0.5
   slideSteeringFactor: 4
   ramForceMultiplier: 1
+  knockbackMuzzleTimer: 0
   wallBoostThreshold: 12
   wallBoostMultiplier: 1.1
   maxWallBoostSpeed: 40
@@ -195,6 +196,9 @@ MonoBehaviour:
   currentClass: {fileID: 11400000, guid: 2716510fa0b59154993e402f1f5a915b, type: 2}
   adrenalineCooldown: 10
   baseDuration: 3
+  ghostSpawnRate: 0.1
+  ghostFadeDuration: 0.5
+  ghostColor: {r: 1, g: 1, b: 1, a: 0.5}
   bonusDuration: 0
   inRunUpgrades: []
 --- !u!114 &5523088645915494640

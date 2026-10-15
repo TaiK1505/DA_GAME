@@ -1937,6 +1937,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1851055290}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &437044401
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 437044402}
+  m_Layer: 0
+  m_Name: WhistleRoomHealthSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &437044402
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 437044401}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.95, y: -1.12, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 714175745}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &484973214
 GameObject:
   m_ObjectHideFlags: 0
@@ -2033,8 +2064,8 @@ MonoBehaviour:
       spawnWeight: 50
   spawnIndicatorPrefab: {fileID: 2534093849529061564, guid: 8e04ea1bdb8038445a586d749a4647b2, type: 3}
   spawnDelay: 1.5
-  healthDropPrefab: {fileID: 0}
-  rewardSpawnPoint: {fileID: 0}
+  healthDropPrefab: {fileID: 8853349245387604636, guid: 0183444296c478641af75304468f6dc3, type: 3}
+  rewardSpawnPoint: {fileID: 877823343}
   healthDropChance: 100
 --- !u!61 &502706583
 BoxCollider2D:
@@ -2107,6 +2138,7 @@ Transform:
   - {fileID: 1610479923}
   - {fileID: 292143851}
   - {fileID: 701535334}
+  - {fileID: 877823343}
   m_Father: {fileID: 20667427}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
@@ -2735,6 +2767,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1851055290}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &663272115
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 663272116}
+  m_Layer: 0
+  m_Name: LongRecHealthSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &663272116
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 663272115}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -32, y: -4.4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1389398454}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &666897772
 GameObject:
   m_ObjectHideFlags: 0
@@ -2898,6 +2961,7 @@ Transform:
   - {fileID: 207399965}
   - {fileID: 992320738}
   - {fileID: 1329613363}
+  - {fileID: 437044402}
   m_Father: {fileID: 20667427}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!114 &714175746
@@ -2943,8 +3007,8 @@ MonoBehaviour:
       spawnWeight: 50
   spawnIndicatorPrefab: {fileID: 2534093849529061564, guid: 8e04ea1bdb8038445a586d749a4647b2, type: 3}
   spawnDelay: 1.5
-  healthDropPrefab: {fileID: 0}
-  rewardSpawnPoint: {fileID: 0}
+  healthDropPrefab: {fileID: 8853349245387604636, guid: 0183444296c478641af75304468f6dc3, type: 3}
+  rewardSpawnPoint: {fileID: 437044402}
   healthDropChance: 100
 --- !u!61 &714175747
 BoxCollider2D:
@@ -3098,6 +3162,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1249793426}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &722994579
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 722994580}
+  m_Layer: 0
+  m_Name: RobotRoomHealthSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &722994580
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 722994579}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.78, y: -0.72, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1329708595}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &735367762
 GameObject:
@@ -3710,6 +3805,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 714175745}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &861640550
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 861640551}
+  m_Layer: 0
+  m_Name: DinoRoomHealthSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &861640551
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 861640550}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.86, y: -0.61, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1157581143}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &862214487
 GameObject:
   m_ObjectHideFlags: 0
@@ -3820,6 +3946,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1249793426}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &877823342
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 877823343}
+  m_Layer: 0
+  m_Name: FurnaceHealthSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &877823343
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 877823342}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -23, y: 6.7, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 502706584}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &886744596
 GameObject:
@@ -4677,6 +4834,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1249793426}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1026707082
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1026707083}
+  m_Layer: 0
+  m_Name: LHealthSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1026707083
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1026707082}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2, y: -2.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1851055290}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1027940924
 GameObject:
   m_ObjectHideFlags: 0
@@ -5018,6 +5206,7 @@ Transform:
   - {fileID: 542088500}
   - {fileID: 1937873707}
   - {fileID: 264402511}
+  - {fileID: 861640551}
   m_Father: {fileID: 20667427}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!114 &1157581144
@@ -5053,8 +5242,8 @@ MonoBehaviour:
       spawnWeight: 33
   spawnIndicatorPrefab: {fileID: 2534093849529061564, guid: 8e04ea1bdb8038445a586d749a4647b2, type: 3}
   spawnDelay: 1.5
-  healthDropPrefab: {fileID: 0}
-  rewardSpawnPoint: {fileID: 0}
+  healthDropPrefab: {fileID: 8853349245387604636, guid: 0183444296c478641af75304468f6dc3, type: 3}
+  rewardSpawnPoint: {fileID: 861640551}
   healthDropChance: 100
 --- !u!61 &1157581145
 BoxCollider2D:
@@ -5378,6 +5567,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1249793426}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1216866691
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1216866692}
+  m_Layer: 0
+  m_Name: SmallSqHealthSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1216866692
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216866691}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.56, y: -0.49, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2097925268}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1232132117
 GameObject:
   m_ObjectHideFlags: 0
@@ -5568,8 +5788,8 @@ MonoBehaviour:
       spawnWeight: 20
   spawnIndicatorPrefab: {fileID: 2534093849529061564, guid: 8e04ea1bdb8038445a586d749a4647b2, type: 3}
   spawnDelay: 1.5
-  healthDropPrefab: {fileID: 0}
-  rewardSpawnPoint: {fileID: 0}
+  healthDropPrefab: {fileID: 8853349245387604636, guid: 0183444296c478641af75304468f6dc3, type: 3}
+  rewardSpawnPoint: {fileID: 1603091179}
   healthDropChance: 100
 --- !u!61 &1249793425
 BoxCollider2D:
@@ -5646,6 +5866,7 @@ Transform:
   - {fileID: 805851202}
   - {fileID: 870024057}
   - {fileID: 827188540}
+  - {fileID: 1603091179}
   m_Father: {fileID: 20667427}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!114 &1275646817 stripped
@@ -5753,8 +5974,8 @@ MonoBehaviour:
       spawnWeight: 50
   spawnIndicatorPrefab: {fileID: 2534093849529061564, guid: 8e04ea1bdb8038445a586d749a4647b2, type: 3}
   spawnDelay: 1.5
-  healthDropPrefab: {fileID: 0}
-  rewardSpawnPoint: {fileID: 0}
+  healthDropPrefab: {fileID: 8853349245387604636, guid: 0183444296c478641af75304468f6dc3, type: 3}
+  rewardSpawnPoint: {fileID: 722994580}
   healthDropChance: 100
 --- !u!61 &1329708594
 BoxCollider2D:
@@ -5825,6 +6046,7 @@ Transform:
   - {fileID: 1974781396}
   - {fileID: 776162473}
   - {fileID: 1581379043}
+  - {fileID: 722994580}
   m_Father: {fileID: 20667427}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!1 &1344412501
@@ -96941,6 +97163,7 @@ Transform:
   - {fileID: 666897773}
   - {fileID: 1760361492}
   - {fileID: 830243786}
+  - {fileID: 663272116}
   m_Father: {fileID: 20667427}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1389398455
@@ -96986,8 +97209,8 @@ MonoBehaviour:
       spawnWeight: 50
   spawnIndicatorPrefab: {fileID: 2534093849529061564, guid: 8e04ea1bdb8038445a586d749a4647b2, type: 3}
   spawnDelay: 1.5
-  healthDropPrefab: {fileID: 0}
-  rewardSpawnPoint: {fileID: 0}
+  healthDropPrefab: {fileID: 8853349245387604636, guid: 0183444296c478641af75304468f6dc3, type: 3}
+  rewardSpawnPoint: {fileID: 663272116}
   healthDropChance: 100
 --- !u!61 &1389398456
 BoxCollider2D:
@@ -97789,6 +98012,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2097925268}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1603091178
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1603091179}
+  m_Layer: 0
+  m_Name: DominoHealthSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1603091179
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1603091178}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -18.31, y: -8.42, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1249793426}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1610479922
 GameObject:
@@ -119290,8 +119544,8 @@ MonoBehaviour:
       spawnWeight: 25
   spawnIndicatorPrefab: {fileID: 2534093849529061564, guid: 8e04ea1bdb8038445a586d749a4647b2, type: 3}
   spawnDelay: 1.5
-  healthDropPrefab: {fileID: 0}
-  rewardSpawnPoint: {fileID: 0}
+  healthDropPrefab: {fileID: 8853349245387604636, guid: 0183444296c478641af75304468f6dc3, type: 3}
+  rewardSpawnPoint: {fileID: 1026707083}
   healthDropChance: 100
 --- !u!61 &1851055289
 BoxCollider2D:
@@ -119365,6 +119619,7 @@ Transform:
   - {fileID: 1871708208}
   - {fileID: 1036978753}
   - {fileID: 1027940925}
+  - {fileID: 1026707083}
   m_Father: {fileID: 20667427}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1869128705
@@ -120140,8 +120395,8 @@ MonoBehaviour:
       spawnWeight: 33
   spawnIndicatorPrefab: {fileID: 2534093849529061564, guid: 8e04ea1bdb8038445a586d749a4647b2, type: 3}
   spawnDelay: 1.5
-  healthDropPrefab: {fileID: 0}
-  rewardSpawnPoint: {fileID: 0}
+  healthDropPrefab: {fileID: 8853349245387604636, guid: 0183444296c478641af75304468f6dc3, type: 3}
+  rewardSpawnPoint: {fileID: 1216866692}
   healthDropChance: 100
 --- !u!61 &2097925267
 BoxCollider2D:
@@ -120210,6 +120465,7 @@ Transform:
   - {fileID: 1424473002}
   - {fileID: 103312520}
   - {fileID: 1432461734}
+  - {fileID: 1216866692}
   m_Father: {fileID: 20667427}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2110410358
@@ -120467,6 +120723,10 @@ PrefabInstance:
     - target: {fileID: 3264387555841540452, guid: a87e5fcc9f4944240baa96c1042c8ee9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5732129671971716746, guid: a87e5fcc9f4944240baa96c1042c8ee9, type: 3}
+      propertyPath: slideMultiplier
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 6652182286996094726, guid: a87e5fcc9f4944240baa96c1042c8ee9, type: 3}
       propertyPath: aimingScript
