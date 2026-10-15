@@ -21,9 +21,21 @@ public class HealthComponent : MonoBehaviour, IDamageable
         CurrentHealth = newMaxHealth;
     }
 
-    public void TakeDamage(float damageAmount)
+   public void TakeDamage(float damageAmount)
     {
-        // 1. Overshield intercepts damage first
+        // 1. TRIGGER VISUAL FEEDBACK IMMEDIATELY FOR ANY HIT
+        HitFlash hitFlash = GetComponent<HitFlash>();
+        if (hitFlash != null) hitFlash.Flash();
+
+        if (gameObject.CompareTag("Player"))
+        {
+            if (GameFeelManager.Instance != null)
+            {
+                GameFeelManager.Instance.TriggerPlayerDamageFeel();
+            }
+        }
+
+        // 2. HYPERSHIELD INTERCEPTS DAMAGE FIRST
         if (CurrentHyperShield > 0)
         {
             float leftoverDamage = damageAmount - CurrentHyperShield;
@@ -31,7 +43,7 @@ public class HealthComponent : MonoBehaviour, IDamageable
             
             if (CurrentHyperShield < 0) CurrentHyperShield = 0;
             
-            // If the shield absorbed all of the hit, trigger a specific shield-hit feel and stop
+            // If the shield absorbed all of the hit, stop here (health is safe)
             if (leftoverDamage <= 0) 
             {
                 Debug.Log(gameObject.name + " shield absorbed the hit! Shield remaining: " + CurrentHyperShield);
@@ -42,21 +54,9 @@ public class HealthComponent : MonoBehaviour, IDamageable
             damageAmount = leftoverDamage;
         }
 
-        // 2. Normal health reduction
+        // 3. NORMAL HEALTH REDUCTION
         CurrentHealth -= damageAmount;
         Debug.Log(gameObject.name + " took " + damageAmount + " damage! Current HP: " + CurrentHealth);
-
-        HitFlash hitFlash = GetComponent<HitFlash>();
-        if (hitFlash != null) hitFlash.Flash();
-
-        // ---> CLEANED UP: Just tells the GameFeelManager what happened <---
-        if (gameObject.CompareTag("Player"))
-        {
-            if (GameFeelManager.Instance != null)
-            {
-                GameFeelManager.Instance.TriggerPlayerDamageFeel();
-            }
-        }
 
         if (CurrentHealth <= 0)
         {
