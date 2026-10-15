@@ -463,7 +463,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f504e2405e4115c41bd42dac5376e4ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HyperShield
-  generationPerSecond: 10
+  generationPerSecond: 5
   decayPerSecond: 10
   decayDelay: 5
   speedThresholdBuffer: 0
