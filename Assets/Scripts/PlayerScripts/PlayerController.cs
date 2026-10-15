@@ -481,7 +481,7 @@ public class PlayerController : MonoBehaviour
         }
     }
     
-    private float GetMaxNaturalSpeed()
+    public float GetMaxNaturalSpeed()
     {
         return (dashSpeed * slideMultiplier) * dashSlideDampener;
     }

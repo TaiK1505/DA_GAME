@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 7503179856316959538}
   - component: {fileID: 3729163121110080360}
   - component: {fileID: 8441628466050787334}
+  - component: {fileID: 208837067341180236}
   m_Layer: 10
   m_Name: Player
   m_TagString: Player
@@ -214,6 +215,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthComponent
   maxHealth: 100
+  maxHyperShield: 25
+  <CurrentHyperShield>k__BackingField: 0
 --- !u!114 &4375685098433773364
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -448,6 +451,22 @@ MonoBehaviour:
   spriteRenderer: {fileID: 8157496880363089303}
   flashMaterial: {fileID: 2100000, guid: 799371cf7808f9545b35efa759cd4813, type: 2}
   flashDuration: 0.1
+--- !u!114 &208837067341180236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2589597642998680059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f504e2405e4115c41bd42dac5376e4ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HyperShield
+  generationPerSecond: 5
+  decayPerSecond: 10
+  decayDelay: 5
+  speedThresholdBuffer: 0
 --- !u!1 &3044415677864352643
 GameObject:
   m_ObjectHideFlags: 0
