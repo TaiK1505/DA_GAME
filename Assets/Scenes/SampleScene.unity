@@ -97273,17 +97273,17 @@ MonoBehaviour:
     maxEnemies: 4
     enemyPool:
     - enemyPrefab: {fileID: 7822890725163632723, guid: ed99bc5b3e3c1d543bdb408420f3c41e, type: 3}
-      spawnWeight: 50
+      spawnWeight: 65
     - enemyPrefab: {fileID: 3458384298365180062, guid: 6a8d23fefef2b1f4eaf27b8a3d1a29a9, type: 3}
-      spawnWeight: 50
+      spawnWeight: 35
   - waveName: Wave1
     minEnemies: 2
     maxEnemies: 4
     enemyPool:
     - enemyPrefab: {fileID: 7822890725163632723, guid: ed99bc5b3e3c1d543bdb408420f3c41e, type: 3}
-      spawnWeight: 50
+      spawnWeight: 70
     - enemyPrefab: {fileID: 3458384298365180062, guid: 6a8d23fefef2b1f4eaf27b8a3d1a29a9, type: 3}
-      spawnWeight: 50
+      spawnWeight: 30
   spawnIndicatorPrefab: {fileID: 2534093849529061564, guid: 8e04ea1bdb8038445a586d749a4647b2, type: 3}
   spawnDelay: 1.5
   healthDropPrefab: {fileID: 8853349245387604636, guid: 0183444296c478641af75304468f6dc3, type: 3}
@@ -120672,9 +120672,9 @@ MonoBehaviour:
     maxEnemies: 5
     enemyPool:
     - enemyPrefab: {fileID: 3458384298365180062, guid: e4f42e0487e6e1a4eb0aa325df265171, type: 3}
-      spawnWeight: 80
+      spawnWeight: 60
     - enemyPrefab: {fileID: 3458384298365180062, guid: 6a8d23fefef2b1f4eaf27b8a3d1a29a9, type: 3}
-      spawnWeight: 20
+      spawnWeight: 40
   spawnIndicatorPrefab: {fileID: 2534093849529061564, guid: 8e04ea1bdb8038445a586d749a4647b2, type: 3}
   spawnDelay: 1.5
   healthDropPrefab: {fileID: 8853349245387604636, guid: 0183444296c478641af75304468f6dc3, type: 3}
