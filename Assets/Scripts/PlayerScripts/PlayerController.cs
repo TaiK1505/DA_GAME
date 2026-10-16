@@ -646,4 +646,12 @@ public class PlayerController : MonoBehaviour
     {
         knockbackMuzzleTimer = duration;
     }
+
+    public void ApplyWeaponRecoil(Vector2 pushDirection, float force)
+    {
+        // Hijack the sliding state for the point-blank wall bounce!
+        currentState = State.Sliding;
+        slideDirection = pushDirection;
+        currentSlideSpeed = force;
+    }
 }

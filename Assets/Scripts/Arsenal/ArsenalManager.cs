@@ -194,10 +194,17 @@ public class ArsenalManager : MonoBehaviour
 
     public void AltFire()
     {
+        // 1. If we hold the Katana, Throw it
         if (isMeleeActive && meleeWeapon != null)
         {
             MeleeWeaponController meleeScript = meleeWeapon.GetComponent<MeleeWeaponController>();
             if (meleeScript != null) meleeScript.Throw();
+        }
+        // 2. If we hold a Gun, trigger its Alt-Fire
+        else if (!isMeleeActive && gunInventory.Count > 0 && gunInventory[currentGunIndex] != null)
+        {
+            WeaponBase currentGun = gunInventory[currentGunIndex].GetComponent<WeaponBase>();
+            if (currentGun != null) currentGun.AltFire();
         }
     }
 
@@ -223,15 +230,28 @@ public class ArsenalManager : MonoBehaviour
         if (EquipmentUI.instance == null || activeWeapon == null) return;
 
         SpriteRenderer sr = activeWeapon.GetComponentInChildren<SpriteRenderer>();
-        
         WeaponDirectionalSprites dirSprites = activeWeapon.GetComponentInChildren<WeaponDirectionalSprites>();
+        
         if (aimingScript != null && sr != null && dirSprites != null)
         {
-            // Pass the SpriteRenderer AND the data package
             aimingScript.UpdateWeaponSprite(sr, dirSprites);
         }
 
-        bool hasAltFire = activeWeapon.GetComponent<MeleeWeaponController>() != null;
+        // ---> THE FIX: Check for BOTH Katana and Ranged Alt-Fires <---
+        bool hasAltFire = false;
+        
+        if (activeWeapon.GetComponent<MeleeWeaponController>() != null)
+        {
+            hasAltFire = true; // It's the Katana
+        }
+        else 
+        {
+            WeaponBase gun = activeWeapon.GetComponent<WeaponBase>();
+            if (gun != null && gun.weaponData != null && gun.weaponData.hasAltFire)
+            {
+                hasAltFire = true; // It's a Gun with an Alt-Fire
+            }
+        }
 
         if (sr != null)
         {
