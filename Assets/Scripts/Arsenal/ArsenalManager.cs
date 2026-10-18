@@ -16,34 +16,51 @@ public class ArsenalManager : MonoBehaviour
 
     [Header("The Ranged Arsenal")]
     public int maxGunCapacity = 2; 
+    public List<GameObject> startingGunPrefabs = new List<GameObject>(); 
     public List<GameObject> gunInventory = new List<GameObject>();
     public int currentGunIndex = 0;
     
-    public GameObject starterGunPrefab; // Your real working gun prefab!
 
     void Start()
     {
-        // Auto-link the player script if forgotten
         if (player == null) player = GetComponent<PlayerController>();
+
+        // ---> THE FIX: Wipe any ghost data saved by the Unity Inspector <---
+        gunInventory.Clear(); 
 
         if (starterMeleePrefab != null)
         {
             meleeWeapon = Instantiate(starterMeleePrefab, weaponPivot);
             meleeWeapon.transform.localPosition = Vector3.zero;
             meleeWeapon.transform.localRotation = Quaternion.identity;
-            
-            // Force it to be holstered when the game starts
             meleeWeapon.SetActive(false); 
         }
 
-        // If we assigned a starter gun, spawn it on the shoulder!
-        if (starterGunPrefab != null)
+        if (startingGunPrefabs.Count > 0)
         {
-            SpawnAndPickupGun(starterGunPrefab);
-        }
-        else if (gunInventory.Count > 0)
-        {
-            EquipGun(0);
+            foreach (GameObject prefab in startingGunPrefabs)
+            {
+                // Only spawn if we haven't hit our max capacity
+                if (prefab != null && gunInventory.Count < maxGunCapacity)
+                {
+                    GameObject spawnedGun = Instantiate(prefab, weaponPivot);
+                    spawnedGun.transform.localPosition = Vector3.zero;
+                    spawnedGun.transform.localRotation = Quaternion.identity;
+                    spawnedGun.SetActive(false); 
+                    
+                    gunInventory.Add(spawnedGun); 
+                    Debug.Log("Successfully spawned and stored: " + spawnedGun.name);
+                }
+                else if (prefab != null)
+                {
+                    Debug.LogWarning("BLOCKED: Could not spawn " + prefab.name + " because max capacity is reached!");
+                }
+            }
+            
+            if (gunInventory.Count > 0)
+            {
+                EquipGun(0);
+            }
         }
     }
 
@@ -150,7 +167,12 @@ public class ArsenalManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Dropping old gun: " + gunInventory[currentGunIndex].name);
+            // ---> THE FIX: Physically destroy the old gun! <---
+            GameObject oldGun = gunInventory[currentGunIndex];
+            Debug.Log("Trashing old gun: " + oldGun.name);
+            Destroy(oldGun);
+
+            // Slot the new gun into the inventory and equip it
             gunInventory[currentGunIndex] = newGun;
             EquipGun(currentGunIndex);
         }

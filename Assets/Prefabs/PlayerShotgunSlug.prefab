@@ -105,8 +105,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProjectileScript
   speed: 60
-  lifetime: 0.4
-  drag: 6
+  lifetime: 0.5
+  drag: 5.5
   hitLayers:
     serializedVersion: 2
     m_Bits: 136

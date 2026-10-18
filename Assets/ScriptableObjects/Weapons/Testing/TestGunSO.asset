@@ -16,6 +16,26 @@ MonoBehaviour:
   damage: 10
   fireRate: 0.2
   maxAmmo: 30
+  projectilesPerShot: 1
+  spreadAngle: 0
+  baseRecoilForce: 0
+  wallKickbackMultiplier: 2.5
+  pointBlankDetectionRange: 1.5
+  recoilDetectionLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  hasAltFire: 0
+  altFireBulletPrefab: {fileID: 0}
+  altFireProjectileCount: 1
+  altFireSpreadAngle: 0
+  altFireDamageMultiplier: 2
+  altFireRecoilForce: 15
+  altFireAmmoCost: 2
+  altFireCooldown: 1
+  baseScreenShake: 0
+  baseShakeDuration: 0
+  altFireScreenShake: 0
+  altFireShakeDuration: 0
   scalesOffStat: None
   bulletPrefab: {fileID: 3981464719375659004, guid: 239850449edc2634eb91441e19292fed, type: 3}
   magazineSize: 30
