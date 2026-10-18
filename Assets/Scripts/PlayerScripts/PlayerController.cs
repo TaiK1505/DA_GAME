@@ -22,6 +22,15 @@ public class PlayerController : MonoBehaviour
     public float minSlideSpeed = 5f;     // The speed at which the slide cancels
     public float slideCooldown = 0.5f;
     public float slideSteeringFactor = 3f; 
+
+    [Header("SuperSlide (Bunny Hop)")]
+    public float perfectSlideWindow = 0.2f;      // The grace period (in seconds) to hit the next slide
+    public float flatSpeedBonusPerChain = 5f;   
+     public float maxSuperSlideSpeed = 60f;     // The absolute speed limit (lets you chain infinitely!)
+    private float peakSlideSpeed = 0f;
+    
+    private int currentSlideChains = 0;
+    private float lastSlideEndTime = -100f;
     
     [Header("Ramming Stats")]
     public float ramForceMultiplier = 1.2f;
@@ -282,6 +291,7 @@ public class PlayerController : MonoBehaviour
                 if (currentSlideSpeed <= minSlideSpeed)
                 {
                     currentState = State.Idle;
+                    lastSlideEndTime = Time.time;
                 }
                 break;
 
@@ -404,27 +414,75 @@ public class PlayerController : MonoBehaviour
 
     private void AttemptSlide()
     {
+        // 1. EARLY PERFECT: Pressed while sliding, but almost stopped (e.g., speed <= minSlideSpeed + 5f)
+        bool earlyPerfect = (currentState == State.Sliding && currentSlideSpeed <= minSlideSpeed + 5f);
+        
+        // 2. LATE PERFECT: Pressed right after standing up, within the grace period
+        bool latePerfect = ((currentState == State.Idle || currentState == State.Running) && (Time.time - lastSlideEndTime) <= perfectSlideWindow);
+
+        bool isPerfectChain = earlyPerfect || latePerfect;
+
+        if (isPerfectChain)
+        {
+            StartSlide(true); // Bypass cooldown and boost speed!
+            return;
+        }
+
+        // NORMAL SLIDE (Strictly obeys the cooldown)
         if ((currentState == State.Running || currentState == State.Dashing) && Time.time >= lastSlideTime + slideCooldown)
         {
-            StartSlide();
+            StartSlide(false); // Broke the chain, reset to normal
         }
     }
 
-     private void StartSlide()
+    // Default is false so your other scripts (like the Slide Gate) don't break when they call StartSlide()
+    private void StartSlide(bool isPerfectChain = false)
     {
-        // 2. MOMENTUM CHECK
+        // 1. Handle the Chain Math
+        if (isPerfectChain)
+        {
+            currentSlideChains++;
+            Debug.Log("<color=cyan>BUNNY HOP! Chain: " + currentSlideChains + "</color>");
+        }
+        else
+        {
+            currentSlideChains = 0; // The chain was broken
+        }
+
+        // 2. Calculate Base Momentum
         float momentumBase = (currentState == State.Dashing) ? (dashSpeed * dashSlideDampener) : moveSpeed;
-        // 3. DIRECTION CHECK
+        
         Vector2 startingDir = movementInput.normalized;
         if (startingDir == Vector2.zero && currentState == State.Dashing)
         {
             startingDir = dashDirection;
         }
+        else if (startingDir == Vector2.zero && currentState == State.Sliding)
+        {
+            startingDir = slideDirection; // Let them chain perfectly in a straight line without holding keys
+        }
 
+        // 3. Enter State
         currentState = State.Sliding;
-        currentSlideSpeed = momentumBase * slideMultiplier; 
+        
+        float calculatedBaseSpeed = momentumBase * slideMultiplier;
+        
+        // ---> THE FIX: Inherit massive momentum from shotguns/boosts if we are chaining! <---
+        float startingSpeedForThisChain = isPerfectChain ? Mathf.Max(calculatedBaseSpeed, peakSlideSpeed) : calculatedBaseSpeed;
+
+        // 5. Apply Flat Bonus & Cap the Speed
+        float totalFlatBonus = currentSlideChains * flatSpeedBonusPerChain; 
+        
+        currentSlideSpeed = Mathf.Min(startingSpeedForThisChain + totalFlatBonus, maxSuperSlideSpeed); 
+        
+        // 6. Memorize this new launch speed so the NEXT hop can inherit it
+        peakSlideSpeed = currentSlideSpeed;
         lastSlideTime = Time.time;
-        slideDirection = startingDir; 
+        
+        if (startingDir != Vector2.zero)
+        {
+            slideDirection = startingDir; 
+        }
     }
 
     public void OnGadgetButton()
