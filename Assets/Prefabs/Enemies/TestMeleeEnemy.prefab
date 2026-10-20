@@ -112,6 +112,7 @@ GameObject:
   - component: {fileID: -5442208146005334441}
   - component: {fileID: -7372527480766788646}
   - component: {fileID: 532174395901753148}
+  - component: {fileID: 7758190951395473833}
   m_Layer: 7
   m_Name: TestMeleeEnemy
   m_TagString: Enemy
@@ -208,6 +209,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthComponent
   maxHealth: 30
+  maxHyperShield: 25
+  <CurrentHyperShield>k__BackingField: 0
 --- !u!61 &5097792411332335620
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -434,6 +437,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExecutionHighlight
   enemyRenderer: {fileID: 6303311596426326617}
+  useShaderOutline: 0
+  executionPink: {r: 1, g: 0.1, b: 0.8, a: 1}
+--- !u!114 &7758190951395473833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3458384298365180062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbbcaaa2172eb374ba335ac4be767b4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyLoot
+  currencyPrefab: {fileID: 5414079216696552810, guid: 1fe008d4a0eb62944bbdaa68fb3a0abf, type: 3}
+  xpPrefab: {fileID: 5414079216696552810, guid: 96d9cb6c4aa99844eb48ee217b58112f, type: 3}
+  currencyDropChance: 100
+  minCurrency: 1
+  maxCurrency: 3
+  xpDropChance: 100
+  minXp: 1
+  maxXp: 2
 --- !u!1 &4572351839506498788
 GameObject:
   m_ObjectHideFlags: 0

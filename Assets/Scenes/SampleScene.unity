@@ -2068,7 +2068,7 @@ MonoBehaviour:
   spawnDelay: 1.5
   healthDropPrefab: {fileID: 8853349245387604636, guid: 0183444296c478641af75304468f6dc3, type: 3}
   rewardSpawnPoint: {fileID: 877823343}
-  healthDropChance: 100
+  healthDropChance: 30
 --- !u!61 &502706583
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3011,7 +3011,7 @@ MonoBehaviour:
   spawnDelay: 1.5
   healthDropPrefab: {fileID: 8853349245387604636, guid: 0183444296c478641af75304468f6dc3, type: 3}
   rewardSpawnPoint: {fileID: 437044402}
-  healthDropChance: 100
+  healthDropChance: 30
 --- !u!61 &714175747
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5321,7 +5321,7 @@ MonoBehaviour:
   spawnDelay: 1.5
   healthDropPrefab: {fileID: 8853349245387604636, guid: 0183444296c478641af75304468f6dc3, type: 3}
   rewardSpawnPoint: {fileID: 861640551}
-  healthDropChance: 100
+  healthDropChance: 30
 --- !u!61 &1157581145
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5867,7 +5867,7 @@ MonoBehaviour:
   spawnDelay: 1.5
   healthDropPrefab: {fileID: 8853349245387604636, guid: 0183444296c478641af75304468f6dc3, type: 3}
   rewardSpawnPoint: {fileID: 1603091179}
-  healthDropChance: 100
+  healthDropChance: 30
 --- !u!61 &1249793425
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6053,7 +6053,7 @@ MonoBehaviour:
   spawnDelay: 1.5
   healthDropPrefab: {fileID: 8853349245387604636, guid: 0183444296c478641af75304468f6dc3, type: 3}
   rewardSpawnPoint: {fileID: 722994580}
-  healthDropChance: 100
+  healthDropChance: 30
 --- !u!61 &1329708594
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -95718,7 +95718,7 @@ MonoBehaviour:
   spawnDelay: 1.5
   healthDropPrefab: {fileID: 8853349245387604636, guid: 0183444296c478641af75304468f6dc3, type: 3}
   rewardSpawnPoint: {fileID: 663272116}
-  healthDropChance: 100
+  healthDropChance: 30
 --- !u!61 &1389398456
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -118169,7 +118169,7 @@ MonoBehaviour:
   spawnDelay: 1.5
   healthDropPrefab: {fileID: 8853349245387604636, guid: 0183444296c478641af75304468f6dc3, type: 3}
   rewardSpawnPoint: {fileID: 1026707083}
-  healthDropChance: 100
+  healthDropChance: 30
 --- !u!61 &1851055289
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -119020,7 +119020,7 @@ MonoBehaviour:
   spawnDelay: 1.5
   healthDropPrefab: {fileID: 8853349245387604636, guid: 0183444296c478641af75304468f6dc3, type: 3}
   rewardSpawnPoint: {fileID: 1216866692}
-  healthDropChance: 100
+  healthDropChance: 30
 --- !u!61 &2097925267
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -119149,7 +119149,7 @@ MonoBehaviour:
   spawnDelay: 1.5
   healthDropPrefab: {fileID: 8853349245387604636, guid: 0183444296c478641af75304468f6dc3, type: 3}
   rewardSpawnPoint: {fileID: 1841080383}
-  healthDropChance: 100
+  healthDropChance: 30
 --- !u!61 &2110410360
 BoxCollider2D:
   m_ObjectHideFlags: 0

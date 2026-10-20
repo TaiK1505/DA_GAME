@@ -176,22 +176,21 @@ public class RoomManager : MonoBehaviour
             GameFeelManager.Instance.TriggerRoomClearSlowMo();
         }
 
-        // ---> NEW: Spawn the reward <---
+        // ---> NEW: The Gungeon Room-Clear Vacuum <---
+        // Find every XP/Currency drop in the room and suck it to the player
+        ResourceDrop[] remainingLoot = FindObjectsByType<ResourceDrop>(FindObjectsSortMode.None);
+        foreach (ResourceDrop loot in remainingLoot)
+        {
+            loot.TriggerRoomClearVacuum();
+        }
+
         if (healthDropPrefab != null)
         {
             float roll = Random.Range(0f, 100f);
             if (roll <= healthDropChance)
             {
-                // Use the dedicated point, or default to the RoomManager's position
                 Vector3 spawnPos = rewardSpawnPoint != null ? rewardSpawnPoint.position : transform.position;
-                
-                ObjectPoolManager.Instance.SpawnObject(
-                    healthDropPrefab, 
-                    spawnPos, 
-                    Quaternion.identity
-                );
-                
-                Debug.Log("Room cleared! Dropped health.");
+                ObjectPoolManager.Instance.SpawnObject(healthDropPrefab, spawnPos, Quaternion.identity);
             }
         }
     }

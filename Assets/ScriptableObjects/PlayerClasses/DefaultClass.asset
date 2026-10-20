@@ -15,7 +15,7 @@ MonoBehaviour:
   className: DefaultClass
   baseAdrenalineModifiers:
   - statType: 0
-    multiplier: 0.5
+    multiplier: 1
     duration: 0
     expirationTime: 0
   - statType: 5

@@ -9,6 +9,8 @@ public class HealthComponent : MonoBehaviour, IDamageable
     [Header("HyperShield Stats")]
     public float maxHyperShield = 25f;
     [field: SerializeField] public float CurrentHyperShield { get; private set; }
+
+    public event System.Action OnDeath;
     
     private void Awake()
     {
@@ -97,7 +99,7 @@ public class HealthComponent : MonoBehaviour, IDamageable
 
     private void Die()
     {
-        Debug.Log(gameObject.name + " has died!");
+        OnDeath?.Invoke();
         ObjectPoolManager.Instance.ReturnObject(gameObject);
     }
 }

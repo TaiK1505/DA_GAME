@@ -336,6 +336,7 @@ GameObject:
   - component: {fileID: 9025191170888162802}
   - component: {fileID: 7724458276455148853}
   - component: {fileID: -5589244103699207229}
+  - component: {fileID: -1748244839762743227}
   m_Layer: 7
   m_Name: TestSniperEnemy
   m_TagString: Enemy
@@ -433,6 +434,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthComponent
   maxHealth: 20
+  maxHyperShield: 25
+  <CurrentHyperShield>k__BackingField: 0
 --- !u!61 &1989751936235461485
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -780,3 +783,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExecutionHighlight
   enemyRenderer: {fileID: 3851992282290864511}
+  useShaderOutline: 0
+  executionPink: {r: 1, g: 0.1, b: 0.8, a: 1}
+--- !u!114 &-1748244839762743227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7822890725163632723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbbcaaa2172eb374ba335ac4be767b4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyLoot
+  currencyPrefab: {fileID: 5414079216696552810, guid: 1fe008d4a0eb62944bbdaa68fb3a0abf, type: 3}
+  xpPrefab: {fileID: 5414079216696552810, guid: 96d9cb6c4aa99844eb48ee217b58112f, type: 3}
+  currencyDropChance: 100
+  minCurrency: 1
+  maxCurrency: 3
+  xpDropChance: 100
+  minXp: 1
+  maxXp: 2
