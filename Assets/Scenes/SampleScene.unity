@@ -119422,7 +119422,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5732129671971716746, guid: a87e5fcc9f4944240baa96c1042c8ee9, type: 3}
       propertyPath: perfectSlideWindow
-      value: 0.05
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 5732129671971716746, guid: a87e5fcc9f4944240baa96c1042c8ee9, type: 3}
       propertyPath: maxPerfectSlideSpeed
@@ -119430,7 +119430,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5732129671971716746, guid: a87e5fcc9f4944240baa96c1042c8ee9, type: 3}
       propertyPath: flatSpeedBonusPerChain
-      value: 2.5
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 6652182286996094726, guid: a87e5fcc9f4944240baa96c1042c8ee9, type: 3}
       propertyPath: aimingScript
