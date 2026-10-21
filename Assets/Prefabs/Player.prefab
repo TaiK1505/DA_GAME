@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 487878976747015608}
   - component: {fileID: 6798470454638224635}
   - component: {fileID: 8935188109872133835}
+  - component: {fileID: 6478144270621710764}
   - component: {fileID: 6652182286996094726}
   - component: {fileID: 8441628466050787334}
   - component: {fileID: 208837067341180236}
@@ -143,6 +144,9 @@ MonoBehaviour:
   minSlideSpeed: 5
   slideCooldown: 0.5
   slideSteeringFactor: 4
+  perfectSlideWindow: 0.2
+  flatSpeedBonusPerChain: 5
+  maxSuperSlideSpeed: 60
   ramForceMultiplier: 1
   knockbackMuzzleTimer: 0
   wallBoostThreshold: 12
@@ -281,6 +285,19 @@ MonoBehaviour:
   isGadgetActive: 0
   overridePlayerPhysics: 0
   myStats: {fileID: 11400000, guid: 1805a8df8ecf0b440906c47b26c0b1e2, type: 2}
+--- !u!114 &6478144270621710764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2589597642998680059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccfa824530d6c1b47b5f35129294aca5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
+  currentCurrency: 0
 --- !u!114 &6652182286996094726
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -301,9 +318,9 @@ MonoBehaviour:
   isMeleeActive: 0
   meleeSpeedBuff: 1.15
   maxGunCapacity: 2
+  startingGunPrefabs: []
   gunInventory: []
   currentGunIndex: 0
-  starterGunPrefab: {fileID: 358642480848166954, guid: 61f83b6381bd2854da96bb87ae312a91, type: 3}
 --- !u!114 &8441628466050787334
 MonoBehaviour:
   m_ObjectHideFlags: 0

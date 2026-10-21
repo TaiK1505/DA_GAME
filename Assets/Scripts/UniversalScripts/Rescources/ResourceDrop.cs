@@ -13,13 +13,17 @@ public class ResourceDrop : Pickup
         // 1. Give the stats to the player based on the type
         if (type == ResourceType.XP)
         {
+            // TODO: Hook up to PlayerStats or LevelManager later
             // player.GetComponent<PlayerStats>().AddXP(resourceValue);
             Debug.Log($"Gained {resourceValue} XP!");
         }
         else if (type == ResourceType.Currency)
         {
-            // player.GetComponent<PlayerInventory>().AddCurrency(resourceValue);
-            Debug.Log($"Gained {resourceValue} Currency!");
+            PlayerInventory inventory = player.GetComponent<PlayerInventory>();
+            if (inventory != null)
+            {
+                inventory.AddCurrency(resourceValue);
+            }
         }
 
         // 2. Return to pool
