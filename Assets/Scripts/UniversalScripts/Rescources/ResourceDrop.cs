@@ -10,12 +10,13 @@ public class ResourceDrop : Pickup
 
     protected override void OnCollected(GameObject player)
     {
-        // 1. Give the stats to the player based on the type
         if (type == ResourceType.XP)
         {
-            // TODO: Hook up to PlayerStats or LevelManager later
-            // player.GetComponent<PlayerStats>().AddXP(resourceValue);
-            Debug.Log($"Gained {resourceValue} XP!");
+            LevelingManager levelManager = player.GetComponent<LevelingManager>();
+            if (levelManager != null)
+            {
+                levelManager.AddXP(resourceValue);
+            }
         }
         else if (type == ResourceType.Currency)
         {
@@ -26,7 +27,6 @@ public class ResourceDrop : Pickup
             }
         }
 
-        // 2. Return to pool
         if (ObjectPoolManager.Instance != null)
         {
             ObjectPoolManager.Instance.ReturnObject(gameObject);

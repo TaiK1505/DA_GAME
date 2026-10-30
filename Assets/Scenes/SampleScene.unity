@@ -867,6 +867,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2110410361}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &263244838 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 542462136609912601, guid: a87e5fcc9f4944240baa96c1042c8ee9, type: 3}
+  m_PrefabInstance: {fileID: 3657803264560434334}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &264402510
 GameObject:
   m_ObjectHideFlags: 0
@@ -119494,6 +119499,14 @@ PrefabInstance:
       propertyPath: speedThresholdBuffer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 542462136609912601, guid: a87e5fcc9f4944240baa96c1042c8ee9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2199166186058297030, guid: a87e5fcc9f4944240baa96c1042c8ee9, type: 3}
+      propertyPath: scannerVisual
+      value: 
+      objectReference: {fileID: 263244838}
     - target: {fileID: 2310280796610986817, guid: a87e5fcc9f4944240baa96c1042c8ee9, type: 3}
       propertyPath: ghostSpawnRate
       value: 0.075
@@ -119556,7 +119569,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5732129671971716746, guid: a87e5fcc9f4944240baa96c1042c8ee9, type: 3}
       propertyPath: maxSuperSlideSpeed
-      value: 35
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 5732129671971716746, guid: a87e5fcc9f4944240baa96c1042c8ee9, type: 3}
       propertyPath: perfectSlideWindow
