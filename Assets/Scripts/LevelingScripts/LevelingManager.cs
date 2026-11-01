@@ -6,6 +6,7 @@ public class LevelingManager : MonoBehaviour
     public int playerLevel = 1;
     public int currentXP = 0;
     public int xpToNextLevel = 50;
+    public float xpScaleFactor = 1.5f;
 
     [Header("Rewards")]
     public int bankedSkillPoints = 0;
@@ -34,7 +35,7 @@ public class LevelingManager : MonoBehaviour
         bankedSkillPoints++;
 
         // Scale the requirement for the next level (e.g., 50 -> 75 -> 112)
-        xpToNextLevel = Mathf.RoundToInt(xpToNextLevel * 1.5f);
+        xpToNextLevel = Mathf.RoundToInt(xpToNextLevel * xpScaleFactor);
 
         Debug.Log($"LEVEL UP! You are now Level {playerLevel}. Skill Points: {bankedSkillPoints}");
 

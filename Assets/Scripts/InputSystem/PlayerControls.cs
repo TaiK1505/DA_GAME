@@ -208,6 +208,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""UIHub"",
+                    ""type"": ""Button"",
+                    ""id"": ""6c148c39-1e56-49ad-aedd-886760c88e74"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MapToggle"",
+                    ""type"": ""Button"",
+                    ""id"": ""dacacba0-e392-4ca6-902c-c98b441df095"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -419,6 +437,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Reload"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c3dce0fe-d399-45cd-becf-ca57eeee54fb"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UIHub"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c4ceaab1-cfb9-4a36-9d52-fbe0f40b20a3"",
+                    ""path"": ""<Keyboard>/m"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MapToggle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -440,6 +480,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_ToggleMelee = m_Player.FindAction("ToggleMelee", throwIfNotFound: true);
         m_Player_AltFire = m_Player.FindAction("AltFire", throwIfNotFound: true);
         m_Player_Reload = m_Player.FindAction("Reload", throwIfNotFound: true);
+        m_Player_UIHub = m_Player.FindAction("UIHub", throwIfNotFound: true);
+        m_Player_MapToggle = m_Player.FindAction("MapToggle", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -533,6 +575,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ToggleMelee;
     private readonly InputAction m_Player_AltFire;
     private readonly InputAction m_Player_Reload;
+    private readonly InputAction m_Player_UIHub;
+    private readonly InputAction m_Player_MapToggle;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -596,6 +640,14 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Reload".
         /// </summary>
         public InputAction @Reload => m_Wrapper.m_Player_Reload;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/UIHub".
+        /// </summary>
+        public InputAction @UIHub => m_Wrapper.m_Player_UIHub;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/MapToggle".
+        /// </summary>
+        public InputAction @MapToggle => m_Wrapper.m_Player_MapToggle;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -661,6 +713,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Reload.started += instance.OnReload;
             @Reload.performed += instance.OnReload;
             @Reload.canceled += instance.OnReload;
+            @UIHub.started += instance.OnUIHub;
+            @UIHub.performed += instance.OnUIHub;
+            @UIHub.canceled += instance.OnUIHub;
+            @MapToggle.started += instance.OnMapToggle;
+            @MapToggle.performed += instance.OnMapToggle;
+            @MapToggle.canceled += instance.OnMapToggle;
         }
 
         /// <summary>
@@ -711,6 +769,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Reload.started -= instance.OnReload;
             @Reload.performed -= instance.OnReload;
             @Reload.canceled -= instance.OnReload;
+            @UIHub.started -= instance.OnUIHub;
+            @UIHub.performed -= instance.OnUIHub;
+            @UIHub.canceled -= instance.OnUIHub;
+            @MapToggle.started -= instance.OnMapToggle;
+            @MapToggle.performed -= instance.OnMapToggle;
+            @MapToggle.canceled -= instance.OnMapToggle;
         }
 
         /// <summary>
@@ -842,5 +906,19 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnReload(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "UIHub" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnUIHub(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "MapToggle" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnMapToggle(InputAction.CallbackContext context);
     }
 }

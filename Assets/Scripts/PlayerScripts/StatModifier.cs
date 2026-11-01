@@ -3,7 +3,7 @@ using UnityEngine;
 [System.Serializable]
 public class StatModifier 
 {
-    public enum StatType { MovementSpeed, DamageReduction, AttackDamage, AttackSpeed, DodgeChance, Friction }
+    public enum StatType { MovementSpeed, DamageReduction, AttackDamage, AttackSpeed, DodgeChance, Friction, CriticalChance, CriticalDamage, LifeSteal, MaxHealth, MaxEnergy, EnergyRegen }
     public StatType statType;
     public float multiplier;
 

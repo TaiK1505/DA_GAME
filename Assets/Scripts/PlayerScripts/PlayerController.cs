@@ -76,6 +76,11 @@ public class PlayerController : MonoBehaviour
     [Header("Combat Lock")]
     public bool canMove = true;
 
+    [Header("UI Lockouts")]
+    public MasterHubUI masterHubUI;
+    public bool isUIActive = false;
+    private Vector2 lastAimDirection = Vector2.right;
+
     public PlayerGadget currentActiveGadget;
     
     private Rigidbody2D rb;
@@ -96,7 +101,7 @@ public class PlayerController : MonoBehaviour
     
     void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+       rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
 
         myStats = GetComponent<PlayerStats>();
@@ -109,8 +114,13 @@ public class PlayerController : MonoBehaviour
             arsenal = GetComponent<ArsenalManager>();
         }
 
-        controls.Player.Fire.started += ctx => arsenal.PullTrigger();
-        controls.Player.Fire.canceled += ctx => arsenal.ReleaseTrigger();
+        if (masterHubUI == null) 
+        {
+            masterHubUI = FindFirstObjectByType<MasterHubUI>();
+        }
+
+        controls.Player.Fire.started += ctx => { if (!isUIActive) arsenal.PullTrigger(); }; 
+        controls.Player.Fire.canceled += ctx => { if (!isUIActive) arsenal.ReleaseTrigger(); };
 
         controls.Player.Reload.performed += ctx => arsenal.ReloadActiveWeapon();
 
@@ -126,9 +136,12 @@ public class PlayerController : MonoBehaviour
 
         controls.Player.ToggleMelee.performed += ctx => arsenal.ToggleMelee();
 
-
         controls.Player.NextWeapon.performed += ctx => arsenal.CycleNext();
         controls.Player.PreviousWeapon.performed += ctx => arsenal.CyclePrevious();
+
+        controls.Player.MapToggle.performed += ctx => masterHubUI?.ToggleHub();
+        controls.Player.UIHub.started += ctx => masterHubUI?.SetHubState(true);
+        controls.Player.UIHub.canceled += ctx => masterHubUI?.SetHubState(false);
     }
     
         void OnEnable()
@@ -202,22 +215,25 @@ public class PlayerController : MonoBehaviour
         {
             animDirection = dashDirection; // Lock body to physical dash momentum!
         }
-        else 
-        {
-            // 2. We are Idle or Running: Lock body to the Mouse!
-            Vector2 mouseScreenPos = UnityEngine.InputSystem.Mouse.current.position.ReadValue();
-            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
-
-            animDirection = ((Vector2)mouseWorldPos - (Vector2)transform.position).normalized;
-            // 3. The Moonwalk Fix: Are we running away from where we are aiming?
-            if (currentState == State.Running)
+        else  
+        { 
+            // 2. We are Idle or Running: Lock body to the Mouse, UNLESS the UI is open! 
+            if (!isUIActive)
             {
-                // Vector2.Dot checks if two directions are facing opposite ways
-                float lookMoveDot = Vector2.Dot(movementInput.normalized, animDirection);
-                
-                // If the dot product is negative, we are backpedaling! Play animation at -1 speed.
-                anim.SetFloat("RunMultiplier", lookMoveDot < 0 ? -1f : 1f);
+                Vector2 mouseScreenPos = UnityEngine.InputSystem.Mouse.current.position.ReadValue(); 
+                Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(mouseScreenPos);
+                lastAimDirection = ((Vector2)mouseWorldPos - (Vector2)transform.position).normalized; 
             }
+            
+            // Feed the animation the last known direction (whether live tracking or frozen)
+            animDirection = lastAimDirection;
+
+            // 3. The Moonwalk Fix
+            if (currentState == State.Running) 
+            { 
+                float lookMoveDot = Vector2.Dot(movementInput.normalized, animDirection); 
+                anim.SetFloat("RunMultiplier", lookMoveDot < 0 ? -1f : 1f); 
+            } 
         }
 
         // 4. Feed the steering wheel!
