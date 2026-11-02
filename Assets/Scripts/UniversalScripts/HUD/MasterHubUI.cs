@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 public class MasterHubUI : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class MasterHubUI : MonoBehaviour
     public PlayerController playerController;
     public GameObject upgradeNotificationIcon; 
     public GameObject crosshairCanvas; // Disables your combat crosshair so you can click!
+
+    [Header("Currency UI")]
+    public TextMeshProUGUI skillPointsText;
 
     public void ToggleHub()
     {
@@ -46,6 +50,7 @@ public class MasterHubUI : MonoBehaviour
             if (upgradeNotificationIcon != null) upgradeNotificationIcon.SetActive(hasPoints);
             
             RefreshTabs();
+            RefreshCurrencyUI();
         }
     }
 
@@ -58,6 +63,7 @@ public class MasterHubUI : MonoBehaviour
         else if (currentTabIndex < 0) currentTabIndex = menuTabs.Length - 1;
         
         RefreshTabs();
+        RefreshCurrencyUI();
     }
 
     private void RefreshTabs()
@@ -65,6 +71,14 @@ public class MasterHubUI : MonoBehaviour
         for (int i = 0; i < menuTabs.Length; i++)
         {
             if (menuTabs[i] != null) menuTabs[i].SetActive(i == currentTabIndex);
+        }
+    }
+
+    public void RefreshCurrencyUI()
+    {
+        if (skillPointsText != null && levelManager != null)
+        {
+            skillPointsText.text = "Skill Points: " + levelManager.bankedSkillPoints;
         }
     }
 }

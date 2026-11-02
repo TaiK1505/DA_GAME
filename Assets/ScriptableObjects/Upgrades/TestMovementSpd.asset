@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15cf05f13bd3059449b71c8ba4a5c93c, type: 3}
   m_Name: TestMovementSpd
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeData
-  upgradeName: 
-  description: 
+  upgradeName: 'Cyber-Leg '
+  description: Cyber-Leg firmware update that increases movement by 25%
   skillPointCost: 1
   category: 0
   statToBoost: 0
