@@ -145,6 +145,23 @@ public class MeleeWeaponController : MonoBehaviour
 
     private void DamageEnemiesInSwing(HashSet<Collider2D> alreadyHit, Vector2 currentAttackCenter)
     {
+        // 1. Ask the PlayerStats manager for our current multiplier!
+        PlayerStats stats = GetComponentInParent<PlayerStats>();
+        float damageMultiplier = stats != null ? stats.GetCurrentDamageMultiplier() : 1f;
+
+        // Base damage calculation
+        float finalDamage = weaponData.damage * damageMultiplier;
+
+        // ---> CRITICAL HIT CHECK <---
+        if (stats != null)
+        {
+            if (Random.value < stats.GetCurrentCritChance())
+            {
+                finalDamage *= stats.GetCurrentCritDamage();
+                Debug.Log("CRITICAL HIT! Damage amplified to: " + finalDamage);
+            }
+        }
+
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(currentAttackCenter, weaponData.attackRange, enemyLayers);
         foreach (Collider2D enemy in hitEnemies)
         {
@@ -153,8 +170,21 @@ public class MeleeWeaponController : MonoBehaviour
             IDamageable damageable = enemy.GetComponent<IDamageable>();
             if (damageable != null) 
             {
-                damageable.TakeDamage(weaponData.damage);
+                damageable.TakeDamage(finalDamage);
                 alreadyHit.Add(enemy);
+
+                // ---> LIFE STEAL CHECK <---
+                if (stats != null)
+                {
+                    float lifeStealPercentage = stats.GetCurrentLifeSteal();
+                    if (lifeStealPercentage > 0f)
+                    {
+                        // You heal a percentage of the final damage dealt
+                        float healAmount = finalDamage * lifeStealPercentage;
+                        HealthComponent playerHealth = stats.GetComponent<HealthComponent>();
+                        if (playerHealth != null) playerHealth.Heal(healAmount);
+                    }
+                }
             }
         }
     }

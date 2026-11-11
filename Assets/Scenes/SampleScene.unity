@@ -680,6 +680,7 @@ GameObject:
   - component: {fileID: 223878064}
   - component: {fileID: 223878065}
   - component: {fileID: 223878066}
+  - component: {fileID: 223878067}
   m_Layer: 5
   m_Name: HUDCanvas
   m_TagString: Untagged
@@ -859,6 +860,20 @@ MonoBehaviour:
   upgradeNotificationIcon: {fileID: 0}
   crosshairCanvas: {fileID: 1232132117}
   skillPointsText: {fileID: 250177984}
+--- !u!114 &223878067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 223878057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b3999238b977d54f9a7b49a2eb2e479, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeManager
+  allAvailableUpgrades: []
+  cardSlots: []
 --- !u!1 &226143463
 GameObject:
   m_ObjectHideFlags: 0
@@ -2820,6 +2835,7 @@ MonoBehaviour:
   playerStats: {fileID: 2094027226}
   playerController: {fileID: 74871045}
   hubUI: {fileID: 223878066}
+  upgradeManager: {fileID: 0}
   nameText: {fileID: 1701523345}
   descriptionText: {fileID: 1873517195}
   costText: {fileID: 252158167}
@@ -3965,7 +3981,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 500, y: 200}
+  m_SizeDelta: {x: 300, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &707163362
 MonoBehaviour:
@@ -4014,8 +4030,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4976,11 +4992,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5b2e7590f8f10b4bb3d03f68f91be0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeSlotUI
-  upgradeData: {fileID: 0}
+  upgradeData: {fileID: 11400000, guid: 29100ecf794fb7046b45bd5cbae74785, type: 2}
   levelManager: {fileID: 2011215183}
   playerStats: {fileID: 2094027226}
   playerController: {fileID: 74871045}
   hubUI: {fileID: 223878066}
+  upgradeManager: {fileID: 0}
   nameText: {fileID: 2107566739}
   descriptionText: {fileID: 1899114445}
   costText: {fileID: 1756026700}
@@ -120704,7 +120721,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 500, y: 200}
+  m_SizeDelta: {x: 300, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1873517195
 MonoBehaviour:
@@ -120753,8 +120770,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -120996,7 +121013,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 500, y: 200}
+  m_SizeDelta: {x: 300, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1899114445
 MonoBehaviour:
@@ -121045,8 +121062,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -121628,11 +121645,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5b2e7590f8f10b4bb3d03f68f91be0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeSlotUI
-  upgradeData: {fileID: 0}
+  upgradeData: {fileID: 11400000, guid: dc293bd70f4b69a40adde53053c43c76, type: 2}
   levelManager: {fileID: 2011215183}
   playerStats: {fileID: 2094027226}
   playerController: {fileID: 74871045}
   hubUI: {fileID: 223878066}
+  upgradeManager: {fileID: 0}
   nameText: {fileID: 1857835929}
   descriptionText: {fileID: 707163362}
   costText: {fileID: 2079148562}
@@ -122622,7 +122640,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 208837067341180236, guid: a87e5fcc9f4944240baa96c1042c8ee9, type: 3}
       propertyPath: speedThresholdBuffer
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 542462136609912601, guid: a87e5fcc9f4944240baa96c1042c8ee9, type: 3}
       propertyPath: m_IsActive
@@ -122709,12 +122727,16 @@ PrefabInstance:
       value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 5732129671971716746, guid: a87e5fcc9f4944240baa96c1042c8ee9, type: 3}
+      propertyPath: wallBoostCoyoteTime
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5732129671971716746, guid: a87e5fcc9f4944240baa96c1042c8ee9, type: 3}
       propertyPath: maxPerfectSlideSpeed
       value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 5732129671971716746, guid: a87e5fcc9f4944240baa96c1042c8ee9, type: 3}
       propertyPath: flatSpeedBonusPerChain
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6478144270621710764, guid: a87e5fcc9f4944240baa96c1042c8ee9, type: 3}
       propertyPath: currencyText

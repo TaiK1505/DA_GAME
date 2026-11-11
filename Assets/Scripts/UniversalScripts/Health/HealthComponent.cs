@@ -25,6 +25,23 @@ public class HealthComponent : MonoBehaviour, IDamageable
 
    public void TakeDamage(float damageAmount)
     {
+        if (gameObject.CompareTag("Player"))
+        {
+            PlayerStats stats = GetComponent<PlayerStats>();
+            if (stats != null)
+            {
+                float dodgeChance = stats.GetCurrentDodgeChance();
+
+                if (Random.value < dodgeChance)
+                {
+                    Debug.Log("PLAYER DODGED THE ATTACK!");
+                    return; 
+                }
+
+                damageAmount *= (1f - stats.GetCurrentDamageReduction());
+            }
+        }
+        
         // 1. TRIGGER VISUAL FEEDBACK IMMEDIATELY FOR ANY HIT
         HitFlash hitFlash = GetComponent<HitFlash>();
         if (hitFlash != null) hitFlash.Flash();
@@ -66,16 +83,36 @@ public class HealthComponent : MonoBehaviour, IDamageable
         }
     }
 
+    public float GetTrueMaxHealth()
+    {
+        // If this is the Player, ask PlayerStats for the upgraded Max Health!
+        if (gameObject.CompareTag("Player"))
+        {
+            PlayerStats stats = GetComponent<PlayerStats>();
+            if (stats != null)
+            {
+                return stats.GetCurrentMaxHealth();
+            }
+        }
+        
+        // If it's an enemy (or PlayerStats is missing), just use the base maxHealth
+        return maxHealth;
+    }
+
+
     public void Heal(float healAmount)
     {
         CurrentHealth += healAmount;
         
-        if (CurrentHealth > maxHealth)
+        // Check our upgraded cap!
+        float trueMax = GetTrueMaxHealth();
+
+        if (CurrentHealth > trueMax)
         {
-            CurrentHealth = maxHealth;
+            CurrentHealth = trueMax;
         }
         
-        Debug.Log(gameObject.name + " healed! Current HP: " + CurrentHealth);
+        Debug.Log(gameObject.name + " healed! Current HP: " + CurrentHealth + " / " + trueMax);
     }
 
     // ---> NEW: Methods to handle adding and losing the overshield <---

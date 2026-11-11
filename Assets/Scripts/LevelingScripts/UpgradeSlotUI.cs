@@ -10,6 +10,7 @@ public class UpgradeSlotUI : MonoBehaviour
     public PlayerStats playerStats;
     public PlayerController playerController; 
     public MasterHubUI hubUI; 
+    public UpgradeManager upgradeManager; 
 
     [Header("UI Elements")]
     public TextMeshProUGUI nameText;
@@ -18,17 +19,31 @@ public class UpgradeSlotUI : MonoBehaviour
 
     private Button buyButton;
 
-    private void Start()
+    private void Awake()
     {
-        // 1. Auto-wire the button so you don't have to use the Inspector OnClick event
         buyButton = GetComponent<Button>();
         if (buyButton != null)
         {
             buyButton.onClick.AddListener(AttemptPurchase);
         }
+    }
 
-        // 2. Populate the UI text from your ScriptableObject
-        if (upgradeData == null) return;
+    // ---> NEW: Allows UpgradeManager to deal a random ScriptableObject to this card <---
+    public void SetUpgradeData(UpgradeData newUpgrade)
+    {
+        upgradeData = newUpgrade;
+
+        if (buyButton == null) buyButton = GetComponent<Button>();
+
+        if (upgradeData == null)
+        {
+            gameObject.SetActive(false); // Hide card if loot pool is empty
+            return;
+        }
+
+        gameObject.SetActive(true);
+        if (buyButton != null) buyButton.interactable = true;
+
         if (nameText != null) nameText.text = upgradeData.upgradeName;
         if (descriptionText != null) descriptionText.text = upgradeData.description;
         if (costText != null) costText.text = "Cost: " + upgradeData.skillPointCost;
@@ -36,6 +51,8 @@ public class UpgradeSlotUI : MonoBehaviour
 
     public void AttemptPurchase()
     {
+        if (upgradeData == null) return;
+
         if (levelManager.bankedSkillPoints >= upgradeData.skillPointCost)
         {
             levelManager.bankedSkillPoints -= upgradeData.skillPointCost;
@@ -45,13 +62,16 @@ public class UpgradeSlotUI : MonoBehaviour
             {
                 ApplyStatBoost();
             }
-            else if (upgradeData.category == UpgradeData.UpgradeCategory.MechanicUnlock)
+            else if (upgradeData.category == UpgradeData.UpgradeCategory.MechanicUnlock) // Matches your UpgradeData enum
             {
                 ApplyMechanicUnlock();
             }
 
             buyButton.interactable = false;
             if (costText != null) costText.text = "OWNED";
+
+            // Tell the UpgradeManager we bought an upgrade (optional: re-roll or lock)
+            if (upgradeManager != null) upgradeManager.OnUpgradePurchased(upgradeData);
         }
         else
         {
@@ -67,17 +87,30 @@ public class UpgradeSlotUI : MonoBehaviour
             0f 
         );
         playerStats.AddModifier(permanentTicket);
+
+        // If it's a MaxHealth upgrade, also heal the player by the bonus amount!
+        if (upgradeData.statToBoost == StatModifier.StatType.MaxHealth)
+        {
+            HealthComponent hp = playerStats.GetComponent<HealthComponent>();
+            if (hp != null)
+            {
+                float bonusHP = playerStats.baseMaxHealth * upgradeData.boostMultiplier;
+                hp.Heal(bonusHP);
+            }
+        }
     }
 
     private void ApplyMechanicUnlock()
     {
+        if (playerController == null) return;
+
         switch (upgradeData.mechanicToUnlock)
         {
             case UpgradeData.MechanicType.ExtraWallBoost:
-                Debug.Log("Extra Wall Boost Unlocked!");
+                playerController.maxWallBoosts++;
                 break;
             case UpgradeData.MechanicType.ExtraDash:
-                Debug.Log("Extra Dash Unlocked!");
+                // playerController.maxDashes++;
                 break;
         }
     }

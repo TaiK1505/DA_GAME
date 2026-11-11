@@ -16,6 +16,7 @@ public class ProjectileScript : MonoBehaviour
     public LayerMask hitLayers; 
 
     [HideInInspector] public float damage; 
+    [HideInInspector] public float lifeStealPercentage;
 
     // ---> NEW: We need to cache the speed for the Object Pool! <---
     private float currentSpeed;
@@ -56,6 +57,20 @@ public class ProjectileScript : MonoBehaviour
             if (damageableTarget != null)
             {
                 damageableTarget.TakeDamage(damage);
+
+                if (lifeStealPercentage > 0f)
+                {
+                    // Calculate the heal amount based on the physical damage dealt
+                    float healAmount = damage * lifeStealPercentage;
+                    
+                    // Find the player and heal them!
+                    GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+                    if (playerObj != null)
+                    {
+                        HealthComponent playerHealth = playerObj.GetComponent<HealthComponent>();
+                        if (playerHealth != null) playerHealth.Heal(healAmount);
+                    }
+                }
             }   
 
             // Optional AAA Polish: Snap the bullet perfectly to the wall before it vanishes

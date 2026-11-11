@@ -79,10 +79,11 @@ public class WeaponBase : MonoBehaviour
     
     protected virtual void Shoot()
     {
+        // Pass the standard bullet prefab to FireSpread
         FireSpread(weaponData.bulletPrefab, weaponData.projectilesPerShot, weaponData.spreadAngle, weaponData.damage);
         
         ApplyRecoil(weaponData.baseRecoilForce);
-        TriggerScreenShake(weaponData.baseShakeDuration, weaponData.baseScreenShake); // Passes Duration AND Intensity
+        TriggerScreenShake(weaponData.baseShakeDuration, weaponData.baseScreenShake);
 
         if (!weaponData.bottomlessClip)
         {
@@ -99,19 +100,37 @@ public class WeaponBase : MonoBehaviour
 
         GameObject prefabToFire = weaponData.altFireBulletPrefab != null ? weaponData.altFireBulletPrefab : weaponData.bulletPrefab;
 
+        // Pass the Alt-Fire Slug to FireSpread
         FireSpread(prefabToFire, weaponData.altFireProjectileCount, weaponData.altFireSpreadAngle, weaponData.damage * weaponData.altFireDamageMultiplier);
         
         ApplyRecoil(weaponData.altFireRecoilForce);
-        TriggerScreenShake(weaponData.altFireShakeDuration, weaponData.altFireScreenShake); // Passes Duration AND Intensity
+        TriggerScreenShake(weaponData.altFireShakeDuration, weaponData.altFireScreenShake);
 
         nextAltFireTime = Time.time + weaponData.altFireCooldown;
     }
 
-    private void FireSpread(GameObject prefabToSpawn, int count, float spread, float dmg)
+    private void FireSpread(GameObject prefabToSpawn, int count, float spread, float baseDamage)
     {
+        // 1. Ask PlayerStats for the multiplier!
+        PlayerStats stats = GetComponentInParent<PlayerStats>();
+        float damageMultiplier = stats != null ? stats.GetCurrentDamageMultiplier() : 1f;
+
+        // Multiply the weapon's base damage by the player's current upgrades
+        float finalDamage = baseDamage * damageMultiplier;
+
+        // ---> CRITICAL HIT CHECK <---
+        if (stats != null)
+        {
+            if (Random.value < stats.GetCurrentCritChance())
+            {
+                finalDamage *= stats.GetCurrentCritDamage();
+                Debug.Log("GUN CRITICAL HIT! Damage amplified to: " + finalDamage);
+            }
+        }
+
         for (int i = 0; i < count; i++)
         {
-            // ---> THE FIX: Natural random spread instead of a perfect fan <---
+            // Natural random spread (Defaults to 0 if count is 1)
             float randomAngle = count > 1 ? Random.Range(-spread / 2f, spread / 2f) : 0f;
             
             Quaternion bulletRotation = firePoint.rotation * Quaternion.Euler(0, 0, randomAngle);
@@ -119,10 +138,17 @@ public class WeaponBase : MonoBehaviour
             GameObject bullet = ObjectPoolManager.Instance.SpawnObject(prefabToSpawn, firePoint.position, bulletRotation);
             
             ProjectileScript proj = bullet.GetComponent<ProjectileScript>();
-            if (proj != null) proj.damage = dmg;
+            if (proj != null) 
+            {
+                // Inject the upgraded/crit damage into the physical bullet
+                proj.damage = finalDamage; 
+                
+                // ---> LIFESTEAL HANDOFF <---
+                // The bullet needs to know what our Lifesteal percentage is so it can heal us when it hits a wall/enemy!
+                proj.lifeStealPercentage = stats != null ? stats.GetCurrentLifeSteal() : 0f;
+            }
         }
     }
-
     private void ApplyRecoil(float force)
     {
         if (force <= 0f || playerRb == null) return;
