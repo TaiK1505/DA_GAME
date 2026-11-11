@@ -218,6 +218,8 @@ MonoBehaviour:
     m_Bits: 512
   arsenal: {fileID: 6652182286996094726}
   canMove: 1
+  masterHubUI: {fileID: 0}
+  isUIActive: 0
   currentActiveGadget: {fileID: 0}
   slideDirection: {x: 0, y: 0}
   currentSlideSpeed: 0
@@ -238,6 +240,11 @@ MonoBehaviour:
   baseDamageReduction: 0
   baseDodgeChance: 0
   baseFrictionMultiplier: 1
+  baseCritChance: 0.05
+  baseCritDamage: 1.5
+  baseLifeSteal: 0
+  baseMaxHealth: 100
+  baseAttackSpeedMultiplier: 1
 --- !u!114 &2310280796610986817
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -389,8 +396,10 @@ MonoBehaviour:
   playerLevel: 1
   currentXP: 0
   xpToNextLevel: 50
+  xpScaleFactor: 1.5
   bankedSkillPoints: 0
   scannerVisual: {fileID: 0}
+  upgradeManager: {fileID: 0}
 --- !u!114 &8441628466050787334
 MonoBehaviour:
   m_ObjectHideFlags: 0

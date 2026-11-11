@@ -19,6 +19,8 @@ public class MasterHubUI : MonoBehaviour
     [Header("Currency UI")]
     public TextMeshProUGUI skillPointsText;
 
+    public UpgradeManager upgradeManager;
+
     public void ToggleHub()
     {
         SetHubState(!hubPanel.activeSelf);
@@ -51,6 +53,8 @@ public class MasterHubUI : MonoBehaviour
             
             RefreshTabs();
             RefreshCurrencyUI();
+
+            if (upgradeManager != null) upgradeManager.CheckAndRefreshIfCanAfford();
         }
     }
 

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15cf05f13bd3059449b71c8ba4a5c93c, type: 3}
+  m_Name: TestAttackSpeedUpgrade
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeData
+  upgradeName: Trigger Finger
+  description: Cyber Arm update that increases Attack Speed by 15%
+  skillPointCost: 1
+  category: 0
+  statToBoost: 3
+  boostMultiplier: 0.15
+  mechanicToUnlock: 0

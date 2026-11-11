@@ -15,10 +15,10 @@ public class PlayerHealthUI : MonoBehaviour
     {
         if (playerHealth == null) return;
 
-        // 1. Update Base Health Bar
-        if (healthBarFill != null && playerHealth.maxHealth > 0)
+        float trueMax = playerHealth.GetTrueMaxHealth();
+        if (healthBarFill != null && trueMax > 0)
         {
-            float healthPercentage = playerHealth.CurrentHealth / playerHealth.maxHealth;
+            float healthPercentage = playerHealth.CurrentHealth / trueMax;
             healthBarFill.fillAmount = healthPercentage;
         }
 

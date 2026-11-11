@@ -10,7 +10,7 @@ public class HealthDrop : Pickup
         HealthComponent health = player.GetComponent<HealthComponent>();
         
         // Only consume the drop if the player actually needs healing
-        if (health != null && health.CurrentHealth < health.maxHealth)
+        if (health != null && health.CurrentHealth < health.GetTrueMaxHealth())
         {
             health.Heal(healAmount);
             

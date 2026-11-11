@@ -73,7 +73,9 @@ public class WeaponBase : MonoBehaviour
             }
 
             Shoot();
-            nextFireTime = Time.time + weaponData.fireRate;
+            PlayerStats stats = GetComponentInParent<PlayerStats>();
+            float attackSpeedMult = stats != null ? stats.GetCurrentAttackSpeedMultiplier() : 1f;
+            nextFireTime = Time.time + (weaponData.fireRate / attackSpeedMult);
         }
     }
     

@@ -62,21 +62,33 @@ public class UpgradeSlotUI : MonoBehaviour
             {
                 ApplyStatBoost();
             }
-            else if (upgradeData.category == UpgradeData.UpgradeCategory.MechanicUnlock) // Matches your UpgradeData enum
+            else if (upgradeData.category == UpgradeData.UpgradeCategory.MechanicUnlock)
             {
                 ApplyMechanicUnlock();
             }
 
-            buyButton.interactable = false;
+            // Lock THIS card as OWNED
+            if (buyButton != null) buyButton.interactable = false;
             if (costText != null) costText.text = "OWNED";
 
-            // Tell the UpgradeManager we bought an upgrade (optional: re-roll or lock)
-            if (upgradeManager != null) upgradeManager.OnUpgradePurchased(upgradeData);
+            // Tell the UpgradeManager to lock the OTHER two cards
+            if (upgradeManager != null) upgradeManager.OnUpgradePurchased(this);
+
+            // Auto-close the Hub menu after buying (delete or comment out if you want it to stay open so you see it gray out!)
+            if (hubUI != null) hubUI.SetHubState(false);
         }
         else
         {
             Debug.Log("Not enough Skill Points!");
         }
+    }
+
+    // ---> NEW: Gray out the cards you didn't pick <---
+    public void LockCard()
+    {
+        if (buyButton == null) buyButton = GetComponent<Button>();
+        if (buyButton != null) buyButton.interactable = false;
+        if (costText != null) costText.text = "LOCKED";
     }
 
     private void ApplyStatBoost()

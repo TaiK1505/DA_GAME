@@ -66,8 +66,9 @@ public class MeleeWeaponController : MonoBehaviour
     {
         if (isThrown || isSwinging || weaponData == null || Time.time < nextAttackTime) return;
         
-        nextAttackTime = Time.time + weaponData.attackCooldown;
-
+        PlayerStats stats = GetComponentInParent<PlayerStats>();
+        float attackSpeedMult = stats != null ? stats.GetCurrentAttackSpeedMultiplier() : 1f;
+        nextAttackTime = Time.time + (weaponData.attackCooldown / attackSpeedMult);
         if (Time.time > lastSwingTime + comboResetWindow) currentComboStep = 0;
         
         currentComboStep++;
@@ -227,6 +228,10 @@ public class MeleeWeaponController : MonoBehaviour
             int index = Mathf.Clamp(comboStep - 1, 0, weaponData.comboStepDurations.Length - 1);
             stepDuration = weaponData.comboStepDurations[index];
         }
+
+        PlayerStats stats = GetComponentInParent<PlayerStats>();
+        float attackSpeedMult = stats != null ? stats.GetCurrentAttackSpeedMultiplier() : 1f;
+        stepDuration /= attackSpeedMult;
         
         float elapsed = 0f;
         float startingSpeed = weaponData.attackStepDistance / stepDuration;

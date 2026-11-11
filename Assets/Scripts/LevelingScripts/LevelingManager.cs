@@ -14,6 +14,9 @@ public class LevelingManager : MonoBehaviour
     [Header("Visuals")]
     public GameObject scannerVisual;
 
+    [Header("Upgrades")]
+    public UpgradeManager upgradeManager;
+
     // Called by the XP orbs you pick up
     public void AddXP(int amount)
     {
@@ -43,6 +46,11 @@ public class LevelingManager : MonoBehaviour
         {
             scannerVisual.SetActive(true);
         }
+
+        if (upgradeManager != null)
+        {
+            upgradeManager.RollRandomUpgrades();
+        } 
 
         // Safety check: If a massive XP drop leveled you up twice, loop it!
         if (currentXP >= xpToNextLevel)

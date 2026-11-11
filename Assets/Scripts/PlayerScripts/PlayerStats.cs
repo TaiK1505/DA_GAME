@@ -15,6 +15,7 @@ public class PlayerStats : MonoBehaviour
     public float baseCritDamage = 1.5f;  // 150% damage on crit
     public float baseLifeSteal = 0f;     // 0% base lifesteal
     public float baseMaxHealth = 100f;
+    public float baseAttackSpeedMultiplier = 1f;
 
     // The List of active stat modifiers currently affecting the player
     private List<StatModifier> activeModifiers = new List<StatModifier>();
@@ -145,4 +146,15 @@ public class PlayerStats : MonoBehaviour
         }
         return finalMaxHealth;
     }
+
+    public float GetCurrentAttackSpeedMultiplier()
+{
+    float finalAttackSpeed = baseAttackSpeedMultiplier;
+    foreach (StatModifier mod in activeModifiers)
+    {
+        if (mod.statType == StatModifier.StatType.AttackSpeed)
+            finalAttackSpeed += mod.multiplier;
+    }
+    return Mathf.Max(finalAttackSpeed, 0.1f); // Never drop below 10% speed
+}
 }
