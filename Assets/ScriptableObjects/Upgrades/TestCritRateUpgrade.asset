@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15cf05f13bd3059449b71c8ba4a5c93c, type: 3}
   m_Name: TestCritRateUpgrade
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeData
-  upgradeName: Crit
-  description: Lets see
+  upgradeName: Crit Rate
+  description: Increases Crit Rate by 10%
   skillPointCost: 1
   category: 0
   statToBoost: 6
-  boostMultiplier: 1
+  boostMultiplier: 0.1
   mechanicToUnlock: 0

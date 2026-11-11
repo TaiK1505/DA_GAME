@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15cf05f13bd3059449b71c8ba4a5c93c, type: 3}
   m_Name: TestDmgReductionUpgrade
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeData
-  upgradeName: 
-  description: 
+  upgradeName: Reinforced Cyber Armor
+  description: Reinforces user and decreases incoming damage by 5%
   skillPointCost: 1
   category: 0
   statToBoost: 1
-  boostMultiplier: 0
+  boostMultiplier: 0.05
   mechanicToUnlock: 0

@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15cf05f13bd3059449b71c8ba4a5c93c, type: 3}
   m_Name: TestMaxHealthUpgrade
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeData
-  upgradeName: Healthy
-  description: 
+  upgradeName: Health Capacity
+  description: Increases user Maximum Health by 20%
   skillPointCost: 1
   category: 0
   statToBoost: 9
-  boostMultiplier: 50
+  boostMultiplier: 0.2
   mechanicToUnlock: 0

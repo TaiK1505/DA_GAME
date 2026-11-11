@@ -860,6 +860,7 @@ MonoBehaviour:
   upgradeNotificationIcon: {fileID: 0}
   crosshairCanvas: {fileID: 1232132117}
   skillPointsText: {fileID: 250177984}
+  upgradeManager: {fileID: 223878067}
 --- !u!114 &223878067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -872,8 +873,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b3999238b977d54f9a7b49a2eb2e479, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeManager
-  allAvailableUpgrades: []
-  cardSlots: []
+  levelManager: {fileID: 2011215183}
+  hubUI: {fileID: 223878066}
+  allAvailableUpgrades:
+  - {fileID: 11400000, guid: f1b77b6506df12d48b4437f271e113c3, type: 2}
+  - {fileID: 11400000, guid: 9d34a348e9fa1284fa7e5f8e34cb0b04, type: 2}
+  - {fileID: 11400000, guid: 74b3d3ac8d409084aba5ace3d822103e, type: 2}
+  - {fileID: 11400000, guid: 29100ecf794fb7046b45bd5cbae74785, type: 2}
+  - {fileID: 11400000, guid: dc293bd70f4b69a40adde53053c43c76, type: 2}
+  - {fileID: 11400000, guid: 27625bbde1ae22c40834b51c278c1f5c, type: 2}
+  - {fileID: 11400000, guid: 4408b1f20570cd94dba1e0776e36790d, type: 2}
+  - {fileID: 11400000, guid: 50b065227fc24bb4e8e003acd9e8b3b9, type: 2}
+  - {fileID: 11400000, guid: 6c4f90e45eeb1ee4bba5a9d8cdbd7283, type: 2}
+  cardSlots:
+  - {fileID: 498289352}
+  - {fileID: 824783167}
+  - {fileID: 2038874018}
 --- !u!1 &226143463
 GameObject:
   m_ObjectHideFlags: 0
@@ -2835,7 +2850,7 @@ MonoBehaviour:
   playerStats: {fileID: 2094027226}
   playerController: {fileID: 74871045}
   hubUI: {fileID: 223878066}
-  upgradeManager: {fileID: 0}
+  upgradeManager: {fileID: 223878067}
   nameText: {fileID: 1701523345}
   descriptionText: {fileID: 1873517195}
   costText: {fileID: 252158167}
@@ -4997,7 +5012,7 @@ MonoBehaviour:
   playerStats: {fileID: 2094027226}
   playerController: {fileID: 74871045}
   hubUI: {fileID: 223878066}
-  upgradeManager: {fileID: 0}
+  upgradeManager: {fileID: 223878067}
   nameText: {fileID: 2107566739}
   descriptionText: {fileID: 1899114445}
   costText: {fileID: 1756026700}
@@ -121650,7 +121665,7 @@ MonoBehaviour:
   playerStats: {fileID: 2094027226}
   playerController: {fileID: 74871045}
   hubUI: {fileID: 223878066}
-  upgradeManager: {fileID: 0}
+  upgradeManager: {fileID: 223878067}
   nameText: {fileID: 1857835929}
   descriptionText: {fileID: 707163362}
   costText: {fileID: 2079148562}
@@ -122646,6 +122661,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1753650362075881688, guid: a87e5fcc9f4944240baa96c1042c8ee9, type: 3}
+      propertyPath: baseAttackSpeedMultiplier
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2199166186058297030, guid: a87e5fcc9f4944240baa96c1042c8ee9, type: 3}
       propertyPath: scannerVisual
       value: 
@@ -122654,6 +122673,10 @@ PrefabInstance:
       propertyPath: xpScaleFactor
       value: 1.25
       objectReference: {fileID: 0}
+    - target: {fileID: 2199166186058297030, guid: a87e5fcc9f4944240baa96c1042c8ee9, type: 3}
+      propertyPath: upgradeManager
+      value: 
+      objectReference: {fileID: 223878067}
     - target: {fileID: 2310280796610986817, guid: a87e5fcc9f4944240baa96c1042c8ee9, type: 3}
       propertyPath: ghostSpawnRate
       value: 0.075
