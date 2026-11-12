@@ -65,6 +65,7 @@ public class PlayerController : MonoBehaviour
     [Header("Gadget Stats")]
     public float grappleStrafeForce = 15f;
     public float activeBoostFriction = 0.5f;
+    public int bonusGadgetDeployLimit = 0;
 
     [Header("Interaction")]
     public float interactRange = 1.5f;
@@ -180,8 +181,9 @@ public class PlayerController : MonoBehaviour
         }
         if (currentWallBoosts < maxWallBoosts)
         {
-            // Tick the clock UP
-            boostRechargeTimer += Time.deltaTime;
+            // Tick the clock UP (Multiplied by our WallBoostRecharge stat!)
+            float rechargeRate = myStats != null ? myStats.GetCurrentWallBoostRechargeMultiplier() : 1f;
+            boostRechargeTimer += Time.deltaTime * rechargeRate;
             
             // Did we hit the 2-second mark?
             if (boostRechargeTimer >= boostRechargeTime)

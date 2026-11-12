@@ -17,6 +17,12 @@ public class PlayerStats : MonoBehaviour
     public float baseMaxHealth = 100f;
     public float baseAttackSpeedMultiplier = 1f;
 
+    [Header("Cooldown & Rate Stats")]
+    public float baseReloadSpeedMultiplier = 1f;       // 1f = 100% normal reload speed
+    public float baseWallBoostRechargeMultiplier = 1f; // 1f = 100% normal recharge rate
+    public float baseAltFireCooldownReduction = 0f;    // 0f = 0% cooldown reduction
+    public float baseGadgetCooldownReduction = 0f;
+
     // The List of active stat modifiers currently affecting the player
     private List<StatModifier> activeModifiers = new List<StatModifier>();
     
@@ -148,13 +154,58 @@ public class PlayerStats : MonoBehaviour
     }
 
     public float GetCurrentAttackSpeedMultiplier()
-{
-    float finalAttackSpeed = baseAttackSpeedMultiplier;
-    foreach (StatModifier mod in activeModifiers)
     {
-        if (mod.statType == StatModifier.StatType.AttackSpeed)
-            finalAttackSpeed += mod.multiplier;
+        float finalAttackSpeed = baseAttackSpeedMultiplier;
+        foreach (StatModifier mod in activeModifiers)
+        {
+            if (mod.statType == StatModifier.StatType.AttackSpeed)
+                finalAttackSpeed += mod.multiplier;
+        }
+        return Mathf.Max(finalAttackSpeed, 0.1f); // Never drop below 10% speed
     }
-    return Mathf.Max(finalAttackSpeed, 0.1f); // Never drop below 10% speed
-}
+
+    public float GetCurrentReloadSpeedMultiplier()
+    {
+        float finalReload = baseReloadSpeedMultiplier;
+        foreach (StatModifier mod in activeModifiers)
+        {
+            if (mod.statType == StatModifier.StatType.ReloadSpeed)
+                finalReload += mod.multiplier;
+        }
+        return Mathf.Max(finalReload, 0.1f);
+    }
+
+    public float GetCurrentWallBoostRechargeMultiplier()
+    {
+        float finalRecharge = baseWallBoostRechargeMultiplier;
+        foreach (StatModifier mod in activeModifiers)
+        {
+            if (mod.statType == StatModifier.StatType.WallBoostRecharge)
+                finalRecharge += mod.multiplier;
+        }
+        return Mathf.Max(finalRecharge, 0.1f);
+    }
+
+    public float GetCurrentAltFireCooldownReduction()
+    {
+        float finalCDR = baseAltFireCooldownReduction;
+        foreach (StatModifier mod in activeModifiers)
+        {
+            if (mod.statType == StatModifier.StatType.AltFireCooldown)
+                finalCDR += mod.multiplier;
+        }
+        return Mathf.Clamp(finalCDR, 0f, 0.8f); // Max 80% cooldown reduction
+    }
+
+    public float GetCurrentGadgetCooldownReduction()
+    {
+        float finalCDR = baseGadgetCooldownReduction;
+        foreach (StatModifier mod in activeModifiers)
+        {
+            if (mod.statType == StatModifier.StatType.GadgetCooldown)
+                finalCDR += mod.multiplier;
+        }
+        return Mathf.Clamp(finalCDR, 0f, 0.8f); // Max 80% cooldown reduction
+    }
+    
 }

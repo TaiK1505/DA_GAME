@@ -3,8 +3,16 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Upgrade", menuName = "Upgrade Data")]
 public class UpgradeData : ScriptableObject
 {
-   public enum UpgradeCategory { StatBoost, MechanicUnlock }
-    public enum MechanicType { ExtraWallBoost, ExtraDash }
+    public enum UpgradeCategory 
+    { 
+    StatBoost, 
+    MechanicUnlock 
+    }
+    public enum MechanicType
+    {
+    ExtraWallBoost,
+    ExtraGadgetDeployLimit 
+    }
 
     [Header("UI Info")]
     public string upgradeName;

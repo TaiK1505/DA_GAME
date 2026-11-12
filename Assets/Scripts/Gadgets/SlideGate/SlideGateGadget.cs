@@ -48,14 +48,17 @@ public class SlideGateGadget : PlayerGadget
             // 5. Queue Management
             activePads.Enqueue(deployedPad);
 
-            if (activePads.Count > myStats.maxActivePads)
+            PlayerController pc = GetComponent<PlayerController>();
+            int bonusLimit = pc != null ? pc.bonusGadgetDeployLimit : 0;
+            int totalMaxPads = myStats.maxActivePads + bonusLimit;
+
+            if (activePads.Count > totalMaxPads)
             {
                 GameObject oldestPad = activePads.Dequeue();
                 ObjectPoolManager.Instance.ReturnObject(oldestPad);
             }
-
             // 6. Start Cooldown
-            nextFireTime = Time.time + myStats.cooldownTime;
+            nextFireTime = Time.time + GetEffectiveCooldown(myStats.cooldownTime);
         }
     }
 
@@ -71,12 +74,12 @@ public class SlideGateGadget : PlayerGadget
         // Are we currently on cooldown?
         if (Time.time < nextFireTime)
         {
-            // Calculate the drain math
+            float effectiveCD = GetEffectiveCooldown(myStats.cooldownTime);
             float timeRemaining = nextFireTime - Time.time;
-            float timePassed = myStats.cooldownTime - timeRemaining;
+            float timePassed = effectiveCD - timeRemaining;
             
             // Push the 0-to-1 decimal to the UI
-            float fillPercentage = timePassed / myStats.cooldownTime;
+            float fillPercentage = timePassed / effectiveCD;
             
             if (EquipmentUI.instance != null)
             {
@@ -92,6 +95,8 @@ public class SlideGateGadget : PlayerGadget
             }
         }
     }
-
     
 }
+
+    
+

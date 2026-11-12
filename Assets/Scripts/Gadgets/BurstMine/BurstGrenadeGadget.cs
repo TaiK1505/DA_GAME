@@ -17,8 +17,7 @@ public class BurstGrenadeGadget : PlayerGadget
     {
         if (Time.time < nextFireTime) return; 
 
-        
-        nextFireTime = Time.time + myStats.cooldownTime;
+        nextFireTime = Time.time + GetEffectiveCooldown(myStats.cooldownTime);
         
         // Getting the mouse position
         Vector2 screenMousePos = Mouse.current.position.ReadValue();
@@ -35,7 +34,6 @@ public class BurstGrenadeGadget : PlayerGadget
         //the exact X/Y coordinate the mine will land on
         Vector2 targetLandingSpot = playerPos + (throwDirection * actualThrowDistance);
 
-        
         GameObject spawnedGrenade = ObjectPoolManager.Instance.SpawnObject(myStats.grenadePrefab, playerPos, Quaternion.identity);
         
         BurstGrenade physicalScript = spawnedGrenade.GetComponent<BurstGrenade>();
@@ -60,12 +58,12 @@ public class BurstGrenadeGadget : PlayerGadget
         // Are we currently on cooldown?
         if (Time.time < nextFireTime)
         {
-            // Calculate the drain math
+            float effectiveCD = GetEffectiveCooldown(myStats.cooldownTime);
             float timeRemaining = nextFireTime - Time.time;
-            float timePassed = myStats.cooldownTime - timeRemaining;
+            float timePassed = effectiveCD - timeRemaining;
             
             // Push the 0-1 decimal to the UI
-            float fillPercentage = timePassed / myStats.cooldownTime;
+            float fillPercentage = timePassed / effectiveCD;
             
             if (EquipmentUI.instance != null)
             {

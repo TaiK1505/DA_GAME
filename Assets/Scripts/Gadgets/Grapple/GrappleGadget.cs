@@ -85,7 +85,7 @@ public class GrappleGadget : PlayerGadget
             // Start the cooldown timer ONLY exactly when the rope snaps
             if (myStats != null)
             {
-                nextFireTime = Time.time + myStats.cooldownTime;
+                nextFireTime = Time.time + GetEffectiveCooldown(myStats.cooldownTime);
             }
         }
     }
@@ -115,12 +115,12 @@ public class GrappleGadget : PlayerGadget
         // --- NEW UI COOLDOWN REFILL LOGIC ---
         else if (myStats != null && Time.time < nextFireTime)
         {
-            // Calculate the drain math
+            float effectiveCD = GetEffectiveCooldown(myStats.cooldownTime);
             float timeRemaining = nextFireTime - Time.time;
-            float timePassed = myStats.cooldownTime - timeRemaining;
+            float timePassed = effectiveCD - timeRemaining;
             
             // Push the 0-to-1 decimal to the UI
-            float fillPercentage = timePassed / myStats.cooldownTime;
+            float fillPercentage = timePassed / effectiveCD;
             
             if (EquipmentUI.instance != null)
             {
@@ -135,7 +135,7 @@ public class GrappleGadget : PlayerGadget
                 EquipmentUI.instance.UpdateGadgetCooldownUI(1f);
             }
         }
-    }   
+    }     
 
     private void FixedUpdate()
     {

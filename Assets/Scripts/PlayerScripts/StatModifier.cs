@@ -14,7 +14,11 @@ public class StatModifier
         CritChance,     
         CritDamage,     
         LifeSteal,      
-        MaxHealth       
+        MaxHealth,      
+        ReloadSpeed,        
+        AltFireCooldown,    
+        WallBoostRecharge,  
+        GadgetCooldown 
     }
     public StatType statType;
     public float multiplier;

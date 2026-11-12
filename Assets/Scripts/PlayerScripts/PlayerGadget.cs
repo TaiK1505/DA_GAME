@@ -12,4 +12,11 @@ public abstract class PlayerGadget : MonoBehaviour
     {
         // gadgets will override this
     }
+
+    protected float GetEffectiveCooldown(float baseCooldown)
+    {
+        PlayerStats stats = GetComponent<PlayerStats>();
+        float cdr = stats != null ? stats.GetCurrentGadgetCooldownReduction() : 0f;
+        return baseCooldown * (1f - cdr);
+    }
 }

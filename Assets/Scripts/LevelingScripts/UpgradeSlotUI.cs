@@ -120,10 +120,15 @@ public class UpgradeSlotUI : MonoBehaviour
         {
             case UpgradeData.MechanicType.ExtraWallBoost:
                 playerController.maxWallBoosts++;
+                playerController.currentWallBoosts++; // Immediately give them the new charge ready to use!
+                Debug.Log("Extra Wall Boost Unlocked! Max is now: " + playerController.maxWallBoosts);
                 break;
-            case UpgradeData.MechanicType.ExtraDash:
-                // playerController.maxDashes++;
+
+            case UpgradeData.MechanicType.ExtraGadgetDeployLimit:
+                playerController.bonusGadgetDeployLimit++;
+                Debug.Log("Extra Gadget Capacity Unlocked! Bonus deployables: +" + playerController.bonusGadgetDeployLimit);
                 break;
+
         }
     }
 }

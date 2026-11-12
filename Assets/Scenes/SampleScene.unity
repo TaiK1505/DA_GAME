@@ -876,15 +876,21 @@ MonoBehaviour:
   levelManager: {fileID: 2011215183}
   hubUI: {fileID: 223878066}
   allAvailableUpgrades:
+  - {fileID: 11400000, guid: 6df6d48515ad746439da4a271a413bc7, type: 2}
+  - {fileID: 11400000, guid: 4408b1f20570cd94dba1e0776e36790d, type: 2}
   - {fileID: 11400000, guid: f1b77b6506df12d48b4437f271e113c3, type: 2}
   - {fileID: 11400000, guid: 9d34a348e9fa1284fa7e5f8e34cb0b04, type: 2}
-  - {fileID: 11400000, guid: 74b3d3ac8d409084aba5ace3d822103e, type: 2}
+  - {fileID: 11400000, guid: 50b065227fc24bb4e8e003acd9e8b3b9, type: 2}
   - {fileID: 11400000, guid: 29100ecf794fb7046b45bd5cbae74785, type: 2}
   - {fileID: 11400000, guid: dc293bd70f4b69a40adde53053c43c76, type: 2}
+  - {fileID: 11400000, guid: 0d7e52a54f22fc64cb0f11dd9b3c010a, type: 2}
   - {fileID: 11400000, guid: 27625bbde1ae22c40834b51c278c1f5c, type: 2}
-  - {fileID: 11400000, guid: 4408b1f20570cd94dba1e0776e36790d, type: 2}
-  - {fileID: 11400000, guid: 50b065227fc24bb4e8e003acd9e8b3b9, type: 2}
   - {fileID: 11400000, guid: 6c4f90e45eeb1ee4bba5a9d8cdbd7283, type: 2}
+  - {fileID: 11400000, guid: 74b3d3ac8d409084aba5ace3d822103e, type: 2}
+  - {fileID: 11400000, guid: 238348649b1f70743bbac6fdcbb08313, type: 2}
+  - {fileID: 11400000, guid: 9555fae9bc8000a409a5f00743cd740f, type: 2}
+  - {fileID: 11400000, guid: 06922207f3244cd468c26164f2a78a97, type: 2}
+  - {fileID: 11400000, guid: 91956166b4755d6458e686f8e7f58305, type: 2}
   cardSlots:
   - {fileID: 498289352}
   - {fileID: 824783167}

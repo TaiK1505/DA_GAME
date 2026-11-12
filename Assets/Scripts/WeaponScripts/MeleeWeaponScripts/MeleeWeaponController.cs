@@ -44,15 +44,23 @@ public class MeleeWeaponController : MonoBehaviour
         aimingScript = GetComponentInParent<WeaponController>(); 
     }
 
+    private float GetEffectiveThrowCooldown()
+    {
+        PlayerStats stats = GetComponentInParent<PlayerStats>();
+        float cdr = stats != null ? stats.GetCurrentAltFireCooldownReduction() : 0f;
+        return weaponData.throwCooldown * (1f - cdr);
+    }
+
     private void Update()
     {
         if (weaponData == null || !weaponData.canThrow) return;
 
         if (Time.time < nextThrowTime)
         {
+            float effectiveCooldown = GetEffectiveThrowCooldown();
             float timeRemaining = nextThrowTime - Time.time;
-            float timePassed = weaponData.throwCooldown - timeRemaining;
-            float fillPercentage = timePassed / weaponData.throwCooldown;
+            float timePassed = effectiveCooldown - timeRemaining;
+            float fillPercentage = timePassed / effectiveCooldown;
             
             if (EquipmentUI.instance != null) EquipmentUI.instance.UpdateAltFireUI(fillPercentage);
         }
@@ -351,7 +359,7 @@ public class MeleeWeaponController : MonoBehaviour
     public void Throw()
     {
         if (!weaponData.canThrow || isThrown || Time.time < nextThrowTime) return;
-        nextThrowTime = Time.time + weaponData.throwCooldown;
+        nextThrowTime = Time.time + GetEffectiveThrowCooldown();
         StartCoroutine(BoomerangRoutine());
     }
 

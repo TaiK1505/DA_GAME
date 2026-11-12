@@ -41,6 +41,13 @@ public class WeaponBase : MonoBehaviour
 
     public void StartShooting() { isShooting = true; }
     public void StopShooting() { isShooting = false; }
+
+    private float GetEffectiveAltFireCooldown()
+    {
+        PlayerStats stats = GetComponentInParent<PlayerStats>();
+        float cdr = stats != null ? stats.GetCurrentAltFireCooldownReduction() : 0f;
+        return weaponData.altFireCooldown * (1f - cdr);
+    }
     
     private void Update()
     {
@@ -49,10 +56,11 @@ public class WeaponBase : MonoBehaviour
         {
             if (Time.time < nextAltFireTime)
             {
+                float effectiveCooldown = GetEffectiveAltFireCooldown();
                 float timeRemaining = nextAltFireTime - Time.time;
-                float timePassed = weaponData.altFireCooldown - timeRemaining;
+                float timePassed = effectiveCooldown - timeRemaining;
                 
-                float fillPercentage = timePassed / weaponData.altFireCooldown;
+                float fillPercentage = timePassed / effectiveCooldown;
                 if (EquipmentUI.instance != null) EquipmentUI.instance.UpdateAltFireUI(fillPercentage);
             }
             else
@@ -108,7 +116,7 @@ public class WeaponBase : MonoBehaviour
         ApplyRecoil(weaponData.altFireRecoilForce);
         TriggerScreenShake(weaponData.altFireShakeDuration, weaponData.altFireScreenShake);
 
-        nextAltFireTime = Time.time + weaponData.altFireCooldown;
+        nextAltFireTime = Time.time + GetEffectiveAltFireCooldown();
     }
 
     private void FireSpread(GameObject prefabToSpawn, int count, float spread, float baseDamage)
@@ -195,7 +203,9 @@ public class WeaponBase : MonoBehaviour
 
         isReloading = true;
 
-        yield return new WaitForSeconds(weaponData.reloadTime);
+        PlayerStats stats = GetComponentInParent<PlayerStats>();
+        float reloadMult = stats != null ? stats.GetCurrentReloadSpeedMultiplier() : 1f;
+        yield return new WaitForSeconds(weaponData.reloadTime / reloadMult);
 
         int bulletsNeeded = weaponData.magazineSize - currentAmmo;
 
@@ -230,4 +240,6 @@ public class WeaponBase : MonoBehaviour
 
         StartCoroutine(ReloadRoutine());
     }
+
+    
 }
