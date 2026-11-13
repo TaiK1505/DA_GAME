@@ -15,7 +15,13 @@ MonoBehaviour:
   upgradeName: Health Capacity
   description: Increases user Maximum Health by 20%
   skillPointCost: 1
+  tier: 1
+  prerequisiteUpgrade: {fileID: 0}
   category: 0
-  statToBoost: 9
-  boostMultiplier: 0.2
+  statModifiers:
+  - statType: 9
+    multiplier: 0.2
+    duration: 0
+    expirationTime: 0
+    sourceUpgrade: {fileID: 0}
   mechanicToUnlock: 0

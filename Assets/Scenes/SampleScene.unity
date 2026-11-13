@@ -891,10 +891,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9555fae9bc8000a409a5f00743cd740f, type: 2}
   - {fileID: 11400000, guid: 06922207f3244cd468c26164f2a78a97, type: 2}
   - {fileID: 11400000, guid: 91956166b4755d6458e686f8e7f58305, type: 2}
+  - {fileID: 11400000, guid: 41f5be0393b8e5f47bd7be0e88012c1b, type: 2}
   cardSlots:
   - {fileID: 498289352}
   - {fileID: 824783167}
   - {fileID: 2038874018}
+  currentFloor: 1
+  prerequisiteOwnedMultiplier: 3.5
+  purchasedUpgrades: []
 --- !u!1 &226143463
 GameObject:
   m_ObjectHideFlags: 0

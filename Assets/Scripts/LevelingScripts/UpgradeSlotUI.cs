@@ -93,21 +93,44 @@ public class UpgradeSlotUI : MonoBehaviour
 
     private void ApplyStatBoost()
     {
-        StatModifier permanentTicket = new StatModifier(
-            upgradeData.statToBoost, 
-            upgradeData.boostMultiplier, 
-            0f 
-        );
-        playerStats.AddModifier(permanentTicket);
+        float oldMaxHealthBonus = 0f;
 
-        // If it's a MaxHealth upgrade, also heal the player by the bonus amount!
-        if (upgradeData.statToBoost == StatModifier.StatType.MaxHealth)
+        // 1. If this upgrade builds off a lower-tier prerequisite, remove the old prerequisite's stats first!
+        if (upgradeData.prerequisiteUpgrade != null)
         {
-            HealthComponent hp = playerStats.GetComponent<HealthComponent>();
-            if (hp != null)
+            // Check if the old prerequisite gave MaxHealth so we only heal the DIFFERENCE
+            foreach (StatModifier oldMod in upgradeData.prerequisiteUpgrade.statModifiers)
             {
-                float bonusHP = playerStats.baseMaxHealth * upgradeData.boostMultiplier;
-                hp.Heal(bonusHP);
+                if (oldMod.statType == StatModifier.StatType.MaxHealth)
+                {
+                    oldMaxHealthBonus += oldMod.multiplier;
+                }
+            }
+
+            playerStats.RemoveModifiersFromSource(upgradeData.prerequisiteUpgrade);
+        }
+
+        // 2. Apply the new Tier's stats and stamp them with this upgradeData as their source
+        foreach (StatModifier mod in upgradeData.statModifiers)
+        {
+            StatModifier permanentTicket = new StatModifier(
+                mod.statType, 
+                mod.multiplier, 
+                0f,
+                upgradeData // Stamp the ticket with this UpgradeData!
+            );
+            playerStats.AddModifier(permanentTicket);
+
+            if (mod.statType == StatModifier.StatType.MaxHealth)
+            {
+                HealthComponent hp = playerStats.GetComponent<HealthComponent>();
+                if (hp != null)
+                {
+                    // If replacing Tier 1 MaxHealth (+20%) with Tier 2 MaxHealth (+50%), only heal the net +30% difference!
+                    float netMultiplier = Mathf.Max(0f, mod.multiplier - oldMaxHealthBonus);
+                    float bonusHP = playerStats.baseMaxHealth * netMultiplier;
+                    if (bonusHP > 0f) hp.Heal(bonusHP);
+                }
             }
         }
     }

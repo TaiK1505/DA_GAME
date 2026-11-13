@@ -15,7 +15,13 @@ MonoBehaviour:
   upgradeName: Gadget Cooldown
   description: Decreases users Gadget Cooldown by 15%
   skillPointCost: 1
+  tier: 1
+  prerequisiteUpgrade: {fileID: 0}
   category: 0
-  statToBoost: 13
-  boostMultiplier: 0.15
+  statModifiers:
+  - statType: 13
+    multiplier: 0.15
+    duration: 0
+    expirationTime: 0
+    sourceUpgrade: {fileID: 0}
   mechanicToUnlock: 0

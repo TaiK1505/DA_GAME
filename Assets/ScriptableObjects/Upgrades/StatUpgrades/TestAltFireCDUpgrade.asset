@@ -15,7 +15,13 @@ MonoBehaviour:
   upgradeName: Alt F4st
   description: Decreases Alt Fire Cooldown by 10%
   skillPointCost: 1
+  tier: 1
+  prerequisiteUpgrade: {fileID: 0}
   category: 0
-  statToBoost: 11
-  boostMultiplier: 0.1
+  statModifiers:
+  - statType: 11
+    multiplier: 0.1
+    duration: 0
+    expirationTime: 0
+    sourceUpgrade: {fileID: 0}
   mechanicToUnlock: 0

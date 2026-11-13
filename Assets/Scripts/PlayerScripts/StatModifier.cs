@@ -18,18 +18,21 @@ public class StatModifier
         ReloadSpeed,        
         AltFireCooldown,    
         WallBoostRecharge,  
-        GadgetCooldown 
+        GadgetCooldown,
+        DashCooldown, 
     }
     public StatType statType;
     public float multiplier;
     public float duration;
     [HideInInspector] public float expirationTime;
+    [HideInInspector] public UpgradeData sourceUpgrade;
 
-    public StatModifier(StatType type, float mult, float time)
+    public StatModifier(StatType type, float mult, float time, UpgradeData source = null)
     {
         statType = type;
         multiplier = mult;
         duration = time;
+        sourceUpgrade = source;
     }
 
 }

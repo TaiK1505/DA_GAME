@@ -13,9 +13,15 @@ MonoBehaviour:
   m_Name: TestDmgUpgrade
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeData
   upgradeName: High Powered Rounds
-  description: Update that allows your gun to shoot with 25% more power
+  description: Update that allows your weapons to deal 25% more power
   skillPointCost: 1
+  tier: 1
+  prerequisiteUpgrade: {fileID: 0}
   category: 0
-  statToBoost: 2
-  boostMultiplier: 0.25
+  statModifiers:
+  - statType: 2
+    multiplier: 0.25
+    duration: 0
+    expirationTime: 0
+    sourceUpgrade: {fileID: 0}
   mechanicToUnlock: 0

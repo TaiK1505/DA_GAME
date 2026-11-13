@@ -407,8 +407,10 @@ public class PlayerController : MonoBehaviour
 
     private void AttemptDash()
     {
-        
-        if ((currentState == State.Idle || currentState == State.Running) && Time.time >= lastDashTime + dashCooldown)
+        float dashCDR = myStats != null ? myStats.GetCurrentDashCooldownReduction() : 0f;
+        float effectiveDashCooldown = dashCooldown * (1f - dashCDR);
+
+        if ((currentState == State.Idle || currentState == State.Running) && Time.time >= lastDashTime + effectiveDashCooldown)
         {
             StartDash();
         }

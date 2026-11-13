@@ -15,7 +15,13 @@ MonoBehaviour:
   upgradeName: Fast Loader
   description: Increases Reload Speed by 20%
   skillPointCost: 1
+  tier: 1
+  prerequisiteUpgrade: {fileID: 0}
   category: 0
-  statToBoost: 10
-  boostMultiplier: 0.2
+  statModifiers:
+  - statType: 10
+    multiplier: 0.2
+    duration: 0
+    expirationTime: 0
+    sourceUpgrade: {fileID: 0}
   mechanicToUnlock: 0

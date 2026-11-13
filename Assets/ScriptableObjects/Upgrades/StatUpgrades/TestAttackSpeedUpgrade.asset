@@ -15,7 +15,13 @@ MonoBehaviour:
   upgradeName: Trigger Finger
   description: Cyber Arm update that increases Attack Speed by 15%
   skillPointCost: 1
+  tier: 1
+  prerequisiteUpgrade: {fileID: 0}
   category: 0
-  statToBoost: 3
-  boostMultiplier: 0.15
+  statModifiers:
+  - statType: 3
+    multiplier: 0.15
+    duration: 0
+    expirationTime: 0
+    sourceUpgrade: {fileID: 0}
   mechanicToUnlock: 0

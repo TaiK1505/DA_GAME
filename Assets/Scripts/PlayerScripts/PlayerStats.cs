@@ -22,6 +22,7 @@ public class PlayerStats : MonoBehaviour
     public float baseWallBoostRechargeMultiplier = 1f; // 1f = 100% normal recharge rate
     public float baseAltFireCooldownReduction = 0f;    // 0f = 0% cooldown reduction
     public float baseGadgetCooldownReduction = 0f;
+    public float baseDashCooldownReduction = 0f;
 
     // The List of active stat modifiers currently affecting the player
     private List<StatModifier> activeModifiers = new List<StatModifier>();
@@ -35,6 +36,20 @@ public class PlayerStats : MonoBehaviour
         
         activeModifiers.Add(modifier);
         Debug.Log("Added Modifier: " + modifier.statType + " (" + modifier.multiplier + ")");
+    }
+
+    public void RemoveModifiersFromSource(UpgradeData sourceToRemove)
+    {
+        if (sourceToRemove == null) return;
+
+        for (int i = activeModifiers.Count - 1; i >= 0; i--)
+        {
+            if (activeModifiers[i].sourceUpgrade == sourceToRemove)
+            {
+                Debug.Log("Replaced lower-tier modifier: " + activeModifiers[i].statType + " from " + sourceToRemove.upgradeName);
+                activeModifiers.RemoveAt(i);
+            }
+        }
     }
 
     private void Update()
@@ -208,4 +223,16 @@ public class PlayerStats : MonoBehaviour
         return Mathf.Clamp(finalCDR, 0f, 0.8f); // Max 80% cooldown reduction
     }
     
+    public float GetCurrentDashCooldownReduction()
+    {
+        float finalCDR = baseDashCooldownReduction;
+        foreach (StatModifier mod in activeModifiers)
+        {
+            if (mod.statType == StatModifier.StatType.DashCooldown)
+                finalCDR += mod.multiplier;
+        }
+        return Mathf.Clamp(finalCDR, 0f, 0.8f); // Max 80% cooldown reduction
+    }
+
+
 }

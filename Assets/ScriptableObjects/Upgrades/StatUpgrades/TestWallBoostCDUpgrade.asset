@@ -15,7 +15,13 @@ MonoBehaviour:
   upgradeName: Wall Booster
   description: Increase Recharge Rate of Wall Boosts by 25%
   skillPointCost: 1
+  tier: 1
+  prerequisiteUpgrade: {fileID: 0}
   category: 0
-  statToBoost: 12
-  boostMultiplier: 0.25
+  statModifiers:
+  - statType: 12
+    multiplier: 0.25
+    duration: 0
+    expirationTime: 0
+    sourceUpgrade: {fileID: 0}
   mechanicToUnlock: 0
